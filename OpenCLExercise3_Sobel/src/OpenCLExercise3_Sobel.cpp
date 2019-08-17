@@ -1,5 +1,22 @@
 //////////////////////////////////////////////////////////////////////////////
-// OpenCL exercise 3: Sobel filter
+// Project:		Accelerating Canny Edge Detector using GPU and OpenCL
+
+// Author Information
+// Author_1: 	Mohit Kalra (mkcipher@gmail.com)
+// Matrikel_1:	3301104
+// Author_2: 	Fahad M Ghouri (ghourifahad@hotmail.com)
+// Matrikel_2:	3304910
+
+// Lab: 		High Performance programming using GPU
+// Semester:	SoSe 2019
+// Supervisor:	Kaicong Sun
+// Professor:	Prof. Sven Simon
+// Institute:	IPVS
+// University:	University of Stuttgart
+
+// This file OpenCLExercise3_Sobel.cpp describes the c++ file for the Canny edge detector host side code \
+// This Implementation is for GPU based execution only.
+
 //////////////////////////////////////////////////////////////////////////////
 
 // includes
@@ -139,15 +156,21 @@ int main(int argc, char** argv) {
 	// Create a command queue
 	cl::CommandQueue queue(context, device, CL_QUEUE_PROFILING_ENABLE);
 	cl::Event WRITEBUFFERTIME;
-	cl::Event KERNELTIME;
+	cl::Event GAUSS_KERNEL_TIME;
+	cl::Event SOBEL_KERNEL_TIME;
+	cl::Event NON_MAX_KERNEL_TIME;
+	cl::Event HYSTERISIS_KERNEL_TIME;
+
+	//cl::Event KERNELTIME;
+
 	cl::Event READBUFFERTIME;
 
 	// Load the source code
 	cl::Program program = OpenCL::loadProgramSource(context, "src/OpenCLExercise3_Sobel.cl");
-	cl::Program program1 = OpenCL::loadProgramSource(context, "src/gaussian_kernel.cl");
-	cl::Program program4 = OpenCL::loadProgramSource(context, "src/hyst_kernel.cl");
-	cl::Program program3 = OpenCL::loadProgramSource(context, "src/non_max_supp_kernel.cl");
-	cl::Program program2 = OpenCL::loadProgramSource(context, "src/sobel_kernel.cl");
+	//cl::Program program1 = OpenCL::loadProgramSource(context, "src/gaussian_kernel.cl");
+	//cl::Program program4 = OpenCL::loadProgramSource(context, "src/hyst_kernel.cl");
+	//cl::Program program3 = OpenCL::loadProgramSource(context, "src/non_max_supp_kernel.cl");
+	//cl::Program program2 = OpenCL::loadProgramSource(context, "src/sobel_kernel.cl");
 	//cl::Program bak = OpenCL::loadProgramSource(context, "src/bak.cl");
 	// Compile the source code. This is similar to program.build(devices) but will print more detailed error messages
 	OpenCL::buildProgram(program, devices);
@@ -280,95 +303,89 @@ int main(int argc, char** argv) {
 		cl::Kernel non_max_supp_kernel(program, "non_max_supp_kernel");
 		cl::Kernel hyst_kernel(program, "hyst_kernel");
 
-		cout<<"Test"<<endl;
+		// Debug Test Display
+		//cout<<"Test"<<endl;
 
-		//cl::Kernel sobel_kernel(program2, kernelName2.c_str ());
-		//cl::Kernel non_max_supp_kernel(program3, kernelName3.c_str ());
-		//cl::Kernel hyst_kernel(program4, kernelName4.c_str ());
+		// Write Image Data to input Buffer
+		queue.enqueueWriteBuffer(d_input, true, 0, size, h_input.data(),NULL,&WRITEBUFFERTIME);
 
-
-
-		queue.enqueueWriteBuffer(d_input, true, 0, size, h_input.data(),NULL,NULL);
 		// Launch kernel on the device
-		//TODO
+		// ====================================Gaussian Kernel====================================//
+
 		gaussian_kernel.setArg<cl::Buffer>(0, d_input);
 		gaussian_kernel.setArg<cl::Buffer>(1, gauss);
 		gaussian_kernel.setArg<unsigned long>(2, inputHeight);
 		gaussian_kernel.setArg<unsigned long>(3, inputWidth);
-		//gaussian_kernel.setArg<cl::Buffer>(4, theta);
-		//gaussian_kernel.setArg<cl::Buffer>(5, gauss);
-		queue.enqueueNDRangeKernel(gaussian_kernel, 0,cl::NDRange(countY, countX),cl::NDRange(wgSizeX, wgSizeY), NULL, NULL);
-		//queue.enqueueNDRangeKernel(gaussian_kernel, 0,count,cl::NDRange(wgSizeX, wgSizeY), NULL, NULL);
-		//queue.enqueueReadBuffer(gauss, true, 0, size, h_outputGpu.data(),NULL,NULL);
-		//queue.enqueueReadBuffer(gauss, true, 0, size, h_outputGpu.data(),NULL,NULL);
-		//Core::writeImagePGM("GaussianBlur" + boost::lexical_cast<std::string> (1) + ".pgm", h_outputGpu, countX, countY);
 
+		queue.enqueueNDRangeKernel(gaussian_kernel, 0,cl::NDRange(countY, countX),cl::NDRange(wgSizeX, wgSizeY), NULL, &GAUSS_KERNEL_TIME);
 
-		//=========================== sobel work==============================/
+		//========================================================================================//
 
-		//queue.enqueueWriteBuffer(gauss, true, 0, size, h_outputGpu.data(),NULL,NULL);
+		//=====================================Sobel Kernel=======================================//
+
 		sobel_kernel.setArg<cl::Buffer>(0, gauss);
 		sobel_kernel.setArg<cl::Buffer>(1, sobel_out);
 		sobel_kernel.setArg<cl::Buffer>(2, theta);
 		sobel_kernel.setArg<unsigned long>(3, inputHeight);
 		sobel_kernel.setArg<unsigned long>(4, inputWidth);
 
-		//gaussian_kernel.setArg<cl::Buffer>(5, gauss);
-		queue.enqueueNDRangeKernel(sobel_kernel, 0,cl::NDRange(countY, countX),cl::NDRange(wgSizeX, wgSizeY), NULL, NULL);
-		//queue.enqueueNDRangeKernel(gaussian_kernel, 0,count,cl::NDRange(wgSizeX, wgSizeY), NULL, NULL);
-		//queue.enqueueReadBuffer(gauss, true, 0, size, h_outputGpu.data(),NULL,NULL);
-		//queue.enqueueReadBuffer(gauss, true, 0, size, h_outputGpu.data(),NULL,NULL);
-		//Core::writeImagePGM("GaussianBlur" + boost::lexical_cast<std::string> (1) + ".pgm", h_outputGpu, countX, countY);
+		queue.enqueueNDRangeKernel(sobel_kernel, 0,cl::NDRange(countY, countX),cl::NDRange(wgSizeX, wgSizeY), NULL, &SOBEL_KERNEL_TIME);
 
+		//========================================================================================//
 
-		//=====================================================//
+		//=====================================Non Maximum Suppression============================//
 
-		//=========================== non max work==============================/
-
-		//queue.enqueueWriteBuffer(gauss, true, 0, size, h_outputGpu.data(),NULL,NULL);
 		non_max_supp_kernel.setArg<cl::Buffer>(0, sobel_out);
 		non_max_supp_kernel.setArg<cl::Buffer>(1, non_max_out);
 		non_max_supp_kernel.setArg<cl::Buffer>(2, theta);
 		non_max_supp_kernel.setArg<unsigned long>(3, inputHeight);
 		non_max_supp_kernel.setArg<unsigned long>(4, inputWidth);
 
-		//gaussian_kernel.setArg<cl::Buffer>(5, gauss);
-		queue.enqueueNDRangeKernel(non_max_supp_kernel, 0,cl::NDRange(countY, countX),cl::NDRange(wgSizeX, wgSizeY), NULL, NULL);
-		//queue.enqueueNDRangeKernel(gaussian_kernel, 0,count,cl::NDRange(wgSizeX, wgSizeY), NULL, NULL);
-		//queue.enqueueReadBuffer(gauss, true, 0, size, h_outputGpu.data(),NULL,NULL);
-		//queue.enqueueReadBuffer(gauss, true, 0, size, h_outputGpu.data(),NULL,NULL);
-		//Core::writeImagePGM("GaussianBlur" + boost::lexical_cast<std::string> (1) + ".pgm", h_outputGpu, countX, countY);
+		queue.enqueueNDRangeKernel(non_max_supp_kernel, 0,cl::NDRange(countY, countX),cl::NDRange(wgSizeX, wgSizeY), NULL, &NON_MAX_KERNEL_TIME);
 
+		//========================================================================================//
 
-		//=====================================================//
+		//=====================================Hysterisis=========================================//
 
-		//=========================== hysterisis work==============================/
-
-		//queue.enqueueWriteBuffer(gauss, true, 0, size, h_outputGpu.data(),NULL,NULL);
 		unsigned char lowThresh = 60;
 		unsigned char highThresh = 100;
 		hyst_kernel.setArg<cl::Buffer>(0, non_max_out);
 		hyst_kernel.setArg<cl::Buffer>(1, d_output);
-		//hyst_kernel.setArg<cl::Buffer>(2, theta);
 		hyst_kernel.setArg<unsigned long>(2, inputHeight);
 		hyst_kernel.setArg<unsigned long>(3, inputWidth);
 		hyst_kernel.setArg<unsigned char>(4, lowThresh);
 		hyst_kernel.setArg<unsigned char>(5, highThresh);
 
-		//gaussian_kernel.setArg<cl::Buffer>(5, gauss);
-		queue.enqueueNDRangeKernel(hyst_kernel, 0,cl::NDRange(countY, countX),cl::NDRange(wgSizeX, wgSizeY), NULL, NULL);
-		//queue.enqueueNDRangeKernel(gaussian_kernel, 0,count,cl::NDRange(wgSizeX, wgSizeY), NULL, NULL);
-		//queue.enqueueReadBuffer(gauss, true, 0, size, h_outputGpu.data(),NULL,NULL);
-		//queue.enqueueReadBuffer(gauss, true, 0, size, h_outputGpu.data(),NULL,NULL);
-		//Core::writeImagePGM("GaussianBlur" + boost::lexical_cast<std::string> (1) + ".pgm", h_outputGpu, countX, countY);
+		queue.enqueueNDRangeKernel(hyst_kernel, 0,cl::NDRange(countY, countX),cl::NDRange(wgSizeX, wgSizeY), NULL, &HYSTERISIS_KERNEL_TIME);
 
+		//========================================================================================//
 
-		//=====================================================//
+		//=====================================Performance Benchmarking===========================//
 
+		queue.enqueueReadBuffer(d_output, true, 0, size, h_outputGpu.data(),NULL,&READBUFFERTIME);
 
+		// Timing Performance Benchmarks
+		Core::TimeSpan time_write_buffer = OpenCL::getElapsedTime(WRITEBUFFERTIME);
+		Core::TimeSpan time_gauss = OpenCL::getElapsedTime(GAUSS_KERNEL_TIME);
+		Core::TimeSpan time_sobel = OpenCL::getElapsedTime(SOBEL_KERNEL_TIME);
+		Core::TimeSpan time_non_max = OpenCL::getElapsedTime(NON_MAX_KERNEL_TIME);
+		Core::TimeSpan time_hysterisis = OpenCL::getElapsedTime(HYSTERISIS_KERNEL_TIME);
+		Core::TimeSpan time_read_buffer = OpenCL::getElapsedTime(READBUFFERTIME);
+		Core::TimeSpan GPU_TIME = 	time_write_buffer
+									+ time_gauss
+									+ time_sobel
+									+ time_non_max
+									+ time_hysterisis
+									+ time_read_buffer;
 
+		cout << "CANNY GPU TIME :" << GPU_TIME<<endl;
 
-		//====================================  draw the images =========================//
+		//========================================================================================//
+
+		//=====================================Saving Images =====================================//
+
+		Core::writeImagePGM("Hysterisis" + boost::lexical_cast<std::string> (1) + ".pgm", h_outputGpu, countX, countY);
+
 		queue.enqueueReadBuffer(gauss, true, 0, size, h_outputGpu.data(),NULL,NULL);
 		Core::writeImagePGM("GaussianBlur" + boost::lexical_cast<std::string> (1) + ".pgm", h_outputGpu, countX, countY);
 
@@ -381,8 +398,8 @@ int main(int argc, char** argv) {
 		queue.enqueueReadBuffer(non_max_out, true, 0, size, h_outputGpu.data(),NULL,NULL);
 		Core::writeImagePGM("NonMaxSupp" + boost::lexical_cast<std::string> (1) + ".pgm", h_outputGpu, countX, countY);
 
-		queue.enqueueReadBuffer(d_output, true, 0, size, h_outputGpu.data(),NULL,NULL);
-		Core::writeImagePGM("Hysterisis" + boost::lexical_cast<std::string> (1) + ".pgm", h_outputGpu, countX, countY);
+		//========================================================================================//
+
 		//////=====================================================================//
 		// Copy input data to device
 		//TODO
