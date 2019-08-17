@@ -1,0 +1,543 @@
+pchal
+    description: Computer
+    width: 64 bits
+    capabilities: vsyscall32
+  *-core
+       description: Motherboard
+       physical id: 0
+     *-memory
+          description: System memory
+          physical id: 0
+          size: 11GiB
+     *-cpu
+          product: Intel(R) Core(TM) i7 CPU         960  @ 3.20GHz
+          vendor: Intel Corp.
+          physical id: 1
+          bus info: cpu@0
+          size: 1600MHz
+          capacity: 3201MHz
+          width: 64 bits
+          capabilities: fpu fpu_exception wp vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx rdtscp x86-64 constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf pni dtes64 monitor ds_cpl vmx est tm2 ssse3 cx16 xtpr pdcm sse4_1 sse4_2 popcnt lahf_lm ssbd ibrs ibpb stibp kaiser tpr_shadow vnmi flexpriority ept vpid dtherm ida flush_l1d cpufreq
+     *-pci:0
+          description: Host bridge
+          product: 5520/5500/X58 I/O Hub to ESI Port
+          vendor: Intel Corporation
+          physical id: 100
+          bus info: pci@0000:00:00.0
+          version: 13
+          width: 32 bits
+          clock: 33MHz
+        *-pci:0
+             description: PCI bridge
+             product: 5520/5500/X58 I/O Hub PCI Express Root Port 1
+             vendor: Intel Corporation
+             physical id: 1
+             bus info: pci@0000:00:01.0
+             version: 13
+             width: 32 bits
+             clock: 33MHz
+             capabilities: pci normal_decode bus_master cap_list
+             configuration: driver=pcieport
+             resources: irq:0
+        *-pci:1
+             description: PCI bridge
+             product: 5520/5500/X58 I/O Hub PCI Express Root Port 2
+             vendor: Intel Corporation
+             physical id: 2
+             bus info: pci@0000:00:02.0
+             version: 13
+             width: 32 bits
+             clock: 33MHz
+             capabilities: pci normal_decode bus_master cap_list
+             configuration: driver=pcieport
+             resources: irq:0 memory:f9f00000-f9ffffff
+           *-usb
+                description: USB controller
+                product: uPD720200 USB 3.0 Host Controller
+                vendor: NEC Corporation
+                physical id: 0
+                bus info: pci@0000:02:00.0
+                version: 03
+                width: 64 bits
+                clock: 33MHz
+                capabilities: xhci bus_master cap_list
+                configuration: driver=xhci_hcd latency=0
+                resources: irq:26 memory:f9ffe000-f9ffffff
+        *-pci:2
+             description: PCI bridge
+             product: 5520/5500/X58 I/O Hub PCI Express Root Port 3
+             vendor: Intel Corporation
+             physical id: 3
+             bus info: pci@0000:00:03.0
+             version: 13
+             width: 32 bits
+             clock: 33MHz
+             capabilities: pci normal_decode bus_master cap_list
+             configuration: driver=pcieport
+             resources: irq:0 ioport:d000(size=4096) memory:fa000000-fbdfffff ioport:d6000000(size=167772160)
+           *-display
+                description: VGA compatible controller
+                product: GF119 [GeForce GT 610]
+                vendor: NVIDIA Corporation
+                physical id: 0
+                bus info: pci@0000:03:00.0
+                version: a1
+                width: 64 bits
+                clock: 33MHz
+                capabilities: vga_controller bus_master cap_list rom
+                configuration: driver=nvidia latency=0
+                resources: irq:40 memory:fa000000-faffffff memory:d8000000-dfffffff memory:d6000000-d7ffffff ioport:dc00(size=128) memory:fbd00000-fbd7ffff
+           *-multimedia
+                description: Audio device
+                product: GF119 HDMI Audio Controller
+                vendor: NVIDIA Corporation
+                physical id: 0.1
+                bus info: pci@0000:03:00.1
+                version: a1
+                width: 32 bits
+                clock: 33MHz
+                capabilities: bus_master cap_list
+                configuration: driver=snd_hda_intel latency=0
+                resources: irq:39 memory:fbdfc000-fbdfffff
+        *-pci:3
+             description: PCI bridge
+             product: 5520/5500/X58 I/O Hub PCI Express Root Port 7
+             vendor: Intel Corporation
+             physical id: 7
+             bus info: pci@0000:00:07.0
+             version: 13
+             width: 32 bits
+             clock: 33MHz
+             capabilities: pci normal_decode bus_master cap_list
+             configuration: driver=pcieport
+             resources: irq:0
+        *-generic:0
+             description: PIC
+             product: 7500/5520/5500/X58 I/O Hub System Management Registers
+             vendor: Intel Corporation
+             physical id: 14
+             bus info: pci@0000:00:14.0
+             version: 13
+             width: 32 bits
+             clock: 33MHz
+             capabilities: 8259 cap_list
+             configuration: driver=i7core_edac latency=0
+             resources: irq:0
+        *-generic:1 UNCLAIMED
+             description: PIC
+             product: 7500/5520/5500/X58 I/O Hub GPIO and Scratch Pad Registers
+             vendor: Intel Corporation
+             physical id: 14.1
+             bus info: pci@0000:00:14.1
+             version: 13
+             width: 32 bits
+             clock: 33MHz
+             capabilities: 8259 cap_list
+             configuration: latency=0
+        *-generic:2 UNCLAIMED
+             description: PIC
+             product: 7500/5520/5500/X58 I/O Hub Control Status and RAS Registers
+             vendor: Intel Corporation
+             physical id: 14.2
+             bus info: pci@0000:00:14.2
+             version: 13
+             width: 32 bits
+             clock: 33MHz
+             capabilities: 8259 cap_list
+             configuration: latency=0
+        *-generic:3 UNCLAIMED
+             description: PIC
+             product: 7500/5520/5500/X58 I/O Hub Throttle Registers
+             vendor: Intel Corporation
+             physical id: 14.3
+             bus info: pci@0000:00:14.3
+             version: 13
+             width: 32 bits
+             clock: 33MHz
+             capabilities: 8259
+             configuration: latency=0
+        *-network
+             description: Ethernet interface
+             product: 82567V-2 Gigabit Network Connection
+             vendor: Intel Corporation
+             physical id: 19
+             bus info: pci@0000:00:19.0
+             logical name: eth0
+             version: 00
+             serial: 48:5b:39:75:ff:83
+             size: 1Gbit/s
+             capacity: 1Gbit/s
+             width: 32 bits
+             clock: 33MHz
+             capabilities: bus_master cap_list ethernet physical tp 10bt 10bt-fd 100bt 100bt-fd 1000bt-fd autonegotiation
+             configuration: autonegotiation=on broadcast=yes driver=e1000e driverversion=3.2.6-k duplex=full firmware=1.8-5 latency=0 link=yes multicast=yes port=twisted pair speed=1Gbit/s
+             resources: irq:37 memory:f9ee0000-f9efffff memory:f9edf000-f9edffff ioport:cc00(size=32)
+        *-usb:0
+             description: USB controller
+             product: 82801JI (ICH10 Family) USB UHCI Controller #4
+             vendor: Intel Corporation
+             physical id: 1a
+             bus info: pci@0000:00:1a.0
+             version: 00
+             width: 32 bits
+             clock: 33MHz
+             capabilities: uhci bus_master cap_list
+             configuration: driver=uhci_hcd latency=0
+             resources: irq:16 ioport:c480(size=32)
+        *-usb:1
+             description: USB controller
+             product: 82801JI (ICH10 Family) USB UHCI Controller #5
+             vendor: Intel Corporation
+             physical id: 1a.1
+             bus info: pci@0000:00:1a.1
+             version: 00
+             width: 32 bits
+             clock: 33MHz
+             capabilities: uhci bus_master cap_list
+             configuration: driver=uhci_hcd latency=0
+             resources: irq:21 ioport:c800(size=32)
+        *-usb:2
+             description: USB controller
+             product: 82801JI (ICH10 Family) USB UHCI Controller #6
+             vendor: Intel Corporation
+             physical id: 1a.2
+             bus info: pci@0000:00:1a.2
+             version: 00
+             width: 32 bits
+             clock: 33MHz
+             capabilities: uhci bus_master cap_list
+             configuration: driver=uhci_hcd latency=0
+             resources: irq:19 ioport:c880(size=32)
+        *-usb:3
+             description: USB controller
+             product: 82801JI (ICH10 Family) USB2 EHCI Controller #2
+             vendor: Intel Corporation
+             physical id: 1a.7
+             bus info: pci@0000:00:1a.7
+             version: 00
+             width: 32 bits
+             clock: 33MHz
+             capabilities: ehci bus_master cap_list
+             configuration: driver=ehci-pci latency=0
+             resources: irq:18 memory:f9ede000-f9ede3ff
+        *-multimedia
+             description: Audio device
+             product: 82801JI (ICH10 Family) HD Audio Controller
+             vendor: Intel Corporation
+             physical id: 1b
+             bus info: pci@0000:00:1b.0
+             version: 00
+             width: 64 bits
+             clock: 33MHz
+             capabilities: bus_master cap_list
+             configuration: driver=snd_hda_intel latency=0
+             resources: irq:38 memory:f9ed4000-f9ed7fff
+        *-pci:4
+             description: PCI bridge
+             product: 82801JI (ICH10 Family) PCI Express Root Port 1
+             vendor: Intel Corporation
+             physical id: 1c
+             bus info: pci@0000:00:1c.0
+             version: 00
+             width: 32 bits
+             clock: 33MHz
+             capabilities: pci normal_decode bus_master cap_list
+             configuration: driver=pcieport
+             resources: irq:24 ioport:1000(size=4096) memory:c0000000-c03fffff ioport:f8f00000(size=1048576)
+        *-pci:5
+             description: PCI bridge
+             product: 82801JI (ICH10 Family) PCI Express Root Port 5
+             vendor: Intel Corporation
+             physical id: 1c.4
+             bus info: pci@0000:00:1c.4
+             version: 00
+             width: 32 bits
+             clock: 33MHz
+             capabilities: pci normal_decode bus_master cap_list
+             configuration: driver=pcieport
+             resources: irq:25 ioport:2000(size=4096) memory:c0400000-c07fffff ioport:f8e00000(size=1048576)
+        *-usb:4
+             description: USB controller
+             product: 82801JI (ICH10 Family) USB UHCI Controller #1
+             vendor: Intel Corporation
+             physical id: 1d
+             bus info: pci@0000:00:1d.0
+             version: 00
+             width: 32 bits
+             clock: 33MHz
+             capabilities: uhci bus_master cap_list
+             configuration: driver=uhci_hcd latency=0
+             resources: irq:23 ioport:c000(size=32)
+        *-usb:5
+             description: USB controller
+             product: 82801JI (ICH10 Family) USB UHCI Controller #2
+             vendor: Intel Corporation
+             physical id: 1d.1
+             bus info: pci@0000:00:1d.1
+             version: 00
+             width: 32 bits
+             clock: 33MHz
+             capabilities: uhci bus_master cap_list
+             configuration: driver=uhci_hcd latency=0
+             resources: irq:19 ioport:c080(size=32)
+        *-usb:6
+             description: USB controller
+             product: 82801JI (ICH10 Family) USB UHCI Controller #3
+             vendor: Intel Corporation
+             physical id: 1d.2
+             bus info: pci@0000:00:1d.2
+             version: 00
+             width: 32 bits
+             clock: 33MHz
+             capabilities: uhci bus_master cap_list
+             configuration: driver=uhci_hcd latency=0
+             resources: irq:18 ioport:c400(size=32)
+        *-usb:7
+             description: USB controller
+             product: 82801JI (ICH10 Family) USB2 EHCI Controller #1
+             vendor: Intel Corporation
+             physical id: 1d.7
+             bus info: pci@0000:00:1d.7
+             version: 00
+             width: 32 bits
+             clock: 33MHz
+             capabilities: ehci bus_master cap_list
+             configuration: driver=ehci-pci latency=0
+             resources: irq:23 memory:f9edd000-f9edd3ff
+        *-pci:6
+             description: PCI bridge
+             product: 82801 PCI Bridge
+             vendor: Intel Corporation
+             physical id: 1e
+             bus info: pci@0000:00:1e.0
+             version: 90
+             width: 32 bits
+             clock: 33MHz
+             capabilities: pci subtractive_decode bus_master cap_list
+             resources: ioport:e000(size=4096) memory:fbe00000-fbefffff
+           *-firewire
+                description: FireWire (IEEE 1394)
+                product: VT6306/7/8 [Fire II(M)] IEEE 1394 OHCI Controller
+                vendor: VIA Technologies, Inc.
+                physical id: 2
+                bus info: pci@0000:07:02.0
+                version: c0
+                width: 32 bits
+                clock: 33MHz
+                capabilities: ohci bus_master cap_list
+                configuration: driver=firewire_ohci latency=64 maxlatency=32
+                resources: irq:18 memory:fbeff000-fbeff7ff ioport:ec00(size=128)
+        *-isa
+             description: ISA bridge
+             product: 82801JIR (ICH10R) LPC Interface Controller
+             vendor: Intel Corporation
+             physical id: 1f
+             bus info: pci@0000:00:1f.0
+             version: 00
+             width: 32 bits
+             clock: 33MHz
+             capabilities: isa bus_master cap_list
+             configuration: driver=lpc_ich latency=0
+             resources: irq:0
+        *-storage
+             description: SATA controller
+             product: 82801JI (ICH10 Family) SATA AHCI Controller
+             vendor: Intel Corporation
+             physical id: 1f.2
+             bus info: pci@0000:00:1f.2
+             version: 00
+             width: 32 bits
+             clock: 66MHz
+             capabilities: storage ahci_1.0 bus_master cap_list
+             configuration: driver=ahci latency=0
+             resources: irq:35 ioport:b880(size=8) ioport:b800(size=4) ioport:b480(size=8) ioport:b400(size=4) ioport:b080(size=32) memory:f9ed3000-f9ed37ff
+        *-serial UNCLAIMED
+             description: SMBus
+             product: 82801JI (ICH10 Family) SMBus Controller
+             vendor: Intel Corporation
+             physical id: 1f.3
+             bus info: pci@0000:00:1f.3
+             version: 00
+             width: 64 bits
+             clock: 33MHz
+             configuration: latency=0
+             resources: memory:f9edc000-f9edc0ff ioport:400(size=32)
+     *-pci:1
+          description: Host bridge
+          product: Xeon 5500/Core i7 QuickPath Architecture Generic Non-Core Registers
+          vendor: Intel Corporation
+          physical id: 101
+          bus info: pci@0000:ff:00.0
+          version: 05
+          width: 32 bits
+          clock: 33MHz
+     *-pci:2
+          description: Host bridge
+          product: Xeon 5500/Core i7 QuickPath Architecture System Address Decoder
+          vendor: Intel Corporation
+          physical id: 102
+          bus info: pci@0000:ff:00.1
+          version: 05
+          width: 32 bits
+          clock: 33MHz
+     *-pci:3
+          description: Host bridge
+          product: Xeon 5500/Core i7 QPI Link 0
+          vendor: Intel Corporation
+          physical id: 103
+          bus info: pci@0000:ff:02.0
+          version: 05
+          width: 32 bits
+          clock: 33MHz
+     *-pci:4
+          description: Host bridge
+          product: Xeon 5500/Core i7 QPI Physical 0
+          vendor: Intel Corporation
+          physical id: 104
+          bus info: pci@0000:ff:02.1
+          version: 05
+          width: 32 bits
+          clock: 33MHz
+     *-pci:5
+          description: Host bridge
+          product: Xeon 5500/Core i7 Integrated Memory Controller
+          vendor: Intel Corporation
+          physical id: 105
+          bus info: pci@0000:ff:03.0
+          version: 05
+          width: 32 bits
+          clock: 33MHz
+     *-pci:6
+          description: Host bridge
+          product: Xeon 5500/Core i7 Integrated Memory Controller Target Address Decoder
+          vendor: Intel Corporation
+          physical id: 106
+          bus info: pci@0000:ff:03.1
+          version: 05
+          width: 32 bits
+          clock: 33MHz
+     *-pci:7
+          description: Host bridge
+          product: Xeon 5500/Core i7 Integrated Memory Controller Test Registers
+          vendor: Intel Corporation
+          physical id: 107
+          bus info: pci@0000:ff:03.4
+          version: 05
+          width: 32 bits
+          clock: 33MHz
+     *-pci:8
+          description: Host bridge
+          product: Xeon 5500/Core i7 Integrated Memory Controller Channel 0 Control Registers
+          vendor: Intel Corporation
+          physical id: 108
+          bus info: pci@0000:ff:04.0
+          version: 05
+          width: 32 bits
+          clock: 33MHz
+     *-pci:9
+          description: Host bridge
+          product: Xeon 5500/Core i7 Integrated Memory Controller Channel 0 Address Registers
+          vendor: Intel Corporation
+          physical id: 109
+          bus info: pci@0000:ff:04.1
+          version: 05
+          width: 32 bits
+          clock: 33MHz
+     *-pci:10
+          description: Host bridge
+          product: Xeon 5500/Core i7 Integrated Memory Controller Channel 0 Rank Registers
+          vendor: Intel Corporation
+          physical id: 10a
+          bus info: pci@0000:ff:04.2
+          version: 05
+          width: 32 bits
+          clock: 33MHz
+     *-pci:11
+          description: Host bridge
+          product: Xeon 5500/Core i7 Integrated Memory Controller Channel 0 Thermal Control Registers
+          vendor: Intel Corporation
+          physical id: 10b
+          bus info: pci@0000:ff:04.3
+          version: 05
+          width: 32 bits
+          clock: 33MHz
+     *-pci:12
+          description: Host bridge
+          product: Xeon 5500/Core i7 Integrated Memory Controller Channel 1 Control Registers
+          vendor: Intel Corporation
+          physical id: 10c
+          bus info: pci@0000:ff:05.0
+          version: 05
+          width: 32 bits
+          clock: 33MHz
+     *-pci:13
+          description: Host bridge
+          product: Xeon 5500/Core i7 Integrated Memory Controller Channel 1 Address Registers
+          vendor: Intel Corporation
+          physical id: 10d
+          bus info: pci@0000:ff:05.1
+          version: 05
+          width: 32 bits
+          clock: 33MHz
+     *-pci:14
+          description: Host bridge
+          product: Xeon 5500/Core i7 Integrated Memory Controller Channel 1 Rank Registers
+          vendor: Intel Corporation
+          physical id: 10e
+          bus info: pci@0000:ff:05.2
+          version: 05
+          width: 32 bits
+          clock: 33MHz
+     *-pci:15
+          description: Host bridge
+          product: Xeon 5500/Core i7 Integrated Memory Controller Channel 1 Thermal Control Registers
+          vendor: Intel Corporation
+          physical id: 10f
+          bus info: pci@0000:ff:05.3
+          version: 05
+          width: 32 bits
+          clock: 33MHz
+     *-pci:16
+          description: Host bridge
+          product: Xeon 5500/Core i7 Integrated Memory Controller Channel 2 Control Registers
+          vendor: Intel Corporation
+          physical id: 110
+          bus info: pci@0000:ff:06.0
+          version: 05
+          width: 32 bits
+          clock: 33MHz
+     *-pci:17
+          description: Host bridge
+          product: Xeon 5500/Core i7 Integrated Memory Controller Channel 2 Address Registers
+          vendor: Intel Corporation
+          physical id: 111
+          bus info: pci@0000:ff:06.1
+          version: 05
+          width: 32 bits
+          clock: 33MHz
+     *-pci:18
+          description: Host bridge
+          product: Xeon 5500/Core i7 Integrated Memory Controller Channel 2 Rank Registers
+          vendor: Intel Corporation
+          physical id: 112
+          bus info: pci@0000:ff:06.2
+          version: 05
+          width: 32 bits
+          clock: 33MHz
+     *-pci:19
+          description: Host bridge
+          product: Xeon 5500/Core i7 Integrated Memory Controller Channel 2 Thermal Control Registers
+          vendor: Intel Corporation
+          physical id: 113
+          bus info: pci@0000:ff:06.3
+          version: 05
+          width: 32 bits
+          clock: 33MHz
+  *-network DISABLED
+       description: Ethernet interface
+       physical id: 1
+       logical name: virbr0-nic
+       serial: 52:54:00:6f:91:3a
+       size: 10Mbit/s
+       capabilities: ethernet physical
+       configuration: autonegotiation=off broadcast=yes driver=tun driverversion=1.6 duplex=full link=no multicast=yes port=twisted pair speed=10Mbit/s
