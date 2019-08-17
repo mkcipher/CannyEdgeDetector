@@ -205,9 +205,10 @@ int main(int argc, char** argv) {
 	cl::Buffer d_input(context, CL_MEM_READ_WRITE, size);
 	cl::Buffer d_output(context, CL_MEM_READ_WRITE, size);
 	cl::Buffer theta(context, CL_MEM_READ_WRITE, size);
-	cl::Buffer gauss(context, CL_MEM_READ_WRITE, size);
+	cl::Buffer gauss_out(context, CL_MEM_READ_WRITE, size);
 	cl::Buffer sobel_out(context, CL_MEM_READ_WRITE, size);
 	cl::Buffer non_max_out(context, CL_MEM_READ_WRITE, size);
+	cl::Buffer hyst_out(context, CL_MEM_READ_WRITE, size);
 	//======================================================================//
 	/*
 	cl::Image2D img1(context, CL_MEM_READ_ONLY, cl::ImageFormat(CL_R,CL_FLOAT), countX, countY);
@@ -231,9 +232,10 @@ int main(int argc, char** argv) {
 	queue.enqueueWriteBuffer(d_input, true, 0, size, h_input.data());
 	queue.enqueueWriteBuffer(d_output, true, 0, size, h_outputGpu.data());
 	queue.enqueueWriteBuffer(theta, true, 0, size, h_input.data());
-	queue.enqueueWriteBuffer(gauss, true, 0, size, h_input.data());
+	queue.enqueueWriteBuffer(gauss_out, true, 0, size, h_input.data());
 	queue.enqueueWriteBuffer(sobel_out, true, 0, size, h_input.data());
 	queue.enqueueWriteBuffer(non_max_out, true, 0, size, h_input.data());
+	queue.enqueueWriteBuffer(hyst_out, true, 0, size, h_input.data());
 
 	//////// Load input data ////////////////////////////////
 	// Use random input data
@@ -247,9 +249,9 @@ int main(int argc, char** argv) {
 	std::size_t inputWidth, inputHeight;
 
 	// Use an image (Valve.pgm) as input data
-	//Core::readImagePGM("Valve.pgm", inputData, inputWidth, inputHeight);
+	Core::readImagePGM("Valve.pgm", inputData, inputWidth, inputHeight);
 
-	Core::readImagePGM("mk.pgm", inputData, inputWidth, inputHeight);
+	//Core::readImagePGM("large.pgm", inputData, inputWidth, inputHeight);
 
 	std::vector<unsigned char> inputData2;
 	Core::imageFloatToByte(inputData,inputData2);
@@ -310,8 +312,9 @@ int main(int argc, char** argv) {
 
 		std::string kernelName1 = "gaussian_kernel";
 		std::string kernelName2 = "sobel_kernel";
-		std::string kernelName3 = "non_max_supp_kernel";
+		std::string kernelName3 = "nms_kernel";
 		std::string kernelName4 = "hyst_kernel";
+		//std::string kernelName5 = "edge_tracking_kernel";
 
 		//std::string kernelbak = "sobelKernel1";
 
@@ -320,8 +323,9 @@ int main(int argc, char** argv) {
 		//cl::Kernel gaussian_kernel(program, "sobelKernel1");
 		cl::Kernel gaussian_kernel(program, "gaussian_kernel");
 		cl::Kernel sobel_kernel(program, "sobel_kernel");
-		cl::Kernel non_max_supp_kernel(program, "non_max_supp_kernel");
+		cl::Kernel nms_kernel(program, "nms_kernel");
 		cl::Kernel hyst_kernel(program, "hyst_kernel");
+		//cl::Kernel edge_tracking_kernel(program, "edge_tracking_kernel");
 
 		// Debug Test Display
 		//cout<<"Test"<<endl;
@@ -333,7 +337,7 @@ int main(int argc, char** argv) {
 		// ====================================Gaussian Kernel====================================//
 
 		gaussian_kernel.setArg<cl::Buffer>(0, d_input);
-		gaussian_kernel.setArg<cl::Buffer>(1, gauss);
+		gaussian_kernel.setArg<cl::Buffer>(1, gauss_out);
 		gaussian_kernel.setArg<unsigned long>(2, inputHeight);
 		gaussian_kernel.setArg<unsigned long>(3, inputWidth);
 
@@ -343,11 +347,12 @@ int main(int argc, char** argv) {
 
 		//=====================================Sobel Kernel=======================================//
 
-		sobel_kernel.setArg<cl::Buffer>(0, gauss);
+		sobel_kernel.setArg<cl::Buffer>(0, gauss_out);
 		sobel_kernel.setArg<cl::Buffer>(1, sobel_out);
 		sobel_kernel.setArg<cl::Buffer>(2, theta);
 		sobel_kernel.setArg<unsigned long>(3, inputHeight);
 		sobel_kernel.setArg<unsigned long>(4, inputWidth);
+		//sobel_kernel.setArg<cl::Buffer>(5, non_max_out);
 
 		queue.enqueueNDRangeKernel(sobel_kernel, 0,cl::NDRange(countY, countX),cl::NDRange(wgSizeX, wgSizeY), NULL, &SOBEL_KERNEL_TIME);
 
@@ -355,22 +360,23 @@ int main(int argc, char** argv) {
 
 		//=====================================Non Maximum Suppression============================//
 
-		non_max_supp_kernel.setArg<cl::Buffer>(0, sobel_out);
-		non_max_supp_kernel.setArg<cl::Buffer>(1, non_max_out);
-		non_max_supp_kernel.setArg<cl::Buffer>(2, theta);
-		non_max_supp_kernel.setArg<unsigned long>(3, inputHeight);
-		non_max_supp_kernel.setArg<unsigned long>(4, inputWidth);
+		nms_kernel.setArg<cl::Buffer>(0, sobel_out);
+		nms_kernel.setArg<cl::Buffer>(1, non_max_out);
+		nms_kernel.setArg<cl::Buffer>(2, theta);
+		nms_kernel.setArg<unsigned long>(3, inputHeight);
+		nms_kernel.setArg<unsigned long>(4, inputWidth);
 
-		queue.enqueueNDRangeKernel(non_max_supp_kernel, 0,cl::NDRange(countY, countX),cl::NDRange(wgSizeX, wgSizeY), NULL, &NON_MAX_KERNEL_TIME);
+		queue.enqueueNDRangeKernel(nms_kernel, 0,cl::NDRange(countY, countX),cl::NDRange(wgSizeX, wgSizeY), NULL, &NON_MAX_KERNEL_TIME);
 
 		//========================================================================================//
 
 		//=====================================Hysterisis=========================================//
 
-		unsigned char lowThresh = 10;
-		unsigned char highThresh = 60;
+		unsigned char lowThresh = 55;
+		unsigned char highThresh = 100;
 		hyst_kernel.setArg<cl::Buffer>(0, non_max_out);
 		hyst_kernel.setArg<cl::Buffer>(1, d_output);
+		//hyst_kernel.setArg<cl::Buffer>(1, hyst_out);
 		hyst_kernel.setArg<unsigned long>(2, inputHeight);
 		hyst_kernel.setArg<unsigned long>(3, inputWidth);
 		hyst_kernel.setArg<unsigned char>(4, lowThresh);
@@ -379,6 +385,22 @@ int main(int argc, char** argv) {
 		queue.enqueueNDRangeKernel(hyst_kernel, 0,cl::NDRange(countY, countX),cl::NDRange(wgSizeX, wgSizeY), NULL, &HYSTERISIS_KERNEL_TIME);
 
 		//========================================================================================//
+
+		//=====================================Edge tracking======================================//
+		// Now Integrated in Hysterisis itself
+
+		//edge_tracking_kernel.setArg<cl::Buffer>(0, non_max_out);
+		//edge_tracking_kernel.setArg<cl::Buffer>(1, d_output);
+		//edge_tracking_kernel.setArg<unsigned long>(2, inputHeight);
+		//edge_tracking_kernel.setArg<unsigned long>(3, inputWidth);
+		//edge_tracking_kernel.setArg<unsigned char>(4, lowThresh);
+		//edge_tracking_kernel.setArg<unsigned char>(5, highThresh);
+		//edge_tracking_kernel.setArg<cl::Buffer>(6, theta);
+
+		//queue.enqueueNDRangeKernel(edge_tracking_kernel, 0,cl::NDRange(countY, countX),cl::NDRange(wgSizeX, wgSizeY), NULL, &HYSTERISIS_KERNEL_TIME);
+
+		//========================================================================================//
+
 
 		//=====================================Performance Benchmarking===========================//
 
@@ -404,9 +426,9 @@ int main(int argc, char** argv) {
 
 		//=====================================Saving Images =====================================//
 
-		Core::writeImagePGM("Hysterisis" + boost::lexical_cast<std::string> (1) + ".pgm", h_outputGpu, countX, countY);
+		Core::writeImagePGM("Final" + boost::lexical_cast<std::string> (1) + ".pgm", h_outputGpu, countX, countY);
 
-		queue.enqueueReadBuffer(gauss, true, 0, size, h_outputGpu.data(),NULL,NULL);
+		queue.enqueueReadBuffer(gauss_out, true, 0, size, h_outputGpu.data(),NULL,NULL);
 		Core::writeImagePGM("GaussianBlur" + boost::lexical_cast<std::string> (1) + ".pgm", h_outputGpu, countX, countY);
 
 		queue.enqueueReadBuffer(sobel_out, true, 0, size, h_outputGpu.data(),NULL,NULL);
@@ -417,6 +439,9 @@ int main(int argc, char** argv) {
 
 		queue.enqueueReadBuffer(non_max_out, true, 0, size, h_outputGpu.data(),NULL,NULL);
 		Core::writeImagePGM("NonMaxSupp" + boost::lexical_cast<std::string> (1) + ".pgm", h_outputGpu, countX, countY);
+
+		//queue.enqueueReadBuffer(hyst_out, true, 0, size, h_outputGpu.data(),NULL,NULL);
+		//Core::writeImagePGM("Hysterisis" + boost::lexical_cast<std::string> (1) + ".pgm", h_outputGpu, countX, countY);
 
 		//========================================================================================//
 
