@@ -1,33 +1,60 @@
+//////////////////////////////////////////////////////////////////////////////
+// Project:		Accelerating Canny Edge Detector using GPU and OpenCL
+
+// Author Information
+// Author_1: 	Mohit Kalra (mkcipher@gmail.com)
+// Matrikel_1:	3301104
+// Author_2: 	Fahad M Ghouri (ghourifahad@hotmail.com)
+// Matrikel_2:	3304910
+
+// Lab: 		High Performance programming using GPU
+// Semester:	SoSe 2019
+// Supervisor:	Kaicong Sun
+// Professor:	Prof. Sven Simon
+// Institute:	IPVS
+// University:	University of Stuttgart
+
+// This file describes the OpenCL Kernels file for the Canny edge detector kernel side code \
+// This Implementation is for GPU based execution only.
+//////////////////////////////////////////////////////////////////////////////
+
 #ifndef __OPENCL_VERSION__
 #include <OpenCL/OpenCLKernel.hpp> // Hack to make syntax highlighting in Eclipse work
 #endif
 
 //==========================================Begin of Defines=========================================//
-#define L_SIZE 16
+#define WG_SIZE 16 // Work Items per Work group in X and Y
 
-// define gaussian filter 3x3
-__constant float gaus[3][3] = { {0.0625, 0.125, 0.0625},
-                                {0.1250, 0.250, 0.1250},
-                                {0.0625, 0.125, 0.0625} };
+// Define gaussian filter 3x3
+__constant float GaussianMask[3][3] = { {0.0625, 0.125, 0.0625},
+                                		{0.1250, 0.250, 0.1250},
+										{0.0625, 0.125, 0.0625} };
 
-// Some of the available convolution kernels
-__constant int sobx[3][3] = { {-1, 0, 1},
-                              {-2, 0, 2},
-                              {-1, 0, 1} };
+// Define Sobel Filter Mask
 
-__constant int soby[3][3] = { {-1,-2,-1},
-                              { 0, 0, 0},
-                              { 1, 2, 1} };
+__constant int SobelMask_Gx[3][3] = { {-1, 0, 1},
+                              	  	  {-2, 0, 2},
+									  {-1, 0, 1} };
+
+__constant int SobelMask_Gy[3][3] = { {-1,-2,-1},
+                              	  	  { 0, 0, 0},
+									  { 1, 2, 1} };
 
 // declare sampler
-	const sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE| CLK_ADDRESS_CLAMP | CLK_FILTER_NEAREST;
+const sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE| CLK_ADDRESS_CLAMP | CLK_FILTER_NEAREST;
 
-int getIndexGlobal(size_t countX, int i, int j) {
+//======================================================================================================//
+
+
+//=============================================Common Functions=========================================//
+int getIndexGlobal(size_t countX, int i, int j)
+{
 	return j * countX + i;
 }
 
 // Read value from global array a, return 0 if outside image
-float getValueGlobal(__global const float* a, size_t countX, size_t countY, int i, int j) {
+float getValueGlobal(__global const float* a, size_t countX, size_t countY, int i, int j)
+{
 	if (i < 0 || (size_t) i >= countX || j < 0 || (size_t) j >= countY)
 		return 0;
 	else
@@ -42,62 +69,81 @@ float getValueGlobal_3(__read_only image2d_t a, size_t countX, size_t countY, in
 		//return a[getIndexGlobal(countX, i, j)];
 		return read_imagef(a, sampler, (int2){i, j}).x;
 }
+
 //======================================================================================================//
 
 
 //=============================================Gaussian Kernel==========================================//
-__kernel void gaussian_kernel(__global const unsigned char *data, __global  unsigned char *out, unsigned long rows, unsigned long cols)
+// Apply the Gaussian Blur to reduce noise
+//
+// Arguments:
+//				d_input: 		Input Image (single channel 8bit value)
+//				gauss_out:		Output Image with Gaussian blur applied
+//				inputHeight:	Height of input image
+//				inputWidth:		Width of input image
+
+__kernel void gaussian_kernel(	__global const unsigned char *d_input,
+								__global  unsigned char *gauss_out,
+								unsigned long inputHeight,
+								unsigned long inputWidth)
 {
     int sum = 0;
-    size_t g_row = get_global_id(0);
-    size_t g_col = get_global_id(1);
-    size_t l_row = get_local_id(0) + 1;
-    size_t l_col = get_local_id(1) + 1;
+    size_t globalRow_x 		= get_global_id(0);
+    size_t globalColumn_y 	= get_global_id(1);
+    size_t localRow_x 		= get_local_id(0) + 1; // fix zero index
+    size_t localColumn_y 	= get_local_id(1) + 1; // fix zero index
+    size_t index 			= globalRow_x * inputWidth + globalColumn_y;
 
-    size_t pos = g_row * cols + g_col;
-
-    __local int l_data[L_SIZE+2][L_SIZE+2];
+    // Need local memory as size of item per work group + 2 for added padding
+    __local int local_data[WG_SIZE+2][WG_SIZE+2];
 
     // copy to local
-    l_data[l_row][l_col] = data[pos];
+    local_data[localRow_x][localColumn_y] = d_input[index];
 
+    // Add Padding
     // top most row
-    if (l_row == 1)
+    if (localRow_x == 1)
     {
-        l_data[0][l_col] = data[pos-cols];
-        // top left
-        if (l_col == 1)
-            l_data[0][0] = data[pos-cols-1];
+        local_data[0][localColumn_y] = d_input[index-inputWidth];
 
-        // top right
-        else if (l_col == L_SIZE)
-            l_data[0][L_SIZE+1] = data[pos-cols+1];
+        // top left corner
+        if (localColumn_y == 1)
+            local_data[0][0] = d_input[index-inputWidth-1];
+
+        // top right corner
+        else if (localColumn_y == WG_SIZE)
+            local_data[0][WG_SIZE+1] = d_input[index-inputWidth+1];
     }
     // bottom most row
-    else if (l_row == L_SIZE)
+    else if (localRow_x == WG_SIZE)
     {
-        l_data[L_SIZE+1][l_col] = data[pos+cols];
-        // bottom left
-        if (l_col == 1)
-            l_data[L_SIZE+1][0] = data[pos+cols-1];
+        local_data[WG_SIZE+1][localColumn_y] = d_input[index+inputWidth];
 
-        // bottom right
-        else if (l_col == L_SIZE)
-            l_data[L_SIZE+1][L_SIZE+1] = data[pos+cols+1];
+        // bottom left corner
+        if (localColumn_y == 1)
+            local_data[WG_SIZE+1][0] = d_input[index+inputWidth-1];
+
+        // bottom right corner
+        else if (localColumn_y == WG_SIZE)
+            local_data[WG_SIZE+1][WG_SIZE+1] = d_input[index+inputWidth+1];
     }
 
-    if (l_col == 1)
-        l_data[l_row][0] = data[pos-1];
-    else if (l_col == L_SIZE)
-        l_data[l_row][L_SIZE+1] = data[pos+1];
+    // left column
+    if (localColumn_y == 1)
+        local_data[localRow_x][0] = d_input[index-1];
 
+    //right column
+    else if (localColumn_y == WG_SIZE)
+        local_data[localRow_x][WG_SIZE+1] = d_input[index+1];
+
+    // wait for synchronization
     barrier(CLK_LOCAL_MEM_FENCE);
 
     for (int i = 0; i < 3; i++)
         for (int j = 0; j < 3; j++)
-            sum += gaus[i][j] * l_data[i+l_row-1][j+l_col-1];
+            sum += GaussianMask[i][j] * local_data[i+localRow_x-1][j+localColumn_y-1]; // fix index error by -1
 
-    out[pos] = min(255,max(0,sum));
+    gauss_out[index] = min(255,max(0,sum));
 
 
 }
@@ -106,232 +152,241 @@ __kernel void gaussian_kernel(__global const unsigned char *data, __global  unsi
 
 
 //===============================================Sobel Kernel===========================================//
+// Apply SobelMask_Gx and SobelMask_Gy separately, combine by taking sqrt of added squares
+//
+// Arguments:
+//				gauss_out_input: 		Input Image After Applying Gaussian Blur
+//				sobel_out:				Output Image with Sobel Filter applied
+//				direction_vector_theta:	Output Image of direction vector gradients
+//				inputHeight:			Height of input image
+//				inputWidth:				Width of input image
 
-// Sobel kernel. Apply sobx and soby separately, then find the sqrt of their
-//               squares.
-// data:  image input data with each pixel taking up 1 byte (8Bit 1Channel)
-// out:   image output data (8B1C)
-// theta: angle output data
-__kernel void sobel_kernel(__global unsigned char *data,
-                           __global unsigned char *out,
-                           __global unsigned char *theta,
-                                    unsigned long rows,
-									unsigned long cols)
+__kernel void sobel_kernel(__global unsigned char *gauss_out_input,
+                           __global unsigned char *sobel_out,
+                           __global unsigned char *direction_vector_theta,
+                                    unsigned long inputHeight,
+									unsigned long inputWidth)
 {
-    // collect sums separately. we're storing them into floats because that
-    // is what hypot and atan2 will expect.
+
     const float PI = 3.14159265;
-    size_t g_row = get_global_id(0);
-    size_t g_col = get_global_id(1);
-    size_t l_row = get_local_id(0) + 1;
-    size_t l_col = get_local_id(1) + 1;
+    size_t globalRow_x 		= get_global_id(0);
+    size_t globalColumn_y 	= get_global_id(1);
+    size_t localRow_x 		= get_local_id(0) + 1;  // fix zero index
+    size_t localColumn_y 	= get_local_id(1) + 1;  // fix zero index
+    size_t index 			= globalRow_x * inputWidth + globalColumn_y;
 
-    size_t pos = g_row * cols + g_col;
-
-    __local int l_data[18][18];
+    __local int local_data[WG_SIZE+2][WG_SIZE+2];
 
     // copy to local
-    l_data[l_row][l_col] = data[pos];
+    local_data[localRow_x][localColumn_y] = gauss_out_input[index];
 
     // top most row
-    if (l_row == 1)
+    if (localRow_x == 1)
     {
-        l_data[0][l_col] = data[pos-cols];
+        local_data[0][localColumn_y] = gauss_out_input[index-inputWidth];
         // top left
-        if (l_col == 1)
-            l_data[0][0] = data[pos-cols-1];
+        if (localColumn_y == 1)
+            local_data[0][0] = gauss_out_input[index-inputWidth-1];
 
         // top right
-        else if (l_col == 16)
-            l_data[0][17] = data[pos-cols+1];
+        else if (localColumn_y == 16)
+            local_data[0][17] = gauss_out_input[index-inputWidth+1];
     }
     // bottom most row
-    else if (l_row == 16)
+    else if (localRow_x == 16)
     {
-        l_data[17][l_col] = data[pos+cols];
+        local_data[17][localColumn_y] = gauss_out_input[index+inputWidth];
         // bottom left
-        if (l_col == 1)
-            l_data[17][0] = data[pos+cols-1];
+        if (localColumn_y == 1)
+            local_data[17][0] = gauss_out_input[index+inputWidth-1];
 
         // bottom right
-        else if (l_col == 16)
-            l_data[17][17] = data[pos+cols+1];
+        else if (localColumn_y == 16)
+            local_data[17][17] = gauss_out_input[index+inputWidth+1];
     }
 
-    // left
-    if (l_col == 1)
-        l_data[l_row][0] = data[pos-1];
-    // right
-    else if (l_col == 16)
-        l_data[l_row][17] = data[pos+1];
+    // left column
+    if (localColumn_y == 1)
+        local_data[localRow_x][0] = gauss_out_input[index-1];
+
+    // right column
+    else if (localColumn_y == 16)
+        local_data[localRow_x][17] = gauss_out_input[index+1];
 
     barrier(CLK_LOCAL_MEM_FENCE);
 
-    float sumx = 0, sumy = 0, angle = 0;
-    // find x and y derivatives
+    float sum_x = 0, sum_y = 0, angle_theta = 0;
+
+    // Calculate the magnitude of gradients
     for (int i = 0; i < 3; i++)
     {
         for (int j = 0; j < 3; j++)
         {
-            sumx += sobx[i][j] * l_data[i+l_row-1][j+l_col-1];
-            sumy += soby[i][j] * l_data[i+l_row-1][j+l_col-1];
+            sum_x += SobelMask_Gx[i][j] * local_data[i+localRow_x-1][j+localColumn_y-1];
+            sum_y += SobelMask_Gy[i][j] * local_data[i+localRow_x-1][j+localColumn_y-1];
         }
     }
 
-    // The output is now the square root of their squares, but they are
-    // constrained to 0 <= value <= 255. Note that hypot is a built in function
-    // defined as: hypot(x,y) = sqrt(x*x, y*y).
-    out[pos] = min(255,max(0, (int)hypot(sumx,sumy) ));
+    // use hypot function to calculate sqrt of sum of sqaures of x,y
+    // hypot(x,y) = sqrt(x*x, y*y).
+    // Apply ceiling of 255 else there will be overflow errors
+    sobel_out[index] = min(255,max(0, (int)hypot(sum_x,sum_y) ));
 
-    // Compute the direction angle theta in radians
-    // atan2 has a range of (-PI, PI) degrees
-    angle = atan2(sumy,sumx);
+    // Calculate the direction angle theta in radians
+    // Range of Function arctan2: (-PI, PI)
+    angle_theta = atan2(sum_y,sum_x);
 
-    // If the angle is negative,
-    // shift the range to (0, 2PI) by adding 2PI to the angle,
-    // then perform modulo operation of 2PI
-    if (angle < 0)
+    // Apply cyclic angle shifting
+    // If angle is negative, add multiples of 2pi
+    if (angle_theta < 0)
     {
-        angle = fmod((angle + 2*PI),(2*PI));
+        angle_theta = fmod((angle_theta + 2*PI),(2*PI));
     }
 
-    // Round the angle to one of four possibilities: 0, 45, 90, 135 degrees
-    // then store it in the theta buffer at the proper position
-    theta[pos] = ((int)(degrees(angle * (PI/8) + PI/8-0.0001) / 45) * 45) % 180;
+    // Round off the angle_theta : 0, pi/4, pi/2, 3pi/4
+    direction_vector_theta[index] = ((int)(degrees(angle_theta * (PI/8) + PI/8-0.0001) / 45) * 45) % 180;
 }
 
 //======================================================================================================//
 
 
 //==================================Non Maximum Suppression Kernel======================================//
+// Apply Non maximum Suppression, which shall reduce the thickness of the edge to 1 pixel by checking
+//  the strongest edge and keeping it in a kernel size and setting the rest to zero.
+//
+// Arguments:
+//				sobel_out_input: 		Input Image After Applying Sobel Filter
+//				non_max_out:			Output Image after applying non max suppression
+//				direction_vector_theta:	Input Direction Vector after applying Sobel Filter
+//				inputHeight:			Height of input image
+//				inputWidth:				Width of input image
 
-// Non-maximum Supression Kernel
-// data: image input data with each pixel taking up 1 byte (8Bit 1Channel)
-// out: image output data (8B1C)
-// theta: angle input data
-__kernel void non_max_supp_kernel(__global unsigned char *data,
-                                  __global unsigned char *out,
-                                  __global unsigned char *theta,
-								  unsigned long rows,
-								  unsigned long cols)
+__kernel void nms_kernel(__global unsigned char *sobel_out_input,
+                         __global unsigned char *non_max_out,
+                         __global unsigned char *direction_vector_theta,
+								  unsigned long inputHeight,
+								  unsigned long inputWidth)
 {
-    // These variables are offset by one to avoid seg. fault errors
-    // As such, this kernel ignores the outside ring of pixels
-    size_t g_row = get_global_id(0);
-    size_t g_col = get_global_id(1);
-    size_t l_row = get_local_id(0) + 1;
-    size_t l_col = get_local_id(1) + 1;
 
-    size_t pos = g_row * cols + g_col;
+    size_t globalRow_x 		= get_global_id(0);
+    size_t globalColumn_y 	= get_global_id(1);
+    size_t localRow_x 		= get_local_id(0) + 1;
+    size_t localColumn_y 	= get_local_id(1) + 1;
+    size_t index 			= globalRow_x * inputWidth + globalColumn_y;
 
-    __local int l_data[18][18];
+    __local int local_data[WG_SIZE+2][WG_SIZE+2];
 
-    // copy to l_data
-    l_data[l_row][l_col] = data[pos];
+    // copy to local_data
+    local_data[localRow_x][localColumn_y] = sobel_out_input[index];
 
     // top most row
-    if (l_row == 1)
+    if (localRow_x == 1)
     {
-        l_data[0][l_col] = data[pos-cols];
+        local_data[0][localColumn_y] = sobel_out_input[index-inputWidth];
         // top left
-        if (l_col == 1)
-            l_data[0][0] = data[pos-cols-1];
+        if (localColumn_y == 1)
+            local_data[0][0] = sobel_out_input[index-inputWidth-1];
 
         // top right
-        else if (l_col == 16)
-            l_data[0][17] = data[pos-cols+1];
+        else if (localColumn_y == 16)
+            local_data[0][17] = sobel_out_input[index-inputWidth+1];
     }
     // bottom most row
-    else if (l_row == 16)
+    else if (localRow_x == 16)
     {
-        l_data[17][l_col] = data[pos+cols];
+        local_data[17][localColumn_y] = sobel_out_input[index+inputWidth];
         // bottom left
-        if (l_col == 1)
-            l_data[17][0] = data[pos+cols-1];
+        if (localColumn_y == 1)
+            local_data[17][0] = sobel_out_input[index+inputWidth-1];
 
         // bottom right
-        else if (l_col == 16)
-            l_data[17][17] = data[pos+cols+1];
+        else if (localColumn_y == 16)
+            local_data[17][17] = sobel_out_input[index+inputWidth+1];
     }
 
-    if (l_col == 1)
-        l_data[l_row][0] = data[pos-1];
-    else if (l_col == 16)
-        l_data[l_row][17] = data[pos+1];
+    // left column
+    if (localColumn_y == 1)
+        local_data[localRow_x][0] = sobel_out_input[index-1];
+
+    // right column
+    else if (localColumn_y == 16)
+        local_data[localRow_x][17] = sobel_out_input[index+1];
 
     barrier(CLK_LOCAL_MEM_FENCE);
 
-    uchar my_magnitude = l_data[l_row][l_col];
+    uchar magnitude = local_data[localRow_x][localColumn_y];
 
-    // The following variables are used to address the matrices more easily
-    switch (theta[pos])
+    // check if an edge is in continuation of a previous edgeRow
+    switch (direction_vector_theta[index])
     {
-        // A gradient angle of 0 degrees = an edge that is North/South
-        // Check neighbors to the East and West
+
+    	// Gradient has angle normal to the direction of edge.
+    	// Since x is height(vertical axis) and y is width(horizontal axis).
+    	// 0 Angle => edge is N/S => check neighbors E/W
         case 0:
-            // supress me if my neighbor has larger magnitude
-            if (my_magnitude <= l_data[l_row][l_col+1] || // east
-                my_magnitude <= l_data[l_row][l_col-1])   // west
+            // Suppress the pixel if its neighbor has larger magnitude
+            if (magnitude <= local_data[localRow_x][localColumn_y+1] || // east
+                magnitude <= local_data[localRow_x][localColumn_y-1])   // west
             {
-                out[pos] = 0;
+                non_max_out[index] = 0;
             }
-            // otherwise, copy my value to the output buffer
+
             else
             {
-                out[pos] = my_magnitude;
+                non_max_out[index] = magnitude;
             }
             break;
 
-        // A gradient angle of 45 degrees = an edge that is NW/SE
-        // Check neighbors to the NE and SW
+        // Gradient has angle normal to the direction of edge.
+        // 45 angle => edge is NW/SE => check neighbors NE/SW
         case 45:
-            // supress me if my neighbor has larger magnitude
-            if (my_magnitude <= l_data[l_row-1][l_col+1] || // north east
-                my_magnitude <= l_data[l_row+1][l_col-1])   // south west
+        	// Suppress the pixel if its neighbor has larger magnitude
+            if (magnitude <= local_data[localRow_x-1][localColumn_y+1] || // north east
+                magnitude <= local_data[localRow_x+1][localColumn_y-1])   // south west
             {
-                out[pos] = 0;
+                non_max_out[index] = 0;
             }
-            // otherwise, copy my value to the output buffer
+
             else
             {
-                out[pos] = my_magnitude;
+                non_max_out[index] = magnitude;
             }
             break;
 
-        // A gradient angle of 90 degrees = an edge that is E/W
-        // Check neighbors to the North and South
+        // Gradient has angle normal to the direction of edge.
+        // 90 angle => edge is E/W => check neighbors N/S
         case 90:
-            // supress me if my neighbor has larger magnitude
-            if (my_magnitude <= l_data[l_row-1][l_col] || // north
-                my_magnitude <= l_data[l_row+1][l_col])   // south
+        	// Suppress the pixel if its neighbor has larger magnitude
+            if (magnitude <= local_data[localRow_x-1][localColumn_y] || // north
+                magnitude <= local_data[localRow_x+1][localColumn_y])   // south
             {
-                out[pos] = 0;
+                non_max_out[index] = 0;
             }
-            // otherwise, copy my value to the output buffer
+
             else
             {
-                out[pos] = my_magnitude;
+                non_max_out[index] = magnitude;
             }
             break;
 
         // A gradient angle of 135 degrees = an edge that is NE/SW
         // Check neighbors to the NW and SE
         case 135:
-            // supress me if my neighbor has larger magnitude
-            if (my_magnitude <= l_data[l_row-1][l_col-1] || // north west
-                my_magnitude <= l_data[l_row+1][l_col+1])   // south east
+        	// Suppress the pixel if its neighbor has larger magnitude
+            if (magnitude <= local_data[localRow_x-1][localColumn_y-1] || // north west
+                magnitude <= local_data[localRow_x+1][localColumn_y+1])   // south east
             {
-                out[pos] = 0;
+                non_max_out[index] = 0;
             }
-            // otherwise, copy my value to the output buffer
+
             else
             {
-                out[pos] = my_magnitude;
+                non_max_out[index] = magnitude;
             }
             break;
 
         default:
-            out[pos] = my_magnitude;
+            non_max_out[index] = magnitude;
             break;
     }
 }
@@ -341,43 +396,46 @@ __kernel void non_max_supp_kernel(__global unsigned char *data,
 
 
 //========================================Hysterisis Kernel=============================================//
+// Apply Hysterisis, which acts like an intensity pull up / pull down for an edge depending on 2 threshold values.
+//  Edges below low threshold are pulled down and discarded (intensity = 0)
+//  Edges above high theshold are pulled up and made white in color (intensity = 255)
+//  Edges in between low and high are checked, if in continuation of an edge, pull up else pull down
 
-// Hysteresis Threshold Kernel
-// data: image input data with each pixel taking up 1 byte (8Bit 1Channel)
-// out: image output data (8B1C)
-__kernel void hyst_kernel(__global unsigned char *data,
-                           __global unsigned char *out,
-						   unsigned long rows,
-						   unsigned long cols,
-						   unsigned char lowThresh,
-						   unsigned char highThresh)
+// Arguments:
+//				sobel_out_input: 		Input Image After Applying Sobel Filter
+//				non_max_out:			Output Image after applying non max suppression
+//				direction_vector_theta:	Input Direction Vector after applying Sobel Filter
+//				inputHeight:			Height of input image
+//				inputWidth:				Width of input image
+
+__kernel void hyst_kernel(__global unsigned char *non_max_out_input,
+                          __global unsigned char *d_output,
+						   	   	   unsigned long inputHeight,
+								   unsigned long inputWidth,
+								   unsigned char lowThresh,
+								   unsigned char highThresh)
 {
-	// Establish our high and low thresholds as floats
-	//float lowThresh = 10;
-	//float highThresh = 70;
 
-	// These variables are offset by one to avoid seg. fault errors
-    // As such, this kernel ignores the outside ring of pixels
-	size_t row = get_global_id(0);
-	size_t col = get_global_id(1);
-	size_t pos = row * cols + col;
+	size_t Row_x 	= get_global_id(0);
+	size_t Column_y = get_global_id(1);
+	size_t index 	= Row_x * inputWidth + Column_y;
 
-    const uchar EDGE = 255;
+    const uchar WHITE = 255;
 
-    uchar magnitude = data[pos];
+    uchar magnitude = non_max_out_input[index];
 
     if (magnitude >= highThresh)
-        out[pos] = EDGE;
+        d_output[index] = WHITE;
     else if (magnitude <= lowThresh)
-        out[pos] = 0;
+        d_output[index] = 0;
     else
     {
         float med = (highThresh + lowThresh)/2;
 
         if (magnitude >= med)
-            out[pos] = EDGE;
+            d_output[index] = WHITE;
         else
-            out[pos] = 0;
+            d_output[index] = 0;
     }
 }
 //======================================================================================================//
