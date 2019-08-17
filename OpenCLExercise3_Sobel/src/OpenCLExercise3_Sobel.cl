@@ -41,7 +41,7 @@ __constant int SobelMask_Gy[3][3] = { {-1,-2,-1},
 									  { 1, 2, 1} };
 
 // declare sampler
-const sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE| CLK_ADDRESS_CLAMP | CLK_FILTER_NEAREST;
+const sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP | CLK_FILTER_NEAREST;
 
 //======================================================================================================//
 
@@ -70,6 +70,64 @@ float getValueGlobal_3(__read_only image2d_t a, size_t countX, size_t countY, in
 		return read_imagef(a, sampler, (int2){i, j}).x;
 }
 
+/*
+void copyData(	int* local_data,
+				const unsigned char *d_input,
+				unsigned long inputHeight,
+				unsigned long inputWidth,
+				size_t globalRow_x,
+				size_t globalColumn_y,
+				size_t localRow_x,
+				size_t localColumn_y,
+				size_t index)
+{
+    //size_t globalRow_x 		= get_global_id(0);
+    //size_t globalColumn_y 	= get_global_id(1);
+    //size_t localRow_x 		= get_local_id(0) + 1; // fix zero index
+    //size_t localColumn_y 	= get_local_id(1) + 1; // fix zero index
+    //size_t index 			= globalRow_x * inputWidth + globalColumn_y;
+    // copy to local
+
+    local_data[localRow_x][localColumn_y] = d_input[index];
+
+    // Add Padding
+    // top most row
+    if (localRow_x == 1)
+    {
+        local_data[0][localColumn_y] = d_input[index-inputWidth];
+
+        // top left corner
+        if (localColumn_y == 1)
+            local_data[0][0] = d_input[index-inputWidth-1];
+
+        // top right corner
+        else if (localColumn_y == WG_SIZE)
+            local_data[0][WG_SIZE+1] = d_input[index-inputWidth+1];
+    }
+    // bottom most row
+    else if (localRow_x == WG_SIZE)
+    {
+        local_data[WG_SIZE+1][localColumn_y] = d_input[index+inputWidth];
+
+        // bottom left corner
+        if (localColumn_y == 1)
+            local_data[WG_SIZE+1][0] = d_input[index+inputWidth-1];
+
+        // bottom right corner
+        else if (localColumn_y == WG_SIZE)
+            local_data[WG_SIZE+1][WG_SIZE+1] = d_input[index+inputWidth+1];
+    }
+
+    // left column
+    if (localColumn_y == 1)
+        local_data[localRow_x][0] = d_input[index-1];
+
+    //right column
+    else if (localColumn_y == WG_SIZE)
+        local_data[localRow_x][WG_SIZE+1] = d_input[index+1];
+
+}
+*/
 //======================================================================================================//
 
 
@@ -163,7 +221,7 @@ __kernel void gaussian_kernel(	__global const unsigned char *d_input,
 
 __kernel void sobel_kernel(__global unsigned char *gauss_out_input,
                            __global unsigned char *sobel_out,
-                           __global unsigned char *direction_vector_theta,
+						   __global unsigned char *direction_vector_theta,
                                     unsigned long inputHeight,
 									unsigned long inputWidth)
 {
@@ -244,7 +302,7 @@ __kernel void sobel_kernel(__global unsigned char *gauss_out_input,
     }
 
     // Round off the angle_theta : 0, pi/4, pi/2, 3pi/4
-    direction_vector_theta[index] = ((int)(degrees(angle_theta * (PI/8) + PI/8-0.0001) / 45) * 45) % 180;
+    direction_vector_theta[index] = ((unsigned char)(degrees(angle_theta * (PI/8) + PI/8-0.0001) / 45) * 45) % 180;
 }
 
 //======================================================================================================//
@@ -278,6 +336,7 @@ __kernel void nms_kernel(__global unsigned char *sobel_out_input,
 
     // copy to local_data
     local_data[localRow_x][localColumn_y] = sobel_out_input[index];
+
 
     // top most row
     if (localRow_x == 1)
@@ -316,8 +375,29 @@ __kernel void nms_kernel(__global unsigned char *sobel_out_input,
 
     uchar magnitude = local_data[localRow_x][localColumn_y];
 
+    // begin trial
+    //unsigned char angle;
+
+    //if((direction_vector_theta[index] <= 22.5) || (direction_vector_theta[index] > 157.5) )
+    //{
+    //	angle = 0;
+    //}
+    //else if ((angle > 22.5) && (angle <= 67.5))
+    //	{
+    //		angle = 45;
+    //	}
+    //else if ((angle > 67.5) && (angle <= 112.5))
+    //	{
+    //    	angle = 90;
+    //	}
+    //else if ((angle > 112.5) && (angle <= 157.5))
+    //    {
+    //        angle = 135;
+    //    }
+
     // check if an edge is in continuation of a previous edgeRow
     switch (direction_vector_theta[index])
+    //switch (angle)
     {
 
     	// Gradient has angle normal to the direction of edge.
@@ -325,8 +405,8 @@ __kernel void nms_kernel(__global unsigned char *sobel_out_input,
     	// 0 Angle => edge is N/S => check neighbors E/W
         case 0:
             // Suppress the pixel if its neighbor has larger magnitude
-            if (magnitude <= local_data[localRow_x][localColumn_y+1] || // east
-                magnitude <= local_data[localRow_x][localColumn_y-1])   // west
+            if (magnitude < local_data[localRow_x][localColumn_y+1] || // east
+                magnitude < local_data[localRow_x][localColumn_y-1])   // west
             {
                 non_max_out[index] = 0;
             }
@@ -341,8 +421,8 @@ __kernel void nms_kernel(__global unsigned char *sobel_out_input,
         // 45 angle => edge is NW/SE => check neighbors NE/SW
         case 45:
         	// Suppress the pixel if its neighbor has larger magnitude
-            if (magnitude <= local_data[localRow_x-1][localColumn_y+1] || // north east
-                magnitude <= local_data[localRow_x+1][localColumn_y-1])   // south west
+            if (magnitude < local_data[localRow_x-1][localColumn_y+1] || // north east
+                magnitude < local_data[localRow_x+1][localColumn_y-1])   // south west
             {
                 non_max_out[index] = 0;
             }
@@ -357,8 +437,8 @@ __kernel void nms_kernel(__global unsigned char *sobel_out_input,
         // 90 angle => edge is E/W => check neighbors N/S
         case 90:
         	// Suppress the pixel if its neighbor has larger magnitude
-            if (magnitude <= local_data[localRow_x-1][localColumn_y] || // north
-                magnitude <= local_data[localRow_x+1][localColumn_y])   // south
+            if (magnitude < local_data[localRow_x-1][localColumn_y] || // north
+                magnitude < local_data[localRow_x+1][localColumn_y])   // south
             {
                 non_max_out[index] = 0;
             }
@@ -373,8 +453,8 @@ __kernel void nms_kernel(__global unsigned char *sobel_out_input,
         // Check neighbors to the NW and SE
         case 135:
         	// Suppress the pixel if its neighbor has larger magnitude
-            if (magnitude <= local_data[localRow_x-1][localColumn_y-1] || // north west
-                magnitude <= local_data[localRow_x+1][localColumn_y+1])   // south east
+            if (magnitude < local_data[localRow_x-1][localColumn_y-1] || // north west
+                magnitude < local_data[localRow_x+1][localColumn_y+1])   // south east
             {
                 non_max_out[index] = 0;
             }
@@ -389,6 +469,7 @@ __kernel void nms_kernel(__global unsigned char *sobel_out_input,
             non_max_out[index] = magnitude;
             break;
     }
+
 }
 
 
@@ -409,7 +490,7 @@ __kernel void nms_kernel(__global unsigned char *sobel_out_input,
 //				inputWidth:				Width of input image
 
 __kernel void hyst_kernel(__global unsigned char *non_max_out_input,
-                          __global unsigned char *d_output,
+                          __global unsigned char *hyst_out,
 						   	   	   unsigned long inputHeight,
 								   unsigned long inputWidth,
 								   unsigned char lowThresh,
@@ -425,17 +506,185 @@ __kernel void hyst_kernel(__global unsigned char *non_max_out_input,
     uchar magnitude = non_max_out_input[index];
 
     if (magnitude >= highThresh)
-        d_output[index] = WHITE;
+    	hyst_out[index] = WHITE;
     else if (magnitude <= lowThresh)
-        d_output[index] = 0;
+    	hyst_out[index] = 0;
     else
+    	//hyst_out[index] = non_max_out_input[index];
     {
-        float med = (highThresh + lowThresh)/2;
+    	// check if immediate neighbor is white
+    	//if((non_max_out_input[index-1] == WHITE) || (non_max_out_input[index+1] == WHITE) )
+    	//	hyst_out[index] = WHITE;
+    	//else
+    	if ((Row_x!= 0) && (Row_x!= inputHeight) && (Column_y!= 0) && (Column_y!= inputWidth))
+    	{
+        	if(		(non_max_out_input[index-1-inputWidth] == WHITE) ||
+        			(non_max_out_input[index-inputWidth] == WHITE) ||
+					(non_max_out_input[index+1-inputWidth] == WHITE) ||
+					(non_max_out_input[index-1] == WHITE) ||
+					(non_max_out_input[index+1] == WHITE) ||
+					(non_max_out_input[index-1+inputWidth] == WHITE) ||
+					(non_max_out_input[index+inputWidth] == WHITE) ||
+					(non_max_out_input[index+1+inputWidth] == WHITE)
+				)
+        		hyst_out[index] = WHITE;
+    	}
 
-        if (magnitude >= med)
-            d_output[index] = WHITE;
-        else
-            d_output[index] = 0;
+    	else
+    		hyst_out[index] = 0;
+
     }
+
+    //{
+    //    float med = (highThresh + lowThresh)/2;
+    //
+    //    if (magnitude >= med)
+    //        d_output[index] = WHITE;
+    //    else
+    //        d_output[index] = 0;
+    //}
 }
 //======================================================================================================//
+/*
+__kernel void edge_tracking_kernel(	__global unsigned char *hyst_out,
+        							__global unsigned char *d_output,
+											 unsigned long inputHeight,
+											 unsigned long inputWidth,
+											 unsigned char lowThresh,
+											 unsigned char highThresh,
+									__global unsigned char *direction_vector_theta)
+{
+
+		size_t globalRow_x 		= get_global_id(0);
+	    size_t globalColumn_y 	= get_global_id(1);
+	    size_t localRow_x 		= get_local_id(0) + 1;
+	    size_t localColumn_y 	= get_local_id(1) + 1;
+	    size_t index 			= globalRow_x * inputWidth + globalColumn_y;
+
+	    __local int local_data[WG_SIZE+2][WG_SIZE+2];
+
+	    // copy to local_data
+	    local_data[localRow_x][localColumn_y] = hyst_out[index];
+
+
+	    // top most row
+	    if (localRow_x == 1)
+	    {
+	        local_data[0][localColumn_y] = hyst_out[index-inputWidth];
+	        // top left
+	        if (localColumn_y == 1)
+	            local_data[0][0] = hyst_out[index-inputWidth-1];
+
+	        // top right
+	        else if (localColumn_y == 16)
+	            local_data[0][17] = hyst_out[index-inputWidth+1];
+	    }
+	    // bottom most row
+	    else if (localRow_x == 16)
+	    {
+	        local_data[17][localColumn_y] = hyst_out[index+inputWidth];
+	        // bottom left
+	        if (localColumn_y == 1)
+	            local_data[17][0] = hyst_out[index+inputWidth-1];
+
+	        // bottom right
+	        else if (localColumn_y == 16)
+	            local_data[17][17] = hyst_out[index+inputWidth+1];
+	    }
+
+	    // left column
+	    if (localColumn_y == 1)
+	        local_data[localRow_x][0] = hyst_out[index-1];
+
+	    // right column
+	    else if (localColumn_y == 16)
+	        local_data[localRow_x][17] = hyst_out[index+1];
+
+	    barrier(CLK_LOCAL_MEM_FENCE);
+
+	    uchar magnitude = local_data[localRow_x][localColumn_y];
+
+
+	    // begin trial
+	    unsigned char angle;
+
+	    if((direction_vector_theta[index] <= 22.5) || (direction_vector_theta[index] > 157.5) )
+	    {
+	    	angle = 0;
+	    }
+	    else if ((angle > 22.5) && (angle <= 67.5))
+	    	{
+	    		angle = 45;
+	    	}
+	    else if ((angle > 67.5) && (angle <= 112.5))
+	    	{
+	        	angle = 90;
+	    	}
+	    else if ((angle > 112.5) && (angle <= 157.5))
+	        {
+	            angle = 135;
+	        }
+*/
+
+/*
+	    	// Gradient has angle normal to the direction of edge.
+	    	// Since x is height(vertical axis) and y is width(horizontal axis).
+	    	// 0 Angle => edge is N/S => check neighbors E/W
+	        	if((direction_vector_theta[index] <= 22.5) || (direction_vector_theta[index] > 157.5) )
+	        	{
+	        		if (magnitude < local_data[localRow_x][localColumn_y+1] || // east
+	        			magnitude < local_data[localRow_x][localColumn_y-1])   // west
+	        			{
+	        			 if(magnitude > lowThresh && magnitude < highThresh)
+	        				 d_output[index] = 128;
+	        			 else
+	        				 d_output[index] = magnitude;
+	        			}
+	        	}
+
+	        // Gradient has angle normal to the direction of edge.
+	        // 45 angle => edge is NW/SE => check neighbors NE/SW
+	    	    else if ((direction_vector_theta[index] > 22.5) && (direction_vector_theta[index] <= 67.5))
+	    	    {
+					if (magnitude < local_data[localRow_x-1][localColumn_y+1] || // north east
+						magnitude < local_data[localRow_x+1][localColumn_y-1])   // south west
+					{
+						if(magnitude > lowThresh && magnitude < highThresh)
+							d_output[index] = 128;
+
+	        			else
+	        				 d_output[index] = magnitude;
+
+					}
+	    	    }
+
+
+	    	    else if ((direction_vector_theta[index] > 67.5) && (direction_vector_theta[index] <= 112.5))
+	    	    {
+					if (magnitude < local_data[localRow_x-1][localColumn_y] || // north
+						magnitude < local_data[localRow_x+1][localColumn_y])   // south
+					{
+						if(magnitude > lowThresh && magnitude < highThresh)
+							d_output[index] = 128;
+
+	        			 else
+	        				 d_output[index] = magnitude;
+					}
+	    	    }
+
+
+	    	    else if ((direction_vector_theta[index] > 112.5) && (direction_vector_theta[index] <= 157.5))
+	    	    {
+					if (magnitude < local_data[localRow_x-1][localColumn_y-1] || // north west
+						magnitude < local_data[localRow_x+1][localColumn_y+1])   // south east
+					{
+						if(magnitude > lowThresh && magnitude < highThresh)
+							d_output[index] = 128;
+
+	        			 else
+	        				 d_output[index] = magnitude;
+					}
+	    	    }
+
+}
+*/
