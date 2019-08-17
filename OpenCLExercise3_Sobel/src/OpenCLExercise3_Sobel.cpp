@@ -37,7 +37,7 @@
 #include <iostream>
 #include <cmath>
 
-#include <iomanip> // required bz gaussian filter
+#include <iomanip> // required by gaussian filter
 
 #include <boost/lexical_cast.hpp>
 using namespace std;
@@ -122,6 +122,7 @@ unsigned char* readBMP(const char* filename , int* img_width , int* img_height)
 // Main function
 //////////////////////////////////////////////////////////////////////////////
 int main(int argc, char** argv) {
+
 	// Create a context	
 	//cl::Context context(CL_DEVICE_TYPE_GPU);
 	std::vector<cl::Platform> platforms;
@@ -155,47 +156,50 @@ int main(int argc, char** argv) {
 
 	// Create a command queue
 	cl::CommandQueue queue(context, device, CL_QUEUE_PROFILING_ENABLE);
+
+	//==================================TIMING EVENTS=================================//
 	cl::Event WRITEBUFFERTIME;
 	cl::Event GAUSS_KERNEL_TIME;
 	cl::Event SOBEL_KERNEL_TIME;
 	cl::Event NON_MAX_KERNEL_TIME;
 	cl::Event HYSTERISIS_KERNEL_TIME;
-
-	//cl::Event KERNELTIME;
-
 	cl::Event READBUFFERTIME;
+	//================================================================================//
 
 	// Load the source code
 	cl::Program program = OpenCL::loadProgramSource(context, "src/OpenCLExercise3_Sobel.cl");
-	//cl::Program program1 = OpenCL::loadProgramSource(context, "src/gaussian_kernel.cl");
-	//cl::Program program4 = OpenCL::loadProgramSource(context, "src/hyst_kernel.cl");
-	//cl::Program program3 = OpenCL::loadProgramSource(context, "src/non_max_supp_kernel.cl");
-	//cl::Program program2 = OpenCL::loadProgramSource(context, "src/sobel_kernel.cl");
-	//cl::Program bak = OpenCL::loadProgramSource(context, "src/bak.cl");
+
 	// Compile the source code. This is similar to program.build(devices) but will print more detailed error messages
 	OpenCL::buildProgram(program, devices);
 
 	// Declare some values
-	std::size_t wgSizeX = 16; // Number of work items per work group in X direction
+	// Number of work items per work group in X direction
+	std::size_t wgSizeX = 16;
+
+	// Number of work items per work group in Y direction
 	std::size_t wgSizeY = 16;
+
 	std::size_t countX = wgSizeX * 40; // Overall number of work items in X direction = Number of elements in X direction
 	std::size_t countY = wgSizeY * 30;
-	//countX *= 3; countY *= 3;
-	std::size_t count = countX * countY; // Overall number of elements
-	//std::size_t size = count * sizeof (float); // Size of data in bytes
 
+	//countX *= 3; countY *= 3;
+
+	std::size_t count = countX * countY; // Overall number of elements
+
+	std::size_t size_cpu = count * sizeof (float); // Size of data in bytes
 	// Allocate space for output data from CPU and GPU on the host
-	//std::vector<float> h_input (count);
-	//std::vector<float> h_outputCpu (count);
+	std::vector<float> h_input_cpu (count);
+	std::vector<float> h_outputCpu (count);
 	//std::vector<float> h_outputGpu (count);
 
-	// ===============================CANNY IMPL=====================//
+	// ===============================CANNY IMPL============================//
 	std::vector<unsigned char> h_input (count);
-	std::vector<unsigned char> h_outputCpu (count);
+	//std::vector<unsigned char> h_outputCpu (count);
 	std::vector<unsigned char> h_outputGpu (count);
 	std::size_t size = count * sizeof (unsigned char); // Size of data in bytes
 	//======================================================================//
 
+	//================================CREATE BUFFERS========================//
 	// Allocate space for input and output data on the device
 	//TODO
 	cl::Buffer d_input(context, CL_MEM_READ_WRITE, size);
@@ -204,7 +208,8 @@ int main(int argc, char** argv) {
 	cl::Buffer gauss(context, CL_MEM_READ_WRITE, size);
 	cl::Buffer sobel_out(context, CL_MEM_READ_WRITE, size);
 	cl::Buffer non_max_out(context, CL_MEM_READ_WRITE, size);
-
+	//======================================================================//
+	/*
 	cl::Image2D img1(context, CL_MEM_READ_ONLY, cl::ImageFormat(CL_R,CL_FLOAT), countX, countY);
 
 					cl::size_t<3> origin;
@@ -215,11 +220,13 @@ int main(int argc, char** argv) {
 					region[1] = countY;
 					region[2] = 1;
 
-
+	*/
 	// Initialize memory to 0xff (useful for debugging because otherwise GPU memory will contain information from last execution)
 	memset(h_input.data(), 255, size);
-	memset(h_outputCpu.data(), 255, size);
 	memset(h_outputGpu.data(), 255, size);
+
+	memset(h_outputCpu.data(), 255, size_cpu);
+	memset(h_input_cpu.data(), 255, size_cpu);
 	//TODO: GPU
 	queue.enqueueWriteBuffer(d_input, true, 0, size, h_input.data());
 	queue.enqueueWriteBuffer(d_output, true, 0, size, h_outputGpu.data());
@@ -234,39 +241,52 @@ int main(int argc, char** argv) {
 	for (int i = 0; i < count; i++)
 		h_input[i] = (rand() % 100) / 5.0f - 10.0f;
 	*/
+
+	std::vector<float> inputData;
+	//std::vector<uint8_t> output_mk;
+	std::size_t inputWidth, inputHeight;
+
 	// Use an image (Valve.pgm) as input data
-		std::vector<float> inputData;
-		std::vector<uint8_t> output_mk;
-		std::size_t inputWidth, inputHeight;
-		Core::readImagePGM("Valve.pgm", inputData, inputWidth, inputHeight);
-		std::vector<unsigned char> inputData2;
-		Core::imageFloatToByte(inputData,inputData2);
-		Core::writeImagePGM("InputConverted" + boost::lexical_cast<std::string> (1) + ".pgm", inputData2, countX, countY);
+	//Core::readImagePGM("Valve.pgm", inputData, inputWidth, inputHeight);
 
-		//Core::imageFloatToByte(inputData, output_mk);
-		//unsigned char* imgbmp;
-		//const char* name = "index.bmp";
-		//int w,h;
-		//imgbmp = readBMP(name, &w, &h);
-		//CannyFilter *canny = new CannyFilter();
-		//canny->Detector(imgbmp,640,480,1.0f, 15, 21);
+	Core::readImagePGM("mk.pgm", inputData, inputWidth, inputHeight);
 
-		//Core::writeImagePGM("mk.pgm", imgbmp, countX, countY);
+	std::vector<unsigned char> inputData2;
+	Core::imageFloatToByte(inputData,inputData2);
+	Core::writeImagePGM("InputConverted" + boost::lexical_cast<std::string> (1) + ".pgm", inputData2, countX, countY);
 
-		for (size_t j = 0; j < countY; j++) {
-			for (size_t i = 0; i < countX; i++) {
-				h_input[i + countX * j] = inputData2[(i % inputWidth) + inputWidth * (j % inputHeight)];
-			}
+	// Need 3 channel image for the ppm file
+	//Core::writeImagePPM("InputConverted" + boost::lexical_cast<std::string> (1) + ".ppm", inputData2, countX, countY);
+
+	for (size_t j = 0; j < countY; j++)
+	{
+		for (size_t i = 0; i < countX; i++)
+		{
+			h_input[i + countX * j] = inputData2[(i % inputWidth) + inputWidth * (j % inputHeight)];
 		}
+	}
+
+	// FOR HOST CPU SOBEL
+	for (size_t j = 0; j < countY; j++)
+	{
+		for (size_t i = 0; i < countX; i++)
+		{
+				h_input_cpu[i + countX * j] = inputData[(i % inputWidth) + inputWidth * (j % inputHeight)];
+		}
+	}
 
 	// Do calculation on the host side
 	// Time stamp before running function on CPU
 	Core::TimeSpan time1 = Core::getCurrentTime();
-	//sobelHost(h_input, h_outputCpu, countX, countY);
+
+	//TODO
+	//implement the CPU code
+	sobelHost(h_input_cpu, h_outputCpu, countX, countY);
 
 
 	// Time Stamp after the function
 	Core::TimeSpan time2 = Core::getCurrentTime();
+
 	// Time on CPU
 	Core::TimeSpan timetotalCPU=time2-time1;
 	cout << "CPU TIME :" << timetotalCPU<<endl;
@@ -347,8 +367,8 @@ int main(int argc, char** argv) {
 
 		//=====================================Hysterisis=========================================//
 
-		unsigned char lowThresh = 60;
-		unsigned char highThresh = 100;
+		unsigned char lowThresh = 10;
+		unsigned char highThresh = 60;
 		hyst_kernel.setArg<cl::Buffer>(0, non_max_out);
 		hyst_kernel.setArg<cl::Buffer>(1, d_output);
 		hyst_kernel.setArg<unsigned long>(2, inputHeight);
@@ -403,15 +423,7 @@ int main(int argc, char** argv) {
 		//////=====================================================================//
 		// Copy input data to device
 		//TODO
-		/*if(impl<3){
-			queue.enqueueWriteBuffer(d_input, true, 0, size, h_input.data(),NULL,&WRITEBUFFERTIME);
-			// Launch kernel on the device
-			//TODO
-			sobelKernel.setArg<cl::Buffer>(0, d_input);
-			sobelKernel.setArg<cl::Buffer>(1, d_output);
-			queue.enqueueNDRangeKernel(sobelKernel, 0,cl::NDRange(countX, countY),cl::NDRange(wgSizeX, wgSizeY), NULL, &KERNELTIME);
-		}
-		else{
+		/*
 
 			queue.enqueueWriteImage(img1,true,origin, region,(countX*sizeof(float)), 0, h_input.data(), NULL, NULL);
 			// Launch kernel on the device
@@ -419,49 +431,9 @@ int main(int argc, char** argv) {
 			sobelKernel.setArg<cl::Image2D>(0, img1);
 			sobelKernel.setArg<cl::Buffer>(1, d_output);
 			queue.enqueueNDRangeKernel(sobelKernel, 0,cl::NDRange(countX, countY),cl::NDRange(wgSizeX, wgSizeY), NULL, &KERNELTIME);
-		}*/
 
-/*
-
-		// Copy output data back to host
-		//TODO
-		queue.enqueueReadBuffer(d_output, true, 0, size, h_outputGpu.data(),NULL,&READBUFFERTIME);
-
-		// Print performance data
-		//TODO
-		Core::TimeSpan time3 = OpenCL::getElapsedTime(WRITEBUFFERTIME);
-		Core::TimeSpan time4 = OpenCL::getElapsedTime(KERNELTIME);
-		Core::TimeSpan time5 = OpenCL::getElapsedTime(READBUFFERTIME);
-		Core::TimeSpan GPUTIME=time3+time4+time5;
-		cout << "GPU TIME :" << GPUTIME<<endl;
-
-		//////// Store GPU output image ///////////////////////////////////
-		Core::writeImagePGM("output_sobel_gpu_" + boost::lexical_cast<std::string> (impl) + ".pgm", h_outputGpu, countX, countY);
-
-		// Check whether results are correct
-		std::size_t errorCount = 0;
-		for (size_t i = 0; i < countX; i = i + 1) { //loop in the x-direction
-			for (size_t j = 0; j < countY; j = j + 1) { //loop in the y-direction
-				size_t index = i + j * countX;
-				// Allow small differences between CPU and GPU results (due to different rounding behavior)
-				if (!(std::abs (h_outputCpu[index] - h_outputGpu[index]) <= 1e-5)) {
-					if (errorCount < 15)
-						std::cout << "Result for " << i << "," << j << " is incorrect: GPU value is " << h_outputGpu[index] << ", CPU value is " << h_outputCpu[index] << std::endl;
-					else if (errorCount == 15)
-						std::cout << "..." << std::endl;
-					errorCount++;
-				}
-			}
-		}
-		if (errorCount != 0) {
-			std::cout << "Found " << errorCount << " incorrect results" << std::endl;
-			return 1;
-		}
-
-		std::cout << std::endl;
-	}
+		 */
 
 	std::cout << "Success" << std::endl;
-*/
 	return 0;
 }
