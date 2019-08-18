@@ -54,7 +54,17 @@ float getValueGlobal(const std::vector<float>& a, std::size_t countX, std::size_
 		return 0;
 	else
 		return a[getIndexGlobal(countX, i, j)];
+
 }
+// params: input, output, width, height, col, row
+int getValueGlobal_int(const std::vector<unsigned char>& a, std::size_t countX, std::size_t countY, int i, int j) {
+	if (i < 0 || (size_t) i >= countX || j < 0 || (size_t) j >= countY)
+		return 0;
+	else
+		return a[getIndexGlobal(countX, i, j)];
+
+}
+
 void sobelHost(const std::vector<float>& h_input, std::vector<float>& h_outputCpu, std::size_t countX, std::size_t countY) {
 	for (int i = 0; i < (int) countX; i++) {
 		for (int j = 0; j < (int) countY; j++) {
@@ -66,6 +76,361 @@ void sobelHost(const std::vector<float>& h_input, std::vector<float>& h_outputCp
 		}
 	}
 }
+
+////////////////////====================================////////////////////////////////
+const float GaussianMask[3][3] = {  {0.0625, 0.125, 0.0625},
+                                	{0.1250, 0.250, 0.1250},
+									{0.0625, 0.125, 0.0625} };
+
+// Define Sobel Filter Mask
+
+// vertical
+const int SobelMask_Gx[3][3] = { {-1, 0, 1},
+                              	 {-2, 0, 2},
+								 {-1, 0, 1} };
+
+// horizontal
+const int SobelMask_Gy[3][3] = {  {-1,-2,-1},
+                              	  { 0, 0, 0},
+								  { 1, 2, 1} };
+
+const float PI = 3.14159265;
+
+void GaussianBlur(	const 	std::vector<unsigned char>& h_input,
+							std::vector<unsigned char>& h_outputCpu,
+							std::size_t countX, // width
+							std::size_t countY) // height
+{
+	int img_height = (int) countY;
+	int img_width  = (int) countX;
+	for (int row = 1; row < img_height; row++)
+	{
+			for (int col = 1; col < img_width; col++)
+			{
+				int sum = 0;
+
+				for(int i=0; i<3; i++) // row
+				{
+					for(int j=0; j<3; j++) // column
+						{
+							sum += GaussianMask[i][j] * getValueGlobal_int(h_input, countX, countY, col+j-1, row+i-1);
+						}
+				}
+				h_outputCpu[getIndexGlobal(countX, col, row)] = min(255, max(0,sum));
+
+			}
+	}
+}
+
+void SobelFilter(  const 	std::vector<unsigned char>& h_input,
+							std::vector<unsigned char>& h_outputCpu,
+							std::vector<unsigned char>& theta,
+							std::size_t countX,
+							std::size_t countY)
+{
+	int img_height = (int) countY;
+	int img_width  = (int) countX;
+
+	for (int row = 1; row < img_height; row++)
+		{
+				for (int col = 1; col < img_width; col++)
+				{
+					float Gx = 0, Gy = 0, angle = 0;
+
+					for(int i=0; i<3; i++) // row
+					{
+						for(int j=0; j<3; j++) // column
+							{
+								Gx += SobelMask_Gx[i][j] * getValueGlobal_int(h_input, countX, countY, col+j-1, row+i-1);
+								Gy += SobelMask_Gy[i][j] * getValueGlobal_int(h_input, countX, countY, col+j-1, row+i-1);
+							}
+					}
+					h_outputCpu[getIndexGlobal(countX, col, row)] = min(255, max(0,(int)hypot(Gx, Gy)));
+
+					angle = atan2(Gy, Gx);
+
+				    if (angle < 0)
+				    {
+				        angle = fmod((angle + 2 * PI), (2 * PI));
+				    }
+
+				    angle = (180/PI)*(angle * (PI/8) + PI/8-0.0001);
+
+				    theta[getIndexGlobal(countX, col, row)]= (((unsigned char)    (angle/ 45)) * 45 ) % 180;
+
+				}
+		}
+
+}
+
+void NonMaxSuppression(  const 	std::vector<unsigned char>& h_input,
+								std::vector<unsigned char>& h_outputCpu,
+								std::vector<unsigned char>& theta,
+								std::size_t countX,
+								std::size_t countY)
+{
+	int img_height = (int) countY;
+	int img_width  = (int) countX;
+
+	for (int row = 1; row < img_height; row++)
+	{
+			for (int col = 1; col < img_width; col++)
+			{
+				switch(theta[getIndexGlobal(countX, col, row)])
+				{
+				case 0:
+					if( (h_input[getIndexGlobal(countX, col, row)] < h_input[getIndexGlobal(countX, col-1, row)]) ||
+						(h_input[getIndexGlobal(countX, col, row)] < h_input[getIndexGlobal(countX, col+1, row)]) )
+					{
+							h_outputCpu[getIndexGlobal(countX, col, row)] = 0;
+					}
+					else
+					{
+							h_outputCpu[getIndexGlobal(countX, col, row)] = h_input[getIndexGlobal(countX, col, row)];
+					}
+					break;
+
+				case 45:
+					if( (h_input[getIndexGlobal(countX, col, row)] < h_input[getIndexGlobal(countX, col+1, row-1)]) ||
+						(h_input[getIndexGlobal(countX, col, row)] < h_input[getIndexGlobal(countX, col-1, row+1)]) )
+					{
+							h_outputCpu[getIndexGlobal(countX, col, row)] = 0;
+					}
+					else
+					{
+							h_outputCpu[getIndexGlobal(countX, col, row)] = h_input[getIndexGlobal(countX, col, row)];
+					}
+					break;
+
+				case 90:
+					if( (h_input[getIndexGlobal(countX, col, row)] < h_input[getIndexGlobal(countX, col, row-1)]) ||
+						(h_input[getIndexGlobal(countX, col, row)] < h_input[getIndexGlobal(countX, col, row+1)]) )
+					{
+							h_outputCpu[getIndexGlobal(countX, col, row)] = 0;
+					}
+					else
+					{
+							h_outputCpu[getIndexGlobal(countX, col, row)] = h_input[getIndexGlobal(countX, col, row)];
+					}
+					break;
+
+				case 135:
+					if( (h_input[getIndexGlobal(countX, col, row)] < h_input[getIndexGlobal(countX, col-1, row-1)]) ||
+						(h_input[getIndexGlobal(countX, col, row)] < h_input[getIndexGlobal(countX, col+1, row+1)]) )
+					{
+							h_outputCpu[getIndexGlobal(countX, col, row)] = 0;
+					}
+					else
+					{
+							h_outputCpu[getIndexGlobal(countX, col, row)] = h_input[getIndexGlobal(countX, col, row)];
+					}
+					break;
+
+				default:
+					h_outputCpu[getIndexGlobal(countX, col, row)] = h_input[getIndexGlobal(countX, col, row)];
+					break;
+
+				}
+			}
+
+	}
+
+}
+
+void Hysterisis(  const std::vector<unsigned char>& h_input,
+						std::vector<unsigned char>& h_outputCpu,
+						std::vector<unsigned char>& theta,
+						std::size_t countX,
+						std::size_t countY,
+						unsigned char lowThresh,
+						unsigned char highThresh)
+{
+	int img_height = (int) countY;
+	int img_width  = (int) countX;
+	const unsigned char WHITE = 255;
+
+	for (int row = 1; row < img_height; row++)
+	{
+			for (int col = 1; col < img_width; col++)
+			{
+				if(h_input[getIndexGlobal(countX, col, row)] <= lowThresh)
+					h_outputCpu[getIndexGlobal(countX, col, row)] = 0;
+
+				else if(h_input[getIndexGlobal(countX, col, row)] >= highThresh)
+					h_outputCpu[getIndexGlobal(countX, col, row)] = WHITE;
+
+				else if(	(h_input[getIndexGlobal(countX, col-1, row-1)] == WHITE) ||
+							(h_input[getIndexGlobal(countX, col  , row-1)] == WHITE) ||
+							(h_input[getIndexGlobal(countX, col+1, row-1)] == WHITE) ||
+							(h_input[getIndexGlobal(countX, col-1, row  )] == WHITE) ||
+							(h_input[getIndexGlobal(countX, col+1, row  )] == WHITE) ||
+							(h_input[getIndexGlobal(countX, col-1, row+1)] == WHITE) ||
+							(h_input[getIndexGlobal(countX, col  , row+1)] == WHITE) ||
+							(h_input[getIndexGlobal(countX, col+1, row+1)] == WHITE) 	)
+					h_outputCpu[getIndexGlobal(countX, col, row)] = WHITE;
+
+				else
+					h_outputCpu[getIndexGlobal(countX, col, row)] = 0;
+			}
+	}
+
+
+}
+/* mk intermediate
+void GaussianBlur(	const 	std::vector<unsigned char>& h_input,
+							std::vector<unsigned char>& h_outputCpu,
+							std::size_t countX,
+							std::size_t countY)
+{
+	for (int x = 1; x < (int) countX; x++)
+	{
+			for (int y = 1; y < (int) countY; y++)
+			{
+				int sum = 0;
+
+				for(int i=-1; i<2; i++)
+				{
+					for(int j=-1; j<2; j++)
+						{
+							sum += GaussianMask[i+1][j+1] * getValueGlobal_int(h_input, countX, countY, x+i, y+j);
+						}
+				}
+				h_outputCpu[getIndexGlobal(countX, x, y)] = min(255, max(0,sum));
+
+			}
+	}
+}
+*/
+
+//void NMS(const 	std::vector<unsigned char>& h_input,
+//		std::vector<unsigned char>& h_outputCpu,
+//		std::size_t countX,
+///		std::size_t countY)
+//{
+
+//}
+
+
+/* mk intermediate
+void sobelHost_mk(  const 	std::vector<unsigned char>& h_input,
+							std::vector<unsigned char>& h_outputCpu,
+							std::vector<unsigned char>& theta,
+							std::size_t countX,
+							std::size_t countY)
+{
+	for (int x = 1; x < (int) countX; x++)
+	{
+			for (int y = 1; y < (int) countY; y++)
+			{
+				float Gx = 0, Gy = 0, angle = 0;
+
+				Gx = 		getValueGlobal_int(h_input, countX, countY, x-1, y-1)
+							+2*getValueGlobal_int(h_input, countX, countY, x-1, y)
+							+getValueGlobal_int(h_input, countX, countY, x-1, y+1)
+							-getValueGlobal_int(h_input, countX, countY, x+1, y-1)
+							-2*getValueGlobal_int(h_input, countX, countY, x+1, y)
+							-getValueGlobal_int(h_input, countX, countY, x+1, y+1);
+				Gy = 		getValueGlobal_int(h_input, countX, countY, x-1, y-1)
+							+2*getValueGlobal_int(h_input, countX, countY, x, y-1)
+							+getValueGlobal_int(h_input, countX, countY, x+1, y-1)
+							-getValueGlobal_int(h_input, countX, countY, x-1, y+1)
+							-2*getValueGlobal_int(h_input, countX, countY, x, y+1)
+							-getValueGlobal_int(h_input, countX, countY, x+1, y+1);
+
+				for(int i=-1; i<2; i++)
+				{
+					for(int j=-1; j<2; j++)
+						{
+							//Gx += SobelMask_Gx[i+1][j+1] * getValueGlobal_int(h_input, countX, countY, x+i, y+i);
+							//Gy += SobelMask_Gy[i+1][j+1] * getValueGlobal_int(h_input, countX, countY, x+i, y+i);
+
+
+						}
+				}
+				//h_outputCpu[getIndexGlobal(countX, x, y)] = min(255, max(0, (int)hypot(Gx, Gy)));
+				h_outputCpu[getIndexGlobal(countX, x, y)] = min(255, max(0, (int)   sqrt(Gx * Gx + Gy * Gy)));
+			    angle = atan2(Gy, Gx);
+
+			      // If the angle is negative,
+			      // shift the range to (0, 2PI) by adding 2PI to the angle,
+			      // then perform modulo operation of 2PI
+			    if (angle < 0)
+			    {
+			        angle = fmod((angle + 2 * PI), (2 * PI));
+			    }
+			    angle = (180/PI)*(angle * (PI/8) + PI/8-0.0001);
+			    theta[getIndexGlobal(countX, x, y)]= (((unsigned char)(angle/ 45)) * 45 ) % 180;
+
+			      // Round the angle to one of four possibilities: 0, 45, 90, 135
+			      // degrees then store it in the theta buffer at the proper position
+			      //if (angle <= PI / 8) {
+			      //  theta[getIndexGlobal(countX, x, y)] = 0;
+			      //} else if (angle <= 3 * PI / 8) {
+			      //  theta[getIndexGlobal(countX, x, y)] = 45;
+			      //} else if (angle <= 5 * PI / 8) {
+			      //  theta[getIndexGlobal(countX, x, y)] = 90;
+			      //} else if (angle <= 7 * PI / 8) {
+			      //  theta[getIndexGlobal(countX, x, y)] = 135;
+			      //} else if (angle <= 9 * PI / 8) {
+			      //  theta[getIndexGlobal(countX, x, y)] = 0;
+			      //} else if (angle <= 11 * PI / 8) {
+			      //  theta[getIndexGlobal(countX, x, y)] = 45;
+			      //} else if (angle <= 13 * PI / 8) {
+			      //  theta[getIndexGlobal(countX, x, y)] = 90;
+			      //} else if (angle <= 15 * PI / 8) {
+			      //  theta[getIndexGlobal(countX, x, y)] = 135;
+			      //} else  { // (angle <= 16*PI/8)
+			      //  theta[getIndexGlobal(countX, x, y)] = 0;
+			      //}
+
+
+			}
+	}
+
+}
+
+*/
+
+/*
+void GaussianBlur(	unsigned char* data,
+					unsigned char* h_outputCpu,
+					unsigned int height,
+					unsigned int width)
+{
+
+	for(int x=1; x<height; x++)
+	{
+		for(int y=1; y<width; y++)
+		{
+			int sum = 0;
+			unsigned long position = x*width+y;
+
+			sum += GaussianMask[0][0] * (*(data + (x-1)*width + (y-1) ) );
+			sum += GaussianMask[0][1] * (*(data + (x-1)*width + (y) ) );
+			sum += GaussianMask[0][2] * (*(data + (x-1)*width + (y+1) ) );
+			sum += GaussianMask[1][0] * (*(data + (x)*width + (y-1) ) );
+			sum += GaussianMask[1][1] * (*(data + (x)*width + (y) ) );
+			sum += GaussianMask[1][2] * (*(data + (x)*width + (y+1) ) );
+			sum += GaussianMask[2][0] * (*(data + (x+1)*width + (y-1) ) );
+			sum += GaussianMask[2][1] * (*(data + (x+1)*width + (y) ) );
+			sum += GaussianMask[2][2] * (*(data + (x+1)*width + (y+1) ) );
+
+			//for(int i=0; i<3; i++)
+			//{
+			//	for(int j=0; j<3; j++)
+			//	{
+			//		sum += GaussianMask[i][j] * (*(data + (x+i-1)*width + y+j-1 ));
+			//	}
+			//
+			//	}
+
+			h_outputCpu[position] = min(255, max(0, sum));
+
+		}
+	}
+}
+*/
+////////////////////====================================////////////////////////////////
 
 
 unsigned char* readBMP(const char* filename , int* img_width , int* img_height)
@@ -194,9 +559,17 @@ int main(int argc, char** argv) {
 
 	// ===============================CANNY IMPL============================//
 	std::vector<unsigned char> h_input (count);
-	//std::vector<unsigned char> h_outputCpu (count);
+	std::vector<unsigned char> h_outputCpu_mk (count);
+	std::vector<unsigned char> h_gaussCPU_mk (count);
+	std::vector<unsigned char> h_sobelCPU_mk (count);
+	std::vector<unsigned char> h_thetaCPU_mk (count);
+	std::vector<unsigned char> h_nmsCPU_mk (count);
+	std::vector<unsigned char> h_hysterisisCPU_mk (count);
 	std::vector<unsigned char> h_outputGpu (count);
 	std::size_t size = count * sizeof (unsigned char); // Size of data in bytes
+
+	unsigned char lowThresh = 55;
+	unsigned char highThresh = 100;
 	//======================================================================//
 
 	//================================CREATE BUFFERS========================//
@@ -268,7 +641,7 @@ int main(int argc, char** argv) {
 		}
 	}
 
-	// FOR HOST CPU SOBEL
+	// FOR HOST CPU SOBEL_old
 	for (size_t j = 0; j < countY; j++)
 	{
 		for (size_t i = 0; i < countX; i++)
@@ -294,7 +667,20 @@ int main(int argc, char** argv) {
 	cout << "CPU TIME :" << timetotalCPU<<endl;
 
 	//////// Store CPU output image ///////////////////////////////////
-	Core::writeImagePGM("output_sobel_cpu.pgm", h_outputCpu, countX, countY);
+	Core::writeImagePGM("output_sobel_cpu_old.pgm", h_outputCpu, countX, countY);
+
+	GaussianBlur(h_input, h_gaussCPU_mk, countX, countY);
+	Core::writeImagePGM("CPU_Gaussian.pgm", h_gaussCPU_mk, countX, countY);
+
+	SobelFilter(h_gaussCPU_mk, h_sobelCPU_mk, h_thetaCPU_mk, countX, countY);
+	Core::writeImagePGM("CPU_Sobel.pgm", h_sobelCPU_mk, countX, countY);
+	Core::writeImagePGM("CPU_Theta.pgm", h_thetaCPU_mk, countX, countY);
+
+	NonMaxSuppression(h_sobelCPU_mk, h_nmsCPU_mk, h_thetaCPU_mk, countX, countY);
+	Core::writeImagePGM("CPU_NonMaxSup.pgm", h_nmsCPU_mk, countX, countY);
+
+	Hysterisis(h_nmsCPU_mk, h_hysterisisCPU_mk, h_thetaCPU_mk, countX, countY, lowThresh, highThresh);
+	Core::writeImagePGM("CPU_Final.pgm", h_hysterisisCPU_mk, countX, countY);
 
 	std::cout << std::endl;
 	// Iterate over all implementations (task 1 - 3)
@@ -372,8 +758,7 @@ int main(int argc, char** argv) {
 
 		//=====================================Hysterisis=========================================//
 
-		unsigned char lowThresh = 55;
-		unsigned char highThresh = 100;
+
 		hyst_kernel.setArg<cl::Buffer>(0, non_max_out);
 		hyst_kernel.setArg<cl::Buffer>(1, d_output);
 		//hyst_kernel.setArg<cl::Buffer>(1, hyst_out);
@@ -426,19 +811,19 @@ int main(int argc, char** argv) {
 
 		//=====================================Saving Images =====================================//
 
-		Core::writeImagePGM("Final" + boost::lexical_cast<std::string> (1) + ".pgm", h_outputGpu, countX, countY);
+		Core::writeImagePGM("GPU_Final" + boost::lexical_cast<std::string> (1) + ".pgm", h_outputGpu, countX, countY);
 
 		queue.enqueueReadBuffer(gauss_out, true, 0, size, h_outputGpu.data(),NULL,NULL);
-		Core::writeImagePGM("GaussianBlur" + boost::lexical_cast<std::string> (1) + ".pgm", h_outputGpu, countX, countY);
+		Core::writeImagePGM("GPU_GaussianBlur" + boost::lexical_cast<std::string> (1) + ".pgm", h_outputGpu, countX, countY);
 
 		queue.enqueueReadBuffer(sobel_out, true, 0, size, h_outputGpu.data(),NULL,NULL);
-		Core::writeImagePGM("Sobel" + boost::lexical_cast<std::string> (1) + ".pgm", h_outputGpu, countX, countY);
+		Core::writeImagePGM("GPU_Sobel" + boost::lexical_cast<std::string> (1) + ".pgm", h_outputGpu, countX, countY);
 
 		queue.enqueueReadBuffer(theta, true, 0, size, h_outputGpu.data(),NULL,NULL);
-		Core::writeImagePGM("Theta" + boost::lexical_cast<std::string> (1) + ".pgm", h_outputGpu, countX, countY);
+		Core::writeImagePGM("GPU_Theta" + boost::lexical_cast<std::string> (1) + ".pgm", h_outputGpu, countX, countY);
 
 		queue.enqueueReadBuffer(non_max_out, true, 0, size, h_outputGpu.data(),NULL,NULL);
-		Core::writeImagePGM("NonMaxSupp" + boost::lexical_cast<std::string> (1) + ".pgm", h_outputGpu, countX, countY);
+		Core::writeImagePGM("GPU_NonMaxSupp" + boost::lexical_cast<std::string> (1) + ".pgm", h_outputGpu, countX, countY);
 
 		//queue.enqueueReadBuffer(hyst_out, true, 0, size, h_outputGpu.data(),NULL,NULL);
 		//Core::writeImagePGM("Hysterisis" + boost::lexical_cast<std::string> (1) + ".pgm", h_outputGpu, countX, countY);

@@ -373,7 +373,7 @@ __kernel void nms_kernel(__global unsigned char *sobel_out_input,
 
     barrier(CLK_LOCAL_MEM_FENCE);
 
-    uchar magnitude = local_data[localRow_x][localColumn_y];
+    unsigned char magnitude = local_data[localRow_x][localColumn_y];
 
     // begin trial
     //unsigned char angle;
@@ -501,31 +501,147 @@ __kernel void hyst_kernel(__global unsigned char *non_max_out_input,
 	size_t Column_y = get_global_id(1);
 	size_t index 	= Row_x * inputWidth + Column_y;
 
-    const uchar WHITE = 255;
+    //size_t globalRow_x 		= get_global_id(0);
+    //size_t globalColumn_y 	= get_global_id(1);
+    //size_t localRow_x 		= get_local_id(0) + 1;
+    //size_t localColumn_y 	= get_local_id(1) + 1;
+    //size_t index 			= globalRow_x * inputWidth + globalColumn_y;
 
-    uchar magnitude = non_max_out_input[index];
+    const unsigned char WHITE = 255;
+
+    //if (non_max_out_input[index] >= highThresh)
+    //	hyst_out[index] = WHITE;
+
+    //else if(non_max_out_input[index] <= lowThresh)
+    //    	hyst_out[index] = 0;
+
+    //else
+    //	hyst_out[index] = non_max_out_input[index];
+
+    unsigned char magnitude = non_max_out_input[index];
+    //printf("value of thres %d %d",lowThresh, highThresh);
 
     if (magnitude >= highThresh)
     	hyst_out[index] = WHITE;
     else if (magnitude <= lowThresh)
     	hyst_out[index] = 0;
     else
+    {
+    if ((Row_x!= 0) && (Row_x!= inputHeight) && (Column_y!= 0) && (Column_y!= inputWidth))
+        	{
+            	if(		(non_max_out_input[index-1-inputWidth] == WHITE) ||
+            			(non_max_out_input[index-inputWidth] == WHITE) ||
+    					(non_max_out_input[index+1-inputWidth] == WHITE) ||
+    					(non_max_out_input[index-1] == WHITE) ||
+    					(non_max_out_input[index+1] == WHITE) ||
+    					(non_max_out_input[index-1+inputWidth] == WHITE) ||
+    					(non_max_out_input[index+inputWidth] == WHITE) ||
+    					(non_max_out_input[index+1+inputWidth] == WHITE)
+    				)
+            		hyst_out[index] = WHITE;
+
+            	else
+        		hyst_out[index] = 0;
+
+        	}
+    }
+
+    	/*
+    barrier(CLK_GLOBAL_MEM_FENCE);
+
+    __local int local_data[WG_SIZE+2][WG_SIZE+2];
+
+    // copy to local_data
+    local_data[localRow_x][localColumn_y] = hyst_out[index];
+
+
+    // top most row
+    if (localRow_x == 1)
+    {
+        local_data[0][localColumn_y] = hyst_out[index-inputWidth];
+        // top left
+        if (localColumn_y == 1)
+            local_data[0][0] = hyst_out[index-inputWidth-1];
+
+        // top right
+        else if (localColumn_y == 16)
+            local_data[0][17] = hyst_out[index-inputWidth+1];
+    }
+    // bottom most row
+    else if (localRow_x == 16)
+    {
+        local_data[17][localColumn_y] = hyst_out[index+inputWidth];
+        // bottom left
+        if (localColumn_y == 1)
+            local_data[17][0] = hyst_out[index+inputWidth-1];
+
+        // bottom right
+        else if (localColumn_y == 16)
+            local_data[17][17] = hyst_out[index+inputWidth+1];
+    }
+
+    // left column
+    if (localColumn_y == 1)
+        local_data[localRow_x][0] = hyst_out[index-1];
+
+    // right column
+    else if (localColumn_y == 16)
+        local_data[localRow_x][17] = hyst_out[index+1];
+
+    barrier(CLK_LOCAL_MEM_FENCE);
+
+    magnitude = local_data[localRow_x][localColumn_y];
+
+    if (magnitude >= highThresh)
+      	hyst_out[index] = WHITE;
+    else if (magnitude <= lowThresh)
+      	hyst_out[index] = 0;
+    else if(	(local_data[localRow_x-1][localColumn_y-1] 	== WHITE) ||
+        (local_data[localRow_x-1][localColumn_y] 	== WHITE) ||
+    	(local_data[localRow_x-1][localColumn_y+1] 	== WHITE) ||
+    	(local_data[localRow_x][localColumn_y-1] 	== WHITE) ||
+    	(local_data[localRow_x][localColumn_y+1] 	== WHITE) ||
+    	(local_data[localRow_x+1][localColumn_y-1] 	== WHITE) ||
+    	(local_data[localRow_x+1][localColumn_y] 	== WHITE) ||
+    	(local_data[localRow_x+1][localColumn_y+1] 	== WHITE)	)
+         	hyst_out[index] = WHITE;
+
+    else
+        	hyst_out[index] = 0;
+
+
     	//hyst_out[index] = non_max_out_input[index];
     {
+
+
+
     	// check if immediate neighbor is white
     	//if((non_max_out_input[index-1] == WHITE) || (non_max_out_input[index+1] == WHITE) )
     	//	hyst_out[index] = WHITE;
     	//else
+    	hyst_out[index-1-inputWidth] 	= non_max_out_input[index-1-inputWidth];
+    	hyst_out[index-inputWidth] 		= non_max_out_input[index-inputWidth];
+    	hyst_out[index+1-inputWidth] 	= non_max_out_input[index+1-inputWidth];
+    	hyst_out[index-1] 				= non_max_out_input[index-1];
+    	hyst_out[index] 				= non_max_out_input[index];
+    	hyst_out[index+1] 				= non_max_out_input[index+1];
+    	hyst_out[index-1+inputWidth] 	= non_max_out_input[index-1+inputWidth];
+    	hyst_out[index+inputWidth] 		= non_max_out_input[index+inputWidth];
+    	hyst_out[index+1+inputWidth] 	= non_max_out_input[index+1+inputWidth];
+
+    	barrier(CLK_GLOBAL_MEM_FENCE);
+
+
     	if ((Row_x!= 0) && (Row_x!= inputHeight) && (Column_y!= 0) && (Column_y!= inputWidth))
     	{
-        	if(		(non_max_out_input[index-1-inputWidth] == WHITE) ||
-        			(non_max_out_input[index-inputWidth] == WHITE) ||
-					(non_max_out_input[index+1-inputWidth] == WHITE) ||
-					(non_max_out_input[index-1] == WHITE) ||
-					(non_max_out_input[index+1] == WHITE) ||
-					(non_max_out_input[index-1+inputWidth] == WHITE) ||
-					(non_max_out_input[index+inputWidth] == WHITE) ||
-					(non_max_out_input[index+1+inputWidth] == WHITE)
+        	if(		(hyst_out[index-1-inputWidth] == WHITE) ||
+        			(hyst_out[index-inputWidth] == WHITE) ||
+					(hyst_out[index+1-inputWidth] == WHITE) ||
+					(hyst_out[index-1] == WHITE) ||
+					(hyst_out[index+1] == WHITE) ||
+					(hyst_out[index-1+inputWidth] == WHITE) ||
+					(hyst_out[index+inputWidth] == WHITE) ||
+					(hyst_out[index+1+inputWidth] == WHITE)
 				)
         		hyst_out[index] = WHITE;
     	}
@@ -533,6 +649,7 @@ __kernel void hyst_kernel(__global unsigned char *non_max_out_input,
     	else
     		hyst_out[index] = 0;
 
-    }
+
+    }*/
 }
 
