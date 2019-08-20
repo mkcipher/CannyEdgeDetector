@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2019-08-17T12:19:35
+# Project created by QtCreator 2019-08-20T21:49:02
 #
 #-------------------------------------------------
 
@@ -8,7 +8,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = CannyFilter
+TARGET = CannyFilter_2
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
@@ -25,16 +25,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
-        CannyEdgeDetector.cpp \
-        main.cpp \
-        mainwindow.cpp
+    main.cpp \
+    mainwindow.cpp
 
 HEADERS += \
-        CannyEdgeDetector.h \
-        mainwindow.h
+    mainwindow.h
 
 FORMS += \
-        mainwindow.ui
+    mainwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

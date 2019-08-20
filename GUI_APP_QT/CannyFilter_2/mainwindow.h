@@ -12,9 +12,6 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    unsigned char* Raw_Image_Data = nullptr;
-    unsigned char* Processed_Image_Data = nullptr;
-    int img_width, img_height;
 
     explicit MainWindow(QWidget *parent = nullptr);
 
