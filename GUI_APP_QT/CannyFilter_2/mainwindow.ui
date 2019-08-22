@@ -115,7 +115,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Run Time: </string>
+     <string/>
     </property>
    </widget>
    <widget class="QWidget" name="layoutWidget">

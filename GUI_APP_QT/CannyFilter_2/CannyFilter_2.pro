@@ -41,10 +41,11 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-win32: LIBS += -L$$PWD/'../../../../Program Files (x86)/AMD APP SDK/3.0/lib/x86_64/' -lOpenCL
 
-INCLUDEPATH += $$PWD/'../../../../Program Files (x86)/AMD APP SDK/3.0/include'
-DEPENDPATH += $$PWD/'../../../../Program Files (x86)/AMD APP SDK/3.0/include'
+win32: LIBS += -L$$PWD/'../../../../../../Program Files (x86)/AMD APP SDK/3.0/lib/x86_64/' -lOpenCL
 
-win32:!win32-g++: PRE_TARGETDEPS += $$PWD/'../../../../Program Files (x86)/AMD APP SDK/3.0/lib/x86_64/OpenCL.lib'
-else:win32-g++: PRE_TARGETDEPS += $$PWD/'../../../../Program Files (x86)/AMD APP SDK/3.0/lib/x86_64/libOpenCL.a'
+INCLUDEPATH += $$PWD/'../../../../../../Program Files (x86)/AMD APP SDK/3.0/include'
+DEPENDPATH += $$PWD/'../../../../../../Program Files (x86)/AMD APP SDK/3.0/include'
+
+win32:!win32-g++: PRE_TARGETDEPS += $$PWD/'../../../../../../Program Files (x86)/AMD APP SDK/3.0/lib/x86_64/OpenCL.lib'
+else:win32-g++: PRE_TARGETDEPS += $$PWD/'../../../../../../Program Files (x86)/AMD APP SDK/3.0/lib/x86_64/libOpenCL.a'

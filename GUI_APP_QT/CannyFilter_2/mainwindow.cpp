@@ -17,6 +17,8 @@
 #include <qthread.h>
 #include <CL/cl.hpp>
 #include <cannyfilter_opencl.h>
+#include <chrono>
+#include <stdlib.h>
 
 
 using namespace std;
@@ -178,11 +180,20 @@ void MainWindow::on_ProcessImage_pushButton_clicked()
             vector<unsigned char> Theta(img_width*img_height);
             vector<unsigned char> MaxSup(img_width*img_height);
             vector<unsigned char> Hysterisisvector(img_width*img_height);
+            /* Time Stamp */
+            auto start = std::chrono::system_clock::now();
+            /* Run the Algorithm */
             GaussianBlur(inputvector, GaussianMask, img_width, img_height);
             SobelFilter(GaussianMask, SobelFiltervector, Theta, img_width, img_height);
             NonMaxSuppression(SobelFiltervector, MaxSup, Theta, img_width, img_height);
             Hysterisis(MaxSup, Hysterisisvector, Theta, img_width, img_height, ui->LowThres_Slider->value(),
                        (ui->HighThres_Slider->value()));
+            /* Time Stamp */
+            auto end = std::chrono::system_clock::now();
+            /* Update GUI for the Run Time */
+            auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+            std::string elapsedtime_mS = "Run Time: "+ std::to_string(elapsed.count())+" mS";
+            ui->RunTime_label->setText(QString::fromStdString(elapsedtime_mS));
 
             /* Show the Processed Image on a new Window */
             /* Store On a Temp File */
@@ -198,9 +209,14 @@ void MainWindow::on_ProcessImage_pushButton_clicked()
         }
         else{
             CannyFilter_OpenCL Canny;
+            long int elapsed_time;
             unsigned char* Result = Canny.Detector(ui->Platform_comboBox->currentText().toStdString(),
                                                     Raw_Image_Data,img_width,img_height,
-                                                    ui->LowThres_Slider->value(),ui->HighThres_Slider->value());
+                                                    ui->LowThres_Slider->value(),ui->HighThres_Slider->value(),
+                                                    elapsed_time);
+            /* Update GUI for Run Time */
+            std::string elapsedtime_mS = "Run Time: "+ std::to_string(elapsed_time)+" mS";
+            ui->RunTime_label->setText(QString::fromStdString(elapsedtime_mS));
 
             /* Show the Processed Image on a new Window */
             /* Store On a Temp File */

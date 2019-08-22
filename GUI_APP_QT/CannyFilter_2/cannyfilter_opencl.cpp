@@ -1,6 +1,7 @@
 #include "cannyfilter_opencl.h"
 #include <fstream>
 #include <iostream>
+#include <chrono>
 
 CannyFilter_OpenCL::CannyFilter_OpenCL()
 {
@@ -20,7 +21,7 @@ void CannyFilter_OpenCL::GetPlatforms(string* Platforms, int* Number){
 
 uint8_t* CannyFilter_OpenCL::Detector(string Platform, uint8_t* input_image,unsigned long width_image,
                                       unsigned long height_image,unsigned char Min_Threshold,
-                                      unsigned char Max_Threshold){
+                                      unsigned char Max_Threshold, long int& elapsedtime){
 
     int platformId = 0;
     for (size_t i = 0; i < this->platforms.size(); i++) {
@@ -81,6 +82,14 @@ uint8_t* CannyFilter_OpenCL::Detector(string Platform, uint8_t* input_image,unsi
     cl::Buffer hyst_out(context, CL_MEM_READ_WRITE, size);
     //======================================================================//
 
+    //==================================TIMING EVENTS=================================//
+    cl::Event WRITEBUFFERTIME;
+    cl::Event GAUSS_KERNEL_TIME;
+    cl::Event SOBEL_KERNEL_TIME;
+    cl::Event NON_MAX_KERNEL_TIME;
+    cl::Event HYSTERISIS_KERNEL_TIME;
+    cl::Event READBUFFERTIME;
+
     // Initialize memory to 0xff (useful for debugging because otherwise GPU memory will contain information from last execution)
     memset(h_outputGpu.data(), 255, size);
 
@@ -99,8 +108,11 @@ uint8_t* CannyFilter_OpenCL::Detector(string Platform, uint8_t* input_image,unsi
     cl::Kernel nms_kernel(program, "nmskernel");
     cl::Kernel hyst_kernel(program, "hyskernel");
 
+    /* Measure Time */
+    auto start = std::chrono::system_clock::now();
+
     // Write Image Data to input Buffer
-    queue.enqueueWriteBuffer(d_input, true, 0, size, h_input.data(),NULL,NULL);
+    queue.enqueueWriteBuffer(d_input, true, 0, size, h_input.data(),NULL,&WRITEBUFFERTIME);
 
     // Launch kernel on the device
     // ====================================Gaussian Kernel====================================//
@@ -110,7 +122,8 @@ uint8_t* CannyFilter_OpenCL::Detector(string Platform, uint8_t* input_image,unsi
     gaussian_kernel.setArg<int>(2, height_image);
     gaussian_kernel.setArg<int>(3, width_image);
 
-    queue.enqueueNDRangeKernel(gaussian_kernel, 0,cl::NDRange(countY, countX),cl::NDRange(wgSizeX, wgSizeY), NULL, NULL);
+    queue.enqueueNDRangeKernel(gaussian_kernel, 0,cl::NDRange(countY, countX),cl::NDRange(wgSizeX, wgSizeY),
+                               NULL, &GAUSS_KERNEL_TIME);
 
     //========================================================================================//
 
@@ -122,7 +135,8 @@ uint8_t* CannyFilter_OpenCL::Detector(string Platform, uint8_t* input_image,unsi
     sobel_kernel.setArg<int>(3, height_image);
     sobel_kernel.setArg<int>(4, width_image);
 
-    queue.enqueueNDRangeKernel(sobel_kernel, 0,cl::NDRange(countY, countX),cl::NDRange(wgSizeX, wgSizeY), NULL, NULL);
+    queue.enqueueNDRangeKernel(sobel_kernel, 0,cl::NDRange(countY, countX),cl::NDRange(wgSizeX, wgSizeY),
+                               NULL, &SOBEL_KERNEL_TIME);
 
     //========================================================================================//
 
@@ -134,7 +148,8 @@ uint8_t* CannyFilter_OpenCL::Detector(string Platform, uint8_t* input_image,unsi
     nms_kernel.setArg<int>(3, height_image);
     nms_kernel.setArg<int>(4, width_image);
 
-    queue.enqueueNDRangeKernel(nms_kernel, 0,cl::NDRange(countY, countX),cl::NDRange(wgSizeX, wgSizeY), NULL, NULL);
+    queue.enqueueNDRangeKernel(nms_kernel, 0,cl::NDRange(countY, countX),cl::NDRange(wgSizeX, wgSizeY),
+                               NULL, &NON_MAX_KERNEL_TIME);
 
     //========================================================================================//
 
@@ -147,15 +162,23 @@ uint8_t* CannyFilter_OpenCL::Detector(string Platform, uint8_t* input_image,unsi
     hyst_kernel.setArg<int>(4, Min_Threshold);
     hyst_kernel.setArg<int>(5, Max_Threshold);
 
-    queue.enqueueNDRangeKernel(hyst_kernel, 0,cl::NDRange(countY, countX),cl::NDRange(wgSizeX, wgSizeY), NULL, NULL);
+    queue.enqueueNDRangeKernel(hyst_kernel, 0,cl::NDRange(countY, countX),cl::NDRange(wgSizeX, wgSizeY),
+                               NULL, &HYSTERISIS_KERNEL_TIME);
 
     //========================================================================================//
 
-    queue.enqueueReadBuffer(d_output, true, 0, size, h_outputGpu.data(),NULL,NULL);
+    queue.enqueueReadBuffer(d_output, true, 0, size, h_outputGpu.data(),NULL,&READBUFFERTIME);
+
+    /* Measure Time */
+    auto end = std::chrono::system_clock::now();
 
     /* Copy Data from Vector to New Heap Memoery pointer for returning */
     unsigned char* outputdata = new unsigned char[size];
     memcpy(outputdata, h_outputGpu.data(), size);
+
+    /* Measure Execution Time */
+    auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    elapsedtime=elapsed.count();
 
     return outputdata;
 }
