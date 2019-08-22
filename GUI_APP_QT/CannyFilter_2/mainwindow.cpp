@@ -15,6 +15,8 @@
 #include <qfile.h>
 #include <math.h>
 #include <qthread.h>
+#include <CL/cl.hpp>
+#include <cannyfilter_opencl.h>
 
 
 using namespace std;
@@ -62,10 +64,18 @@ MainWindow::MainWindow(QWidget *parent) :
     QWidget::setWindowTitle ( "Canny Filter" );
     /* SetUp Available Platforms */
     ui->Platform_comboBox->addItem("CPU Core");
-
-    /* Set Default Values for Threshold */
-    //ui->LowThres_Slider->setValue(10);
-    //ui->HighThres_Slider->setValue(30);
+    /* Read the OpenCL Class to check for available Platforms */
+    string AvailablePlat[10];
+    int NumofAvailPlat;
+    CannyFilter_OpenCL Canny;
+    Canny.GetPlatforms(AvailablePlat,&NumofAvailPlat);
+    /* if num is greater than zero then add them to the ComboBox */
+    if(NumofAvailPlat>0){
+        QString Plat;
+        for(uint8_t loop=0;loop<NumofAvailPlat;loop++){
+           ui->Platform_comboBox->addItem(QString::fromStdString(AvailablePlat[loop]));
+        }
+    }
 
 }
 
@@ -125,10 +135,10 @@ void MainWindow::on_LoadImage_pushButton_clicked()
             image_scaled.save ("Temp_scaledimage.bmp", "bmp", 100);
 
             /* Temporary DEBUG */
-            int width,height;
-            unsigned char* test=readBMP1Ch("Temp_scaledimage.bmp",&width,&height);
-            ofstream test1 ("test.pgm", std::ios_base::binary);
-            writeImagePGM(test1,test,width,height);
+            //int width,height;
+            //unsigned char* test=readBMP1Ch("Temp_scaledimage.bmp",&width,&height);
+            //ofstream test1 ("test.pgm", std::ios_base::binary);
+            //writeImagePGM(test1,test,width,height);
 
         }
     }
@@ -182,8 +192,26 @@ void MainWindow::on_ProcessImage_pushButton_clicked()
             writeImagePGM(outtemp,Hysterisisvector.data(),img_width,img_height);
             outtemp.close();
             /* Show the Processed Image on the Image Window Label */
-            QString test=QDir::currentPath()+"/Out.pgm";
-            QPixmap DisplayImage(test);
+            QString display=QDir::currentPath()+"/Out.pgm";
+            QPixmap DisplayImage(display);
+            ui->ImageWindow->setPixmap(DisplayImage.scaled(ui->ImageWindow->width(),ui->ImageWindow->height(),Qt::KeepAspectRatio));
+        }
+        else{
+            CannyFilter_OpenCL Canny;
+            unsigned char* Result = Canny.Detector(ui->Platform_comboBox->currentText().toStdString(),
+                                                    Raw_Image_Data,img_width,img_height,
+                                                    ui->LowThres_Slider->value(),ui->HighThres_Slider->value());
+
+            /* Show the Processed Image on a new Window */
+            /* Store On a Temp File */
+            QFile OldOutFile(QDir::currentPath()+"/Out.pgm");
+            OldOutFile.remove();
+            ofstream outtemp ("Out.pgm", std::ios_base::binary);
+            writeImagePGM(outtemp,Result,img_width,img_height);
+            outtemp.close();
+            /* Show the Processed Image on the Image Window Label */
+            QString display=QDir::currentPath()+"/Out.pgm";
+            QPixmap DisplayImage(display);
             ui->ImageWindow->setPixmap(DisplayImage.scaled(ui->ImageWindow->width(),ui->ImageWindow->height(),Qt::KeepAspectRatio));
         }
         /* Delete the Buffer for the Input Image */
