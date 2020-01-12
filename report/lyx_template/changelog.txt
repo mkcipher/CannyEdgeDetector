@@ -1,0 +1,55 @@
+2018/02/24
+- Fixed issue that references mentioned in bibtree are included in
+bibliography with pageref -> \backrefsetup{disable}
+- Added multipage chapter name for bibtree 
+
+2016/11/16
+- Added quick fix for page breaking within dirtree
+- New feature: List of notations
+- Updated deprecated command \bf by \bfseries
+- Added Language Sensitive Institute title in Titlepage
+- Added some code listing examples
+- Using new University logo
+- The DOI field in a bibliography entry is now a link and URL is ignored if DOI present.
+
+2015/09/08
+- Added the new Bibliography-Tree-Feature (optional) and respective description in the
+Howto
+
+2015/09/03
+- Fixed problem with subfigures
+- Added hints for working with subfigures
+- Template files are versioned with Git
+
+2015/07/21
+- Alumni poster page: color code of the thesis type
+  Master Thesis: red, Forschungsarbeit: blue, Bachelorarbeit: green, Seminar Thesis: yellow
+- Font of the author's name on title page now matches the LaTeX template
+
+2015/07/14
+- Minor changes to the layout of the alumni poster page
+
+2015/07/02
+- Added new last page, designed to be placed on the INÜ Alumni wall
+- Added description of this last page
+- Title page and the last page are created automatically from ERT-wise entered variables
+- Removed German version, Language of the thesis is set via document settings.
+- Generalized 2nd supervisor
+
+2015/05/12
+- Added Appendix
+- Added design rules for abbreviations and hints for acronym usage
+- International university logo in English template
+- Minor corrections
+
+2014/12/10:
+- Added a note about formatting the width of the supervisor field
+- Added some hints useful for equations (brackets, units, ...)
+
+2014/08/14 (Thanks to D. Rörich):
+- Increased paragraph skipping setting (MedSkip)
+- Added information about the language of the Abstract
+- Added information/hints for writing equations
+- Added recommendation to use the spellchecker
+- Minor change to the appearance of the bibliography
+- Minor text changes.

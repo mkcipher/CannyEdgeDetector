@@ -1,0 +1,1518 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass scrreprt
+\begin_preamble
+\usepackage{trfsigns}
+\usepackage{scrpage2} 
+\automark[chapter]{section}
+\pagestyle{scrheadings}
+\clearscrheadfoot 
+\rehead{\pagemark} 
+\rohead{\pagemark}
+\lehead{\headmark}
+\lohead{\headmark}
+\setheadsepline{0.4pt}
+\pagenumbering{Roman}
+\usepackage{blindtext}
+\usepackage{babel}
+\usepackage{tikz}
+\definecolor{uni_apfelgruen}{cmyk}{.5, 0, 1, 0}
+\definecolor{uni_mittelblau}{cmyk}{1, 0.4, 0, 0}
+\definecolor{uni_gelb}{cmyk}{0, 0.1, 1, 0}
+\definecolor{uni_rot}{cmyk}{0, 1, 1, 0}
+% for the Wall-of-Fame page:
+%\usepackage{authoraftertitle}
+\usepackage{changepage}
+
+\renewcommand\nomname{Symbols}
+
+
+\def\nompreamble {\addcontentsline{toc}{chapter}\nomname \markboth{\nomname}{\nomname}} %   % \addchap{\nomname}
+\setlength{\nomlabelwidth}{0.3\hsize}
+% \markboth{\nomname {\nomname}}
+
+\usepackage[printonlyused]{acronym} 
+
+
+%provides nice tree-layouting for the bib-reference-tree
+\input{tex_contents/dirtree2}
+\input{tex_contents/dirtree2}
+\usepackage{usebib}
+\newbibfield{author}
+
+% tell usebib to parse the primary Bib-File
+% -> add more if necessary
+\bibinput{tex_contents/Bib}
+
+% Controls the appearance of backlinks in the bibliography
+\renewcommand{\backrefxxx}[3]{%
+  (\hyperlink{page.#1}{p.~#1})}
+
+\makeatletter
+
+\protected\def\hacs{%
+  \let\AC@hyperlink\@secondoftwo
+  \acs
+}
+\protected\def\hacl{%
+  \let\AC@hyperlink\@secondoftwo
+  \acl
+}
+
+\makeatother
+
+\AtBeginDocument{%
+  \pdfstringdefDisableCommands{%
+    \let\hacl\acl
+  }%
+  \pdfstringdefDisableCommands{%
+    \let\hacs\acs
+  }%
+}
+\makeatletter
+\end_preamble
+\options 12pt,a4paper,oneside,bibliography=totoc
+\use_default_options true
+\maintain_unincluded_children false
+\language american
+\language_package default
+\inputencoding utf8-plain
+\fontencoding global
+\font_roman "times" "default"
+\font_sans "helvet" "default"
+\font_typewriter "courier" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format pdf2
+\output_sync 0
+\bibtex_command bibtex
+\index_command default
+\float_placement tbh
+\paperfontsize 12
+\spacing single
+\use_hyperref true
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder true
+\pdf_colorlinks false
+\pdf_backref page
+\pdf_pdfusetitle true
+\papersize a4paper
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\use_minted 0
+\branch WoF_abstract
+\selected 0
+\filename_suffix 0
+\color #faf0e6
+\end_branch
+\branch WoF_abstract_pic
+\selected 1
+\filename_suffix 0
+\color #faf0e6
+\end_branch
+\branch WoF_bibtree
+\selected 1
+\filename_suffix 0
+\color #faf0e6
+\end_branch
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 2
+\tocdepth 2
+\paragraph_separation skip
+\defskip medskip
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+
+\series bold
+THIS TEMPLATE CAN ONLY BE USED WITH \SpecialChar LyX
+ VERSION 2.1.3 OR NEWER
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Thesis type (Master, Bachelor Thesis etc.)
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+def
+\backslash
+thesistypevar{Study Project Thesis}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Title of the thesis 
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+def
+\backslash
+titlevar{Performance Benchmarking for Deep Learning-based User Localization}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Your name
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+def
+\backslash
+authorvar{Mohit Kalra}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Your supervisor's name.
+ Mind the double-backslash between two supervisors
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+def
+\backslash
+supervisorvar{Sebastian Doerner 
+\backslash
+
+\backslash
+ 
+\backslash
+mbox{Sebastian Cammerer}}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Path to the title page image.
+ Image should be in format EPS or PDF
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+def
+\backslash
+titleimagevar{fig/cover-page-benchmark}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Date of hand out (start of your work)
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+def
+\backslash
+handoutvar{June 1, 2018}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Date of hand in (final version of the thesis)
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+def
+\backslash
+handinvar{July 19, 2018}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+If the table with names and supervisor(s) is too far left/right, decrease/increa
+se this value.
+ Default is 5cm
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+def
+\backslash
+titletablewidth{5cm}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Reduce the number to make the image smaller if the title is too long.
+ Default is
+\family typewriter
+ 7.3cm
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+def
+\backslash
+titleimageheight{6.5cm}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Reduce the number to make the image on the alumni page smaller if it's too
+ wide.
+ Default is
+\family typewriter
+ 8.5cm
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+def
+\backslash
+posterimageheight{8.5cm}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand include
+filename "lyx_contents/titlepage.lyx"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter*
+
+\color white
+Abstract
+\end_layout
+
+\begin_layout Section*
+Abstract
+\end_layout
+
+\begin_layout Standard
+Supervised learning in Deep Neural Networks (DNN) is a two phased process
+ of Training and Validation.
+ In the former, the DNN model is fed in with labeled sets of input-output
+ tuples (or vectors).
+ The model learns by optimizing the trainable parameters (weights) to minimize
+ the loss function.
+ In coherence, for the case of Deep Learning-based User Localization, the
+ model is trained to map the complex channel coefficient to the coordinates
+ of the user’s position.
+ Though, the training process of the model is optimized to run on Graphics
+ Processing Unit (GPU), yet, one major bottleneck hindering complete utilization
+ of GPU’s processing power is the data set generator function, which makes
+ use of channel’s model to generate a batch of input-output tuples (channel
+ coefficient - user’s coordinates), as it is computed on Central Processing
+ Unit (CPU).
+ This study thesis elaborates on the method to remove the above discussed
+ bottleneck by implementing generator function which can run on GPU.
+ This is achieved by writing a custom Keras Layer of the channel model to
+ generate training data set within the TensorFlow computing graph, which
+ is then plugged into the existing DNN model.
+ Finally, Performance bench-marking is done for the original training method
+ and the upgraded customized generator layer by comparing the training time
+ of the model along with GPU utilization concluding the speed ups which
+ are achieved using this method.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace vfill
+\end_inset
+
+
+\series bold
+Title page image:
+\series default
+ Comparison of Benchmarks of Training Time in seconds for Normal Generator
+ vs Custom Layer Generator for 5000 steps per epoch.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+The following \SpecialChar LaTeX
+ code defines the list of acronyms.
+ You should not change anything here.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+% acronyms, nomenclature, abstract
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+addchap{
+\backslash
+AcrListName}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{acronym}[ABCDEFG]
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+setlength{
+\backslash
+itemsep}{-
+\backslash
+parsep}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+input{./tex_contents/listofacronyms.tex} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{acronym}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand include
+filename "lyx_contents/notations_en.lyx"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Symbol list is here.
+ Definitions (= nomenclature entries) can be at any place in the document.
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset nomencl_print
+LatexCommand printnomenclature
+set_width "custom"
+width "10text%"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+Introduction
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Here we reset the page counter and set it to Arabic
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pagenumbering{arabic} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+setcounter{page}{1}
+\end_layout
+
+\end_inset
+
+This section briefly introduces the programming tools and frameworks which
+ are used in this study thesis.
+ All the below mentioned tools are open source.
+ Jupyter Notebook is used as an Integrated Development Environment (IDE)
+ throughout the work.
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "lyx"
+literal "true"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Section
+TensorFlow
+\end_layout
+
+\begin_layout Standard
+TensorFlow is an open-source machine learning library for dataflow programming
+ across research and production.
+ It is a symbolic math library and offers APIs for development of machine
+ learning applications such as neural networks.
+ TensorFlow offers a python interface and can run on multiple CPUs and GPUs
+ with CUDA extensions to support general purpose computing on GPUs.
+\end_layout
+
+\begin_layout Section
+Keras
+\end_layout
+
+\begin_layout Standard
+Keras is an open source high-level neural network framework written in Python.
+ It is capable of running on top of TensorFlow, CNTK or Theano.
+ Designed to enable fast experimentation with DNNs, it focuses on being
+ user-friendly, modular, and extensible.
+ For training a model with pre-generated data set, 
+\family typewriter
+fit
+\family default
+ function is used.
+ However, to train the model on-the-fly, as the data set is being generated
+ in parallel to training, 
+\family typewriter
+fit_generator
+\family default
+ function is used.
+\end_layout
+
+\begin_layout Section
+Python
+\end_layout
+
+\begin_layout Standard
+Python is an interpreted high-level programming language for general-purpose
+ programming.
+ Python features a dynamic type system and automatic memory management.
+ It supports multiple programming paradigms, including object-oriented,
+ imperative, functional and procedural, and has a large and comprehensive
+ standard library.
+ Numpy is a library for the Python programming language, adding support
+ for large, multi-dimensional arrays and matrices, along with a large collection
+ of high-level mathematical functions to operate on these arrays.
+\end_layout
+
+\begin_layout Standard
+Python command to check GPU usage.
+ Parameter 
+\family typewriter
+-l
+\family default
+ can be used, to run command in loop.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand lstinputlisting
+filename "listings/gpu_usage.py"
+lstparams "breaklines=true,captionpos=b,frame=tblr,language=Java,basicstyle={\\footnotesize\\ttfamily},keywordstyle={\\bfseries\\color{green!40!black}},commentstyle={\\itshape\\color{purple!40!black}},identifierstyle={\\color{blue}},stringstyle={\\color{orange}},numbers={left},caption={Check GPU Usage},label={list:gpuusage}"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+Deep Learning based User Localization
+\end_layout
+
+\begin_layout Section
+Overview
+\end_layout
+
+\begin_layout Standard
+The work as described in Literature [1], focuses on Deep learning based
+ massive MIMO Indoor User localization.
+ In this, MIMO based OFDM spider antenna setup is used with focus on the
+ non-line of sight (NLoS) scenario between the antenna and user.
+ One approach to obtain indoor user localization is model based in which
+ it needs to be mathematically defined, how the channel is expected to behave
+ to estimate the user’s position accordingly (e.g.
+ Ray-tracing of a room).
+ However, this modelling possesses its own challenges since the under-lying
+ channel function which describes the behavior of the channel for any given
+ position, is typically not known or can only be estimated as it is infeasible
+ to fully capture the geometries of the room and its surroundings.
+ The role deep learning plays in this research is crucial as it removes
+ the model based dependency of channel behavior to obtain the same results,
+ rather it revolves around data driven approach, in which a database with
+ appropriate features such as channel coefficients and corresponding user’s
+ coordinates of position are directly fed to the neural network based deep
+ learning model which learns dependency to interpolate in-between them as
+ a regression task.
+ 
+\end_layout
+
+\begin_layout Standard
+A question which arises when following the above mentioned data-driven approach
+ is if real-time collected data of channel coefficients and users coordinated
+ are to be used, why we require a data set generator function in the first
+ place.
+ This is actually done to obtain huge amount of simulated training samples,
+ which would otherwise be impractical to physically provide to the model
+ with exact coordinates for each h channel coefficient measured.
+ Thus, a two-step training strategy is adopted in which the DNN model is
+ first pre-trained on a simulated LoS channel and then fine-tuned with small
+ number of real-life measured training samples, which helps in speeding
+ up the DNN model training as compared to a randomly initialized neural
+ network.
+ Hence, a data set generator function is required.
+ 
+\end_layout
+
+\begin_layout Section
+Model Implementation 
+\end_layout
+
+\begin_layout Standard
+A simple feed-forward deep neural network structure is used for implementation.
+ The input layer takes a 2 dimensional input tensor of size 
+\family typewriter
+(16,2)
+\family default
+, where the first parameter 16, denotes the number of antennas in the MIMO
+ system and the second parameter denotes the h channel coefficient of each
+ antenna, which is a complex value, hence, requires a real and imaginary
+ part to express the whole term.
+ A flatten layer is used to flatten out two dimensional data into a single
+ dimension, since at the output we require one dimensional tensor 
+\family typewriter
+(x,y,z)
+\family default
+ components.
+ Since the input and flatten layer do not have any weights in between their
+ layers, there are no trainable parameters.
+ Flatten layer has an out degree of 32, which is then connected to three
+ dense fully connected layers, with each layer having 128 units of neurons.
+ Each of the three dense layer has Rectified Linear Unit (ReLU) activation
+ function.
+ Finally, an output dense layer of 3 neurons is connected at the output
+ of the neural network.
+ The output layer has linear activation, with 
+\family typewriter
+(3)
+\family default
+ as single dimensional output tensor giving 
+\family typewriter
+(x,y,z)
+\family default
+ as output.
+\end_layout
+
+\begin_layout Standard
+Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:original-model"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ describes the summary of the neural network implemented in the original
+ Jupyter Notebook.
+ It should be noted that the first dimension of each layer is 
+\family typewriter
+None
+\family default
+, which signifies the batch size, which is by default passed as the first
+ dimension and ignored by Keras during compile time.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename fig/original-nn-model.png
+	width 70text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Summary of Deep Neural Network model
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:original-model"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Generator Function
+\end_layout
+
+\begin_layout Standard
+The generator function takes the batch size of the data to be generated
+ as a scalar input argument and returns the 
+\family typewriter
+h
+\family default
+ channel coefficients and 
+\family typewriter
+(x,y,z)
+\family default
+ coordinate labels for LoS scenario.
+ Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:channel-formula"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ describes the formulae to calculate channel coefficient 
+\family typewriter
+(h)
+\family default
+ given the distance 
+\family typewriter
+(d)
+\family default
+ of the user from the transmitting antenna and wavelength λ.
+ Distance 
+\family typewriter
+d
+\family default
+ is calculated by applying distance formulae to 
+\family typewriter
+(x,y,z) 
+\family default
+labels from the co-ordinates of the antennas.
+ To achieve maximum coverage of the entire coordinate space, values of 
+\family typewriter
+(x,y,z)
+\family default
+ are randomly generated (uniform distribution) using Numpy’s library and
+ the channel coefficients are computed using coordinates generated.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename fig/channel-formula.png
+	width 35text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Relationship between channel coefficient and distance
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:channel-formula"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Bottleneck 
+\end_layout
+
+\begin_layout Standard
+The python code for generator function is sequential in execution on a CPU,
+ i.e.
+ instructions are executed one by one.
+ The total time consumed by the CPU to complete execution of one instruction
+ is dependent on the complexity of the instruction.
+ Simpler instructions such as addition, subtraction take up less CPU time
+ to execute as compared to more complex operations of exponents and trigonometri
+c functions.
+ Thus, total CPU time taken by generator function to generate one data set
+ is determined by the complexity of instructions in the function.
+ Moreover, due to Python’s Global Interpreter Lock (GIL), true multi-threading
+ cannot be achieved even on a multi-core CPU.
+\end_layout
+
+\begin_layout Standard
+On the other hand, GPU, owing to its highly parallel structure and large
+ number of processing cores, is much more potent at rapidly carrying out
+ large blocks of numerical computations, thereby reducing the total time
+ consumed for a particular operation to be completed.
+ The DNN model mapping the channel’s coefficients to the user’s coordinates
+ is implemented using Keras with TensowFlow backend.
+ Keras typically performs the estimation of the batches in parallel and
+ the neural network is optimized to be trained on a GPU (if GPU acceleration
+ is enabled in the Jupyter Notebook Settings).
+ This enables the model to train for large data sets in significantly less
+ magnitude of time having higher throughput as compared to training on a
+ CPU alone.
+ 
+\end_layout
+
+\begin_layout Standard
+During normal training process where GPU acceleration for training is enabled,
+ data set is generated on the CPU using the Python’s generator function
+ and the DNN model is trained on the GPU using the TensorFlow’s computing
+ graph.
+ However, due to different architecture of CPUs and GPUs, they have different
+ performance throughputs and processing times.
+ In a situation where generator function is too demanding computationally
+ as compared to the DNN model itself, a bottleneck shall be observed at
+ the CPUs end, when it cannot feed the neural network fast enough with data
+ samples, for the training process to exploit true processing power of the
+ GPU.
+ This can lead to low GPU utilization which translates to longer training
+ time and wasted hardware resources.
+ 
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:initial-benchmark"
+
+\end_inset
+
+.
+ shows the present Benchmarks of GPU utilization and Training Time when
+ training the model over different batch sizes with 5000 steps per epoch
+ using a normal python data generator function which runs on a CPU in parallel
+ to the TensorFlow’s computing (training) graph which runs on a GPU.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename fig/initial-benchmarks2.png
+	lyxscale 50
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Normal Generator Benchmarks 
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:initial-benchmark"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+It can be clearly seen from the benchmarks that as the batch size increases,
+ the GPU utilization does not increase drastically, a jump of 5% of utilization
+ is observed when batch size is increased from 64 to 1024.
+ However, as we further increase the batch size up to 65536, the performance
+ further plummets than what was observed at small batch size.
+ Moreover, by having a look at the Training time benchmarks, it remains
+ nearly constant at about 29 seconds for batch sizes 64 up to 1024, this
+ is in consistence with the GPU utilization which increases during this
+ window, as the CPU till now is fast enough to feed the model on GPU to
+ train without any latency.
+ However, for batch sizes above 1024 up to 65536, there is an exponential
+ increase in the training time required.
+ To visualize the values practically on a graph logarithmic scaling is used
+ for the training time.
+ For batch size of 65536, the training time shot up close to 800 seconds
+ while the GPU usage was reduced to 10%.
+ These numbers clearly indicate a bottleneck as discussed above where the
+ data set generator running on CPU is not able to cope up with the pace
+ to feed the model training on GPU, thereby causing training time to increase
+ and ineffective utilization of GPU.
+\end_layout
+
+\begin_layout Section
+Proposed Solution
+\end_layout
+
+\begin_layout Standard
+The main objective of this study thesis is to remove the above mentioned
+ bottleneck to improve the training performance.
+ There are various methods that can be used in this case.
+ A brief summary of them is mentioned below.
+\end_layout
+
+\begin_layout Subsection
+Multi-Threaded Function
+\end_layout
+
+\begin_layout Standard
+This approach follows the methodology of writing a thread-safe generator
+ function that can serve more than one workers, i.e.
+ re-writing the code for generator function using threading libraries of
+ python to make the generator function multi-threaded (more than one instance
+ can run at a given time), this shall result in python make much efficient
+ use of multi-core CPUs to generate the training data set faster.
+ However, this multi-threaded approach, generates the data set which are
+ then stored on the main memory.
+ For the DNN model to use them for training, they have to be copied to the
+ GPUs memory, maximum bandwidth of which is limited by the bus interconnect.
+ 
+\end_layout
+
+\begin_layout Subsection
+TensorFlow Generator
+\end_layout
+
+\begin_layout Standard
+This approach follows the methodology of re-writing the data set generator
+ function using TensorFlow instead of Python.
+ Since TensorFlow is written in a combination of highly-optimized C++ and
+ CUDA (Nvidia’s parallel computing platform), it could serve as an optimal
+ replacement for the python code and result in better performance.
+ However, function written with TensorFlow is still not a part of any layer
+ of the DNN’s model, which is compiled together such that all its components
+ such as input layer, dense layers, weights etc.
+ are all formulated together to create a dataflow computing graph.
+ Rather, TensorFlow generator runs alone on the GPU and the generated data
+ set has to be communicated to the main memory, before it can be again loaded
+ to the model on GPU by the call of 
+\family typewriter
+fit
+\family default
+ and
+\family typewriter
+ fit_generator
+\family default
+ function.
+ This double transfer of data in between CPU and GPU is limited by the bandwidth
+ of the interface in between them and the main memory.
+ Moreover, the extra added overhead results in non-significant performance
+ improvements.
+\end_layout
+
+\begin_layout Subsection
+Custom keras layer generator
+\end_layout
+
+\begin_layout Standard
+This approach follows the methodology of integrating the data generator
+ function into the DNN model as a custom keras layer towards the input side,
+ so that the generator function is compiled with DNN model as a part of
+ it.
+ This results in eliminating the limitations mentioned in the above two
+ methods such as excessive overhead from copying data between GPUs memory
+ and main memory, alongside integrating generator function as a part of
+ the computing graph.
+ This study follows this approach to remove the before said bottleneck.
+\end_layout
+
+\begin_layout Section
+Bibliography
+\end_layout
+
+\begin_layout Standard
+This file is set to meet the restrictions on bibliographies for INÜ papers
+ so you just have to deal a little with the idea of Bib\SpecialChar TeX
+.
+ This document refers to the database 
+\family typewriter
+./tex_contents/Bib.bib
+\family default
+.
+ The entries in this database are only examples at the moment and you have
+ to define your own entries for the sources you have used.
+ You can also use your own database.
+ To do so, click the gray bar labeled 
+\begin_inset Quotes eld
+\end_inset
+
+BibTex generated Bibliography
+\begin_inset Quotes erd
+\end_inset
+
+ at the end of this document and add it.
+ 
+\end_layout
+
+\begin_layout Standard
+If you want to refer to one of your sources click on 
+\begin_inset Graphics
+	filename fig/dialog-show-new-inset_citation.png
+
+\end_inset
+
+ or on 
+\begin_inset Info
+type  "icon"
+arg   "dialog-show-new-inset citation"
+\end_inset
+
+, depending on your \SpecialChar LyX
+ version.
+ Here you see an example reference to the bibliography: 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "fftw"
+literal "true"
+
+\end_inset
+
+; or with several entries in a reference: 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "621567,mar_test,lyx"
+literal "true"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Spell check
+\end_layout
+
+\begin_layout Standard
+\SpecialChar LyX
+ integrates external spellcheckers 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "lyx"
+literal "true"
+
+\end_inset
+
+.
+ After the spellchecker has been configured in 
+\begin_inset Quotes eld
+\end_inset
+
+Tools -> Settings...
+ / Language Settings / Spellchecker
+\begin_inset Quotes erd
+\end_inset
+
+, it can be activated by pressing F7.
+ Spell-checking is very helpful for finding typos.
+ Please use it to save yourself (and your advisor) some time.
+\end_layout
+
+\begin_layout Section
+Declaration of self-performing the work
+\end_layout
+
+\begin_layout Standard
+The declaration is included after the bibliography and.
+ Your name and the hand in date will be added automatically.
+ Since it is in German, it looks better when the date is also in German.
+ If you write your thesis in English, , right-click the gray bar 
+\begin_inset Quotes eld
+\end_inset
+
+Include: Declaration.lyx
+\begin_inset Quotes erd
+\end_inset
+
+ and select 
+\begin_inset Quotes eld
+\end_inset
+
+Edit the included file...
+\begin_inset Quotes erd
+\end_inset
+
+ in the menu.
+ There, change the 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+ac{ERT}
+\end_layout
+
+\end_inset
+
+ 
+\family typewriter
+
+\backslash
+handinvar
+\family default
+ to the date of hand in the format 
+\begin_inset Quotes eld
+\end_inset
+
+28.06.2014
+\begin_inset Quotes erd
+\end_inset
+
+ or 
+\begin_inset Quotes eld
+\end_inset
+
+28.
+ Juni 2014
+\begin_inset Quotes erd
+\end_inset
+
+ and save the file.
+ German-writing authors don't need to change anything here.
+ After printing the work, you have to sign the declaration on the underline
+ bottom right of the page.
+\end_layout
+
+\begin_layout Chapter
+\start_of_appendix
+Appendix
+\end_layout
+
+\begin_layout Standard
+After your main part you may want to insert an appendix to achieve one or
+ several of this targets:
+\end_layout
+
+\begin_layout Itemize
+Move longer calculations from the text to the appendix to improve readability.
+\end_layout
+
+\begin_layout Itemize
+Put some intermediate results (figures, tables) in the appendix to concentrate
+ on the final results.
+\end_layout
+
+\begin_layout Itemize
+Explain the files submitted along with the thesis (source code, figures,
+ report, presentation) and how to use them.
+\end_layout
+
+\begin_layout Standard
+Use this (and any self-created) chapters to insert the appendix.
+ If you somehow lose the setting, you can create an appendix in \SpecialChar LyX
+ by checking
+ the box in the menu 
+\begin_inset Quotes eld
+\end_inset
+
+Document -> Start appendix here
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Sectioning the appendix
+\end_layout
+
+\begin_layout Standard
+The thesis must have not more than one appendix (A).
+ This is achieved by having only one chapter after the start of the appendix.
+ If you need some structure in the appendix, please use sections and subsections
+ for this.
+ An example is the section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:app_section"
+
+\end_inset
+
+ and the subsection 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:app_subsec"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Another section of the appendix
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:app_section"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This is just to demonstrate the numbering structure.
+\end_layout
+
+\begin_layout Subsection
+Subsections in Appendix
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:app_subsec"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+As you see, numbering always starts with A (convinient for the name 
+\begin_inset Quotes eld
+\end_inset
+
+Appendix
+\begin_inset Quotes erd
+\end_inset
+
+), and different appendix types are separated by numbers.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+bibfiles "tex_contents/Bib"
+options "tex_contents/IEEEtran"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand include
+filename "lyx_contents/Declaration.lyx"
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

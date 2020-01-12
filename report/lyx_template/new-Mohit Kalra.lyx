@@ -1,0 +1,2293 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass scrreprt
+\begin_preamble
+\usepackage{trfsigns}
+\usepackage{scrpage2} 
+\automark[chapter]{section}
+\pagestyle{scrheadings}
+\clearscrheadfoot 
+\rehead{\pagemark} 
+\rohead{\pagemark}
+\lehead{\headmark}
+\lohead{\headmark}
+\setheadsepline{0.4pt}
+\pagenumbering{Roman}
+\usepackage{blindtext}
+\usepackage{babel}
+\usepackage{tikz}
+\definecolor{uni_apfelgruen}{cmyk}{.5, 0, 1, 0}
+\definecolor{uni_mittelblau}{cmyk}{1, 0.4, 0, 0}
+\definecolor{uni_gelb}{cmyk}{0, 0.1, 1, 0}
+\definecolor{uni_rot}{cmyk}{0, 1, 1, 0}
+% for the Wall-of-Fame page:
+%\usepackage{authoraftertitle}
+\usepackage{changepage}
+
+\renewcommand\nomname{Symbols}
+
+
+\def\nompreamble {\addcontentsline{toc}{chapter}\nomname \markboth{\nomname}{\nomname}} %   % \addchap{\nomname}
+\setlength{\nomlabelwidth}{0.3\hsize}
+% \markboth{\nomname {\nomname}}
+
+\usepackage[printonlyused]{acronym} 
+
+
+%provides nice tree-layouting for the bib-reference-tree
+\input{tex_contents/dirtree2}
+\input{tex_contents/dirtree2}
+\usepackage{usebib}
+\newbibfield{author}
+
+% tell usebib to parse the primary Bib-File
+% -> add more if necessary
+\bibinput{tex_contents/Bib}
+
+% Controls the appearance of backlinks in the bibliography
+\renewcommand{\backrefxxx}[3]{%
+  (\hyperlink{page.#1}{p.~#1})}
+
+\makeatletter
+
+\protected\def\hacs{%
+  \let\AC@hyperlink\@secondoftwo
+  \acs
+}
+\protected\def\hacl{%
+  \let\AC@hyperlink\@secondoftwo
+  \acl
+}
+
+\makeatother
+
+\AtBeginDocument{%
+  \pdfstringdefDisableCommands{%
+    \let\hacl\acl
+  }%
+  \pdfstringdefDisableCommands{%
+    \let\hacs\acs
+  }%
+}
+\makeatletter
+\end_preamble
+\options 12pt,a4paper,oneside,bibliography=totoc
+\use_default_options true
+\maintain_unincluded_children false
+\language american
+\language_package default
+\inputencoding utf8
+\fontencoding global
+\font_roman "times" "default"
+\font_sans "helvet" "default"
+\font_typewriter "courier" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format pdf2
+\output_sync 0
+\bibtex_command bibtex
+\index_command default
+\float_placement tbh
+\paperfontsize 12
+\spacing single
+\use_hyperref true
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder true
+\pdf_colorlinks false
+\pdf_backref page
+\pdf_pdfusetitle true
+\papersize a4paper
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\use_minted 0
+\branch WoF_abstract
+\selected 0
+\filename_suffix 0
+\color #faf0e6
+\end_branch
+\branch WoF_abstract_pic
+\selected 1
+\filename_suffix 0
+\color #faf0e6
+\end_branch
+\branch WoF_bibtree
+\selected 1
+\filename_suffix 0
+\color #faf0e6
+\end_branch
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 2
+\tocdepth 2
+\paragraph_separation skip
+\defskip medskip
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+
+\series bold
+THIS TEMPLATE CAN ONLY BE USED WITH \SpecialChar LyX
+ VERSION 2.1.3 OR NEWER
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Thesis type (Master, Bachelor Thesis etc.)
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+def
+\backslash
+thesistypevar{GPU Lab Project Report}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Title of the thesis 
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+def
+\backslash
+titlevar{Performance Benchmarking for Canny Edge Detector using OpenCL}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Your name
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+def
+\backslash
+authorvar{Mohit Kalra, Fahad Ghouri}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Your supervisor's name.
+ Mind the double-backslash between two supervisors
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+def
+\backslash
+supervisorvar{Kaicong Sun}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Path to the title page image.
+ Image should be in format EPS or PDF
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+def
+\backslash
+titleimagevar{fig/cover}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Date of hand out (start of your work)
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+def
+\backslash
+handoutvar{June 7, 2019}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Date of hand in (final version of the thesis)
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+def
+\backslash
+handinvar{September 19, 2019}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+If the table with names and supervisor(s) is too far left/right, decrease/increa
+se this value.
+ Default is 5cm
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+def
+\backslash
+titletablewidth{5cm}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Reduce the number to make the image smaller if the title is too long.
+ Default is
+\family typewriter
+ 7.3cm
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+def
+\backslash
+titleimageheight{5cm}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Reduce the number to make the image on the alumni page smaller if it's too
+ wide.
+ Default is
+\family typewriter
+ 8.5cm
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+def
+\backslash
+posterimageheight{8.5cm}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand include
+filename "lyx_contents/titlepage.lyx"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter*
+
+\color white
+Abstract
+\end_layout
+
+\begin_layout Section*
+Abstract
+\end_layout
+
+\begin_layout Standard
+In modern-day computer vision applications, edge detection is one of the
+ fundamental tasks that is carried out to extract features from an image.
+ These features can then be used to perform higher semantics vision processing
+ and object detection.
+ Traditionally, Sobel filters have been quite popular for the task of edge
+ detection as they are the easiest to implement.
+ However, Sobel filters lack crisp and precise edge detection and output
+ images are usually very noisy.
+ Canny Filter makes use of Sobel Filter at its core and applies some Pre-
+ and Post- Processing to improve the quality of the edge detection by many
+ folds.
+ For image processing algorithms, there is a high potential for parallelism
+ since the mathematical operations performed are fundamental in nature and
+ quite repetitive.
+ Implementing these algorithms on a CPU is quite easy but is not highly
+ efficient.
+ Since CPUs usually have fewer cores, much of execution of the filtering
+ algorithms are sequential in nature.
+ To exploit the true potential of parallelism of these algorithms a parallel
+ GPU implementation is highly desirable.
+ This report elaborates the project carried out to implement and accelerate
+ the Canny Edge Detector on a GPU using OpenCL.
+ This is achieved by breaking down the complete filtering algorithm into
+ smaller independent kernels which carry out one aspect of the processing
+ element.
+ To make for a smooth user interface experience, the algorithm is packaged
+ along with a QT-based GUI running in the front end.
+ Finally, performance benchmarking of the Canny Edge Detector’s implementation
+ is done both on the CPU and GPU to compare the speedups that are achieved.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace vfill
+\end_inset
+
+
+\series bold
+Title page image:
+\series default
+ Comparison of Input Grayscale Image vs Canny Edge Detector Output
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+The following \SpecialChar LaTeX
+ code defines the list of acronyms.
+ You should not change anything here.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand include
+filename "lyx_contents/notations_en.lyx"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Symbol list is here.
+ Definitions (= nomenclature entries) can be at any place in the document.
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset nomencl_print
+LatexCommand printnomenclature
+set_width "custom"
+width "10text%"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+Introduction
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Here we reset the page counter and set it to Arabic
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pagenumbering{arabic} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+setcounter{page}{1}
+\end_layout
+
+\end_inset
+
+This section briefly introduces the different techniques which are used
+ in this project for edge detection.
+ Development Toolkit such as Eclipse for core and QT for GUI based functionality
+ has been used.
+ 
+\end_layout
+
+\begin_layout Section
+Edge Detection
+\end_layout
+
+\begin_layout Standard
+Edge detection is the technique of extracting boundaries between different
+ objects of an image by the process of checking for gradient change in the
+ intensity value pixel by pixel.
+ These edges hold to define the change of object or patterns and hold valuable
+ images in terms of segments and semantics 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Gonzales1992"
+literal "false"
+
+\end_inset
+
+.
+ One of the most popular techniques of edge detection is the Sobel Filter
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Boyle1988"
+literal "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Sobel Filter
+\end_layout
+
+\begin_layout Standard
+Sobel Filter uses first-order gradients along each axis of a 2-D image and
+ combines them using the square root of the sum of squares of each gradient
+ sum calculated in each 3x3 filter size.
+ Sobel filters are quite simple to implement and deliver good results for
+ the most part where images have good contrast in between the objects.
+ However, it is highly sensitive to the scale of detection particularly
+ at the edges where the contrast within pixels isn’t quite high.
+ This results in some edges with high intensity and boldness while on the
+ other hand, some edges with minuscule intensity, disconnected edges and
+ a lot of noise.
+ This can also occur when there is a contrast change within an object without
+ an edge or vice-versa.
+\end_layout
+
+\begin_layout Section
+Canny Filter
+\end_layout
+
+\begin_layout Standard
+The limitation of Sobel Filter can be improved by using certain Pre- and
+ Post- Processing algorithms.
+ These collectively make up the Canny Filter 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Canny1986"
+literal "false"
+
+\end_inset
+
+.
+ The Canny filter is an excellent filter for edge detection task and produces
+ uniform edges for the objects in the image.
+ It is also well known for good localization, uniformity of the edges, and
+ excellent noise reduction.
+ There are four main stages within a Canny Filter, these are
+\end_layout
+
+\begin_layout Enumerate
+Gaussian Blur
+\end_layout
+
+\begin_layout Enumerate
+Sobel Filtering
+\end_layout
+
+\begin_layout Enumerate
+Non-Maximum Suppression
+\end_layout
+
+\begin_layout Enumerate
+Hysteresis
+\end_layout
+
+\begin_layout Enumerate
+Edge Tracking
+\end_layout
+
+\begin_layout Section
+Computational Complexity
+\end_layout
+
+\begin_layout Standard
+Implementing these algorithms can be quite computationally demanding.
+ Consider an example of an image 640x480 pixels in size.
+ There are 307200 pixels in this image and each pixel is operated upon by
+ mathematical operations of the image processing algorithms such as multiplicati
+ons, summation and trigonometric functions, etc.
+\end_layout
+
+\begin_layout Subsection
+CPU
+\end_layout
+
+\begin_layout Standard
+Since most of the programming languages such as C/C++ are sequential in
+ nature, executing without multi-threading on a single core can result in
+ quite a considerable CPU load.
+ Moreover, these sequential languages are not able to exploit the massive
+ parallel potential that these algorithms process.
+ Take convolution operation for an example.
+ A 3x3 filter convoluted over an input image could be done in parallel since
+ the output of one convolution doesn’t affect the result of the other.
+ On the CPU is not possible to achieve this by simple techniques.
+ 
+\end_layout
+
+\begin_layout Subsection
+GPU
+\end_layout
+
+\begin_layout Standard
+GPUs, on the other hand, are designed to be massively parallel because of
+ their architecture.
+ They are capable of exploiting parallelism by breaking down a complex operation
+ into smaller simpler operations and then utilizing multiple parallel cores
+ to process simultaneously on instances of the input.
+ In this work, we focus on the use of OpenCL framework for General Purpose
+ GPU programming to implement Canny Edge Detector.
+\end_layout
+
+\begin_layout Chapter
+Canny Edge Detector
+\end_layout
+
+\begin_layout Standard
+Canny filter improves the Sobel Filter by adding some pre-processing operations
+ on the input image before feeding into the Sobel core followed by some
+ post-processing ones.
+ Since these operations are applicable only on grayscale mono-channel images,
+ hence, all 3 channel RGB images need to be converted beforehand.
+ 
+\end_layout
+
+\begin_layout Section
+Gaussian Blur
+\end_layout
+
+\begin_layout Standard
+This stage of pre-processing applies a Gaussian Filter convolutional operation
+ on the input image.
+ Since mathematical operations involved in the edge detection are mainly
+ based on the derivatives (gradient calculation), the output edges are highly
+ sensitive to image noise.
+ Applying Gaussian Blur is one of the ways to reduce the noise in an image.
+ A Gaussian kernel mask of appropriate size (usually 3x3 or 5x5) is applied
+ and the weights of each element of the kernel is dependent on the gaussian
+ distribution.
+ The following equations describe the relationship between sigma and Gaussian
+ mask calculation 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "sigma-formula"
+literal "false"
+
+\end_inset
+
+
+\begin_inset CommandInset citation
+LatexCommand cite
+key "gaussian-wiki"
+literal "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+σ=0.3\left(\frac{n}{2}-1\right)+0.8
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+G\left(x,y\right)=\frac{1}{2\pi\sigma^{2}}e^{-\frac{x^{2}+y^{2}}{2\sigma^{2}}}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename fig/gausian.png
+	width 70text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Gaussian Curve 
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:gaussian"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Fig 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:gaussian"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ shows the Gaussian distribution with various means 
+\begin_inset Formula $\mu$
+\end_inset
+
+ and standard deviations sigma.
+ As it can be seen, the smaller the value of sigma, the sharper the curve
+ is and less spread out.
+ However, as the value of sigma increases, the distribution becomes more
+ spread out and less sharp.
+ This is a trade-off that needs to be optimized since larger sigma values
+ lead to higher noise reduction but also increase the blur effect which
+ in turn makes the edges less sharp and blurrier visibly.
+ The size of the kernel is dependent on the size of sigma.
+ In this work, the value of sigma is assumed to be 1 and kernel size 3x3
+ is selected based on equation (insert citation).
+ The Gaussian Blur works by weighing neighboring pixels’ intensity according
+ to the gaussian mask and calculating the new value of the pixel as per
+ equation.
+ In this case, it results in the multiplication of the image matrix with
+ 3x3 kernel.
+ This helps to reduce the noise but there is a tradeoff as the sharpness
+ of the image is reduced and the processed image appears to be a bit blurry.
+ Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:result-1"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ (2) shows the effect of applying Gaussian Blur to an input image
+\end_layout
+
+\begin_layout Section
+Sobel Filter
+\end_layout
+
+\begin_layout Standard
+Sobel filter determines the edges in an image by using first-order gradients
+ that are calculated for each direction (horizontal and vertical) for a
+ 2-D image (denoted by matrix A).
+ To calculate the gradients, a Sobel filter mask is used (and multiplied
+ with image matrix A) for each direction as given by the following equation.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+K_{x}=\begin{bmatrix}-1 & 0 & 1\\
+-2 & 0 & 2\\
+-1 & 0 & 1
+\end{bmatrix}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+K_{y}=\begin{bmatrix}1 & 2 & 1\\
+0 & 0 & 0\\
+-1 & -2 & -1
+\end{bmatrix}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\left|G\right|=\sqrt{I_{x}^{2}+I_{y}^{2}}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\theta(x,y)=\arctan\left(\frac{I_{y}}{I_{x}}\right)
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Since the Sobel kernel itself is 3x3 in size, gradients are summed up in
+ a 3x3 matrix in each direction and the process is repeated over in multiple
+ passes, each sliding by a factor of one pixel, to cover the whole image.
+ Then finally, both directional gradients are combined by taking the square
+ root of the sum of squares of the individual gradient as shown by the formula.
+ Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:result-1"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ (3) shows the effect of applying Sobel Filter to an input image.
+ Apart from the magnitude, we also calculate the direction vector theta
+ by the formula above.
+ This direction vector symbolizes the direction of the edge which pertains
+ to a heading from higher brightness pixel to a lower one, thus the edge
+ runs normal to the theta vector 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Davies2004"
+literal "false"
+
+\end_inset
+
+.
+ This shall be useful in further processing steps.
+ The output produced by Sobel filter has a varying intensity of the pixels
+ hence it appears brighter and sharper at edges with higher contrast to
+ the background and appears dull and blurry at edges with poor contrast,
+ thereby resulting in a ghosting effect.
+ Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:theta-drection"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "python-ref-images"
+literal "false"
+
+\end_inset
+
+ shows the possible angle values when applying a 3x3 kernel size, it can
+ be clearly seen that an edge could be in four possible configurations.
+\end_layout
+
+\begin_layout Enumerate
+Horizontal 
+\begin_inset Formula $(\theta=\{0,\pi\})$
+\end_inset
+
+ or 0
+\end_layout
+
+\begin_layout Enumerate
+Vertical 
+\begin_inset Formula $(\theta=\{\frac{-\pi}{2},\frac{\pi}{2}\})$
+\end_inset
+
+ or 90
+\end_layout
+
+\begin_layout Enumerate
+Slanted with positive slope 
+\begin_inset Formula $(\theta=\{\frac{-3\pi}{4},\frac{\pi}{4}\})$
+\end_inset
+
+ or 45
+\end_layout
+
+\begin_layout Enumerate
+Slanted with negative slope 
+\begin_inset Formula $(\theta=\{\frac{-\pi}{4},\frac{3\pi}{4}\})$
+\end_inset
+
+ or 135
+\end_layout
+
+\begin_layout Standard
+When these values are plotted for each pixel as an image we obtain Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:result-1"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ (4) theta direction.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename fig/theta-direction.png
+	width 80text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Direction Angle Theta 
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:theta-drection"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Non-Maximum Suppression
+\end_layout
+
+\begin_layout Standard
+To fix the uneven thickness of the edges, we apply non-maximum suppression
+ to the edges.
+ In principle the algorithm iterates over all the points on the gradient
+ intensity matrix to find the pixels with the maximum value in an edge’s
+ direction by comparing the value of theta.
+ In each iteration of a small kernel size 3x3, for the given theta, neighboring
+ pixels are checked, if they have the same theta, in that direction only
+ the pixel with the maximum intensity is kept and rest all are made to zero.
+\end_layout
+
+\begin_layout Standard
+In fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:nonmax"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "python-ref-images"
+literal "false"
+
+\end_inset
+
+ , the green areas represent the kernel size of the non-max suppression
+ that is iterating over the highlighted section on the image.
+ In this area, it can be clearly seen that some pixel (x,y) such as (i,j),
+ (i,j+1),(i-1,j),(i+1,j+1) are low in intensity as compared to pixel (i,j-1)
+ which is white (255 in 8 bit grayscale format).
+ It can be concluded that the edge runs in the vertical direction passing
+ through (i,j-1).
+ Thus the pixels with low intensity falling in the direction of theta are
+ set to zero ie.
+ (i,j) and (i,j+1).
+ This helps to sharpen the blunt edges and make them only the brightest
+ pixel in width.
+ This helps to make the edges thinner, however, the problem of varying intensity
+ is still persistent.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename fig/nonmax.png
+	width 50text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Non Maximum Suppression
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:nonmax"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Hysteresis
+\end_layout
+
+\begin_layout Standard
+After non-maximum suppression, we have thinned out the edges, but there
+ are still edges with uneven intensity and some stray ones.
+ To solve this problem, hysteresis with thresholding is applied.
+ We use two threshold levels, min threshold, and max threshold to determine
+ 3kinds of edges, strong, weak and noise.
+ Strong edges are those in which the intensity of each pixel is higher than
+ the maximum threshold, this ensures that they are a part of an edge in
+ the image and hence make up the final image.
+ We pull up their intensity to maximum (255) making them white.
+ Noise are those in which the intensity of each pixel is lower than the
+ min threshold.
+ For the noise pixels, we pull down their intensity to the minimum (0) making
+ them black.
+ Weak edges are those where the intensity of the pixel lies between both
+ the threshold values.
+ These pixels need further looking into to decide whether they are a part
+ of any existing edge or are they just noise.
+ Double thresholding makes the processed edge image nearly uniform as all
+ the strong pixels are white and noise is black except for the weak ones
+ which need further processing.
+\end_layout
+
+\begin_layout Section
+Edge Tracking
+\end_layout
+
+\begin_layout Standard
+Edge tracking is a technique to trace the edges in the same direction by
+ checking the intensity value of each pixel iteratively along with its neighbori
+ng pixel.
+ This ensures that weak pixels which are a part of an existing edge are
+ pulled up to the maximum intensity and the ones left without any neighboring
+ edge are discarded as being noise and their intensity is reduced to zero.
+ This results in the cleanup of the processed image such that no pixel has
+ an intermediate value.
+ All the pixel intensity values are either 0 (black) or 255 (white).
+ As shown in fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:edge-tracking"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "python-ref-images"
+literal "false"
+
+\end_inset
+
+ , the first case since there is no strong pixel in the vicinity, the red
+ highlighted pixel is set to black (0).
+ In the second case, since there is a strong neighboring pixel, we set the
+ highlighted pixel to strong as well.
+ This process is carried out iteratively over the complete image to get
+ rid of the weak pixels.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename fig/hysterisis.png
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Edge Tracking 
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:edge-tracking"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+Implementation using OpenCL
+\end_layout
+
+\begin_layout Standard
+The Canny filter is implemented in two phases.
+ Phase One implements the CPU and GPU implementation as an eclipse project
+ on a University pool Desktop that compares the timing performance for both.
+\end_layout
+
+\begin_layout Section
+Eclipse Implementation
+\end_layout
+
+\begin_layout Standard
+This implementation takes the input image as a single channel PGM image.
+ The input image is floating number in data type, it is first processed
+ to normalize the image to 8-bit unsigned int values.
+\end_layout
+
+\begin_layout Enumerate
+One of the limitations of the first implementation is that the input image
+ file, hysteresis threshold values need to be specified at compile time.
+\end_layout
+
+\begin_layout Enumerate
+If a different image is to be selected or thresholds need to be adjusted,
+ we need to compile the code every single time.
+\end_layout
+
+\begin_layout Enumerate
+This not only consumes a lot of time but the chances of introducing bugs
+ and non-deterministic behavior increases.
+\end_layout
+
+\begin_layout Section
+QT Implementation
+\end_layout
+
+\begin_layout Standard
+The second implementation extends the first implementation by porting the
+ eclipse project in a QT environment with the added functionality of a GUI.
+ Phase two implements the CPU and GPU implementation as a QT GUI project
+ on a portable Laptop with low power consumption Hardware (Intel Core i5,
+ Nvidia 940MX, 12GB DDR4).
+\end_layout
+
+\begin_layout Subsection
+OpenCL - QT Interfacing
+\end_layout
+
+\begin_layout Standard
+Since there is no off-the-shelf OpenCL plug-in or add-on available for QT
+ environment, special provisions were made to integrate OpenCL SDK with
+ QT ensuring that compiler conflicts and dependency issues are taken care
+ of.
+ OpenCL SDK from AMD is used and interfaced with the project by pre-compile
+ directives and includes.To set up the environment, the OpenCL SDK is installed
+ and linked with the qt c++ compiler to add the GPU support.
+ Following list of header files are used by the API as shown in fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:include-files"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename fig/include-files.png
+	width 80text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+List of Header Files
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:include-files"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Since phase two implementation does not use OpenCV libraries to read the
+ image, we implemented a custom ReadBMP function which reads .bmp image file
+ from the file-system, iterates over its header to extract the parameters
+ such as height, width, to fetch the image pixel data as an array.
+ All the necessary pre-processing such as conversion to single-channel grayscale
+, normalization to 8-bit value are taken care of my the algorithm.
+\end_layout
+
+\begin_layout Enumerate
+This enables ease of usage for the user, as the input image need not be
+ specified at compile time as a command to read the image, rather it can
+ be dynamically specified in a File browse GUI.
+\end_layout
+
+\begin_layout Enumerate
+The threshold values for hysteresis and edge tracking can be changed dynamically
+\end_layout
+
+\begin_layout Enumerate
+User can select any .bmp image without hassling about pre-processing.
+\end_layout
+
+\begin_layout Enumerate
+One of the drawbacks of this method is the added library support that is
+ used by qt, but seamless environment setup explained in the previous subsection
+ makes up for the complexity.
+\end_layout
+
+\begin_layout Enumerate
+This makes the code to be compiled once and run multiple times.
+\end_layout
+
+\begin_layout Standard
+For the Gaussian Blur, 3x3 filter size is used with the weights defined
+ as follows
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+GaussianMask[3][3]=\begin{bmatrix}1/16 & 1/8 & 1/16\\
+1/8 & 1/4 & 1/8\\
+1/16 & 1/8 & 1/16
+\end{bmatrix}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+For each stage of the filter, CPU implementation follows an iterative approach,
+ where multiple loops are used to traverse over each pixel and the desired
+ operations are applied.
+ For the GPU implementation, global memory pointers and data buffers are
+ used to copy blocks of input image to local memory with necessary padding
+ to avoid image tearing.
+ Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:gui"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ shows the different stages of GUI while processing.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename fig/gui.PNG
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Different stages of GUI
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:gui"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+Results
+\end_layout
+
+\begin_layout Section
+Performance Benchmarks
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\lang english
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\lang english
+Performance Benchmarks 
+\begin_inset CommandInset label
+LatexCommand label
+name "table:performance-eclipse"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+
+\lang english
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="8">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0pt">
+<column alignment="center" valignment="top" width="0pt">
+<column alignment="center" valignment="top" width="0pt">
+<column alignment="center" valignment="top" width="0pt">
+<column alignment="center" valignment="top" width="0pt">
+<column alignment="center" valignment="top" width="0pt">
+<column alignment="center" valignment="top" width="0pt">
+<column alignment="center" valignment="top" width="0pt">
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="1" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Implementation I (Desktop-Eclipse)
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="1" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Implementation II (Laptop-QT)
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\lang english
+Image
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\lang english
+CPU (i7)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\lang english
+GPU (AMD 390)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\lang english
+Speedup
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+CPU (i5)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+GPU (940MX)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Speedup
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\lang english
+Valve
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\lang english
+0.139 s
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\lang english
+0.000663 s
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\lang english
+209x
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.633 s
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.002 s
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+316x
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\lang english
+Airplane
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\lang english
+0.136 s
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\lang english
+0.00071 s
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\lang english
+191x
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.507 s
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.002 s
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+253x
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\lang english
+Car Engine
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\lang english
+0.141 s
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\lang english
+0.000713 s
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\lang english
+197x
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.513 s
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.003 s
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+171x
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "table:performance-eclipse"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ compares the performance benchmarks for Canny Filter when implemented on
+ CPU and GPU using OpenCL.
+ It can be clearly seen that massive speedups of around 200x are obtained
+ for both the implementations.
+ The Desktop performance numbers are better than those of the laptop because
+ of improved hardware with higher performance.
+\end_layout
+
+\begin_layout Standard
+Timing of CPU is started as soon as the first stage of filter function is
+ called until the last stage returns the final resultant image.
+ Timing of GPU is started as soon as the input data buffer is loaded with
+ the image until the final processed image is read from the output data
+ buffer.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename fig/openclresults.png
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Performance comparison 
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:result"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename fig/result-final.PNG
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Different stages of processing of Canny Filter
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:result-1"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+Conclusion Summary
+\end_layout
+
+\begin_layout Standard
+This project successfully demonstrates that Canny Edge Detector when implemented
+ on GPU results in massive speedup times in execution as compared to when
+ executing on a CPU.
+ On an average speedup of about 200x is achieved on different platforms.
+ However, this number should not be taken as a literate default as the speedup
+ varies from hardware to hardware.
+ The promising conclusion that can be derived is that even when implemented
+ on a low power GPU such as Nvidia 940MX, the speedups are quite impressive.
+ Moreover, the QT based GUI makes up for an easy to use interface for the
+ end-user with interactive button selections and options to tweak the thresholds
+, select the platform to run and save the output image.
+ This not only increases the usability of the code but also the input image
+ can be changed dynamically since the code doesn’t need to re-compile as
+ compared with the Eclipse-based project.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+btprint "btPrintCited"
+bibfiles "tex_contents/Bib"
+options "plain"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:subfig_vert_1"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Formula $\unit{}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

@@ -1,0 +1,3532 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass scrreprt
+\begin_preamble
+\usepackage{trfsigns}
+\usepackage{scrpage2} 
+\automark[chapter]{section}
+\pagestyle{scrheadings}
+\clearscrheadfoot 
+\rehead{\pagemark} 
+\rohead{\pagemark}
+\lehead{\headmark}
+\lohead{\headmark}
+\setheadsepline{0.4pt}
+\pagenumbering{Roman}
+\usepackage{blindtext}
+\usepackage{babel}
+\usepackage{tikz}
+\definecolor{uni_apfelgruen}{cmyk}{.5, 0, 1, 0}
+\definecolor{uni_mittelblau}{cmyk}{1, 0.4, 0, 0}
+\definecolor{uni_gelb}{cmyk}{0, 0.1, 1, 0}
+\definecolor{uni_rot}{cmyk}{0, 1, 1, 0}
+% for the Wall-of-Fame page:
+%\usepackage{authoraftertitle}
+\usepackage{changepage}
+
+\renewcommand\nomname{Symbols}
+
+
+\def\nompreamble {\addcontentsline{toc}{chapter}\nomname \markboth{\nomname}{\nomname}} %   % \addchap{\nomname}
+\setlength{\nomlabelwidth}{0.3\hsize}
+% \markboth{\nomname {\nomname}}
+
+\usepackage[printonlyused]{acronym} 
+
+
+%provides nice tree-layouting for the bib-reference-tree
+\input{tex_contents/dirtree2}
+\input{tex_contents/dirtree2}
+\usepackage{usebib}
+\newbibfield{author}
+
+% tell usebib to parse the primary Bib-File
+% -> add more if necessary
+\bibinput{tex_contents/Bib}
+
+% Controls the appearance of backlinks in the bibliography
+\renewcommand{\backrefxxx}[3]{%
+  (\hyperlink{page.#1}{p.~#1})}
+
+\makeatletter
+
+\protected\def\hacs{%
+  \let\AC@hyperlink\@secondoftwo
+  \acs
+}
+\protected\def\hacl{%
+  \let\AC@hyperlink\@secondoftwo
+  \acl
+}
+
+\makeatother
+
+\AtBeginDocument{%
+  \pdfstringdefDisableCommands{%
+    \let\hacl\acl
+  }%
+  \pdfstringdefDisableCommands{%
+    \let\hacs\acs
+  }%
+}
+\makeatletter
+\end_preamble
+\options 12pt,a4paper,oneside,bibliography=totoc
+\use_default_options true
+\maintain_unincluded_children false
+\language american
+\language_package default
+\inputencoding utf8
+\fontencoding global
+\font_roman "times" "default"
+\font_sans "helvet" "default"
+\font_typewriter "courier" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format pdf2
+\output_sync 0
+\bibtex_command bibtex
+\index_command default
+\float_placement tbh
+\paperfontsize 12
+\spacing single
+\use_hyperref true
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder true
+\pdf_colorlinks false
+\pdf_backref page
+\pdf_pdfusetitle true
+\papersize a4paper
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\branch WoF_abstract
+\selected 0
+\filename_suffix 0
+\color #faf0e6
+\end_branch
+\branch WoF_abstract_pic
+\selected 1
+\filename_suffix 0
+\color #faf0e6
+\end_branch
+\branch WoF_bibtree
+\selected 1
+\filename_suffix 0
+\color #faf0e6
+\end_branch
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 2
+\tocdepth 2
+\paragraph_separation skip
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+
+\series bold
+THIS TEMPLATE CAN ONLY BE USED WITH \SpecialChar LyX
+ VERSION 2.1.3 OR NEWER
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Thesis type (Master, Bachelor Thesis etc.)
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+def
+\backslash
+thesistypevar{Seminar Thesis}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Title of the thesis 
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+def
+\backslash
+titlevar{A Long Title of the LyX Thesis Taking two or more Lines which is
+ the  Realistic Case for Students' Theses}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Your name
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+def
+\backslash
+authorvar{John Smith}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Your supervisor's name.
+ Mind the double-backslash between two supervisors
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+def
+\backslash
+supervisorvar{Supervisor's Name 
+\backslash
+
+\backslash
+ 
+\backslash
+mbox{Second Supervisor's Long Name}}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Path to the title page image.
+ Image should be in format EPS or PDF
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+def
+\backslash
+titleimagevar{fig/eye_diagram}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Date of hand out (start of your work)
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+def
+\backslash
+handoutvar{February 20, 2014}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Date of hand in (final version of the thesis)
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+def
+\backslash
+handinvar{March 27, 2014}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+If the table with names and supervisor(s) is too far left/right, decrease/increa
+se this value.
+ Default is 5cm
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+def
+\backslash
+titletablewidth{5cm}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Reduce the number to make the image smaller if the title is too long.
+ Default is
+\family typewriter
+ 7.3cm
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+def
+\backslash
+titleimageheight{6.5cm}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Reduce the number to make the image on the alumni page smaller if it's too
+ wide.
+ Default is
+\family typewriter
+ 8.5cm
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+def
+\backslash
+posterimageheight{8.5cm}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand include
+filename "lyx_contents/titlepage.lyx"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter*
+
+\color white
+Abstract
+\end_layout
+
+\begin_layout Section*
+Kurzfassung
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+figurename
+\end_layout
+
+\end_inset
+
+ Studenten im Studiengang Elektro- und Informationstechnik sollten eine
+ deutsche und eine englische Kurzfassung verfassen.
+ Für INFOTECH-Studenten ist die deutsche Kurzfassung optional.
+ In jedem Fall sollte sie eine halbe Seite füllen, so dass sich zusammen
+ mit dem englischen Abstract eine einladende Seite ergibt.
+ Es folgt Blindtext zur Veranschaulichung.
+ 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+blindtext
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+Abstract
+\end_layout
+
+\begin_layout Standard
+Students enrolled to the German study course Elektro- und Informationstechnik
+ should write an English as well as a German abstract.
+ For INFOTECH students the German abstract is optional.
+ Anyway, it has to be about half a page long to build an inviting page together
+ with the German Kurzfassung.
+ The following is blind text.
+ 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+blindtext
+\end_layout
+
+\end_inset
+
+
+\begin_inset VSpace vfill
+\end_inset
+
+
+\series bold
+Title page image:
+\series default
+ Write here some description or caption of the image placed on the title
+ page.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+The following \SpecialChar LaTeX
+ code defines the list of acronyms.
+ You should not change anything here.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+% acronyms, nomenclature, abstract
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+addchap{
+\backslash
+AcrListName}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{acronym}[ABCDEFG]
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+setlength{
+\backslash
+itemsep}{-
+\backslash
+parsep}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+input{./tex_contents/listofacronyms.tex} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{acronym}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand include
+filename "lyx_contents/notations_en.lyx"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Symbol list is here.
+ Definitions (= nomenclature entries) can be at any place in the document.
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset nomencl_print
+LatexCommand printnomenclature
+set_width "custom"
+width "10text%"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+How to use the Template
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Here we reset the page counter and set it to Arabic
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pagenumbering{arabic} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+setcounter{page}{1}
+\end_layout
+
+\end_inset
+
+For your thesis, you should use this \SpecialChar LyX
+ template, or an equivalent \SpecialChar LaTeX
+ template.
+ If you happen to have any issues with \SpecialChar LyX
+ or \SpecialChar LaTeX
+ while preparing the document,
+ you will find plenty of support at our institute.
+\end_layout
+
+\begin_layout Standard
+The template is just a \SpecialChar LyX
+ Document with some \SpecialChar LaTeX
+ modifications.
+ So you can write your own \SpecialChar LyX
+ documents and include them into the overall
+ document as you would do it with any other template or without it.
+ In following sections, some hints are given, what this template takes care
+ of and which part of the job is left to you.
+ Additional information regarding \SpecialChar LyX
+ can be found in 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "lyx"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Section
+Title page
+\end_layout
+
+\begin_layout Standard
+The title page is created automatically according to the needs of the template.
+ In the main file (usually 
+\family typewriter
+Main.lyx
+\family default
+), you have to set the variables used for it in the first 9 lines of this
+ document.
+ You can find the description of the variables in Table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:titlepage-variables"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="11" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="3cm">
+<column alignment="center" valignment="top" width="4cm">
+<column alignment="left" valignment="top" width="8cm">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Name of the variable
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+(Default) value in this template
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Description/Hints
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\backslash
+thesistypevar
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Seminar Thesis
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Thesis type: Master Thesis/Bachelorarbeit etc.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\backslash
+titlevar
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Title of your thesis.
+ Same as in the description on the homepage unless you agree with your superviso
+r on a different title.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\backslash
+authorvar
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+John Smith
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Your name in the form <First name> <Last name>.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\backslash
+supervisorvar
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Supervisor's Name 
+\backslash
+
+\backslash
+ 
+\family typewriter
+
+\backslash
+mbox{
+\family default
+2nd Supervisor's Name
+\family typewriter
+}
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Supervisor of your thesis.
+ If you had more than one supervisor, place a double-backslash between their
+ names to enable a line break.
+ Write long names in a 
+\family typewriter
+
+\backslash
+mbox{}
+\family default
+.
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\backslash
+titleimagevar
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+fig/eye_diagram
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Path to the title page image.
+ Usually one of the images of the thesis.
+ Select one that represents your work (e.
+ g.
+ some results chart, block diagram or a webdemo screenshot).
+ Insert the description of the image on the bottom of the abstract page.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\backslash
+handoutvar
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+February 20, 2014
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Date when you started your work.
+ Take care of correct format: 
+\begin_inset Quotes eld
+\end_inset
+
+February 20, 2014
+\begin_inset Quotes erd
+\end_inset
+
+ for an Englich thesis, 
+\begin_inset Quotes eld
+\end_inset
+
+20.
+ Februar 2014
+\begin_inset Quotes erd
+\end_inset
+
+ for a German thesis.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\backslash
+handinvar
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+March 27, 2014
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Date when you finished your work and hand in your thesis to your supervisor.
+ Take care of the correct format as above.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\backslash
+titletablewidth
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+5cm
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Do not change this value.
+
+\series default
+ If the name of your supervisor is too long for one line, break it into
+ several lines manually by placing it in several 
+\family typewriter
+
+\backslash
+mbox{}
+\family default
+es.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\backslash
+titleimageheight
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+6.5cm
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Do not change this value
+\series default
+ unless the the following abstract page slips to the 3rd page.
+ If needed, refer to Table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:Image-height"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\backslash
+posterimageheight
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+8.5cm
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Do not change this value
+\series default
+ unless your title image has unusual dimensions (too wide).
+ In this case decrease the number.
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:titlepage-variables"
+
+\end_inset
+
+Title page variables
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="3" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+No.
+ lines of the title
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1 supervisor
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2 supervisors
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1 to 3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+7.3cm
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+6.5cm
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+6.2cm
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+5.5cm
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Image height on the title page in cm
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:Image-height"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Document language
+\end_layout
+
+\begin_layout Standard
+You can set the language of the document in the document settings dialog
+ accessible via the menu 
+\begin_inset Quotes eld
+\end_inset
+
+Document 
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+ Settings...
+\begin_inset Quotes erd
+\end_inset
+
+ and there in the menu 
+\begin_inset Quotes eld
+\end_inset
+
+Language
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Thus, all terms inserted by \SpecialChar LyX
+ automatically such as 
+\begin_inset Quotes eld
+\end_inset
+
+Figure
+\begin_inset Quotes erd
+\end_inset
+
+ vs.
+ 
+\begin_inset Quotes eld
+\end_inset
+
+
+\lang ngerman
+Abbildung
+\lang american
+
+\begin_inset Quotes erd
+\end_inset
+
+ or 
+\begin_inset Quotes eld
+\end_inset
+
+Supervisor
+\begin_inset Quotes erd
+\end_inset
+
+ vs.
+ 
+\begin_inset Quotes eld
+\end_inset
+
+
+\lang ngerman
+Betreuer
+\lang american
+
+\begin_inset Quotes erd
+\end_inset
+
+ will be translated to the correct language.
+ Please set only 
+\begin_inset Quotes eld
+\end_inset
+
+English (USA)
+\begin_inset Quotes erd
+\end_inset
+
+ or 
+\begin_inset Quotes eld
+\end_inset
+
+Deutsch
+\begin_inset Quotes erd
+\end_inset
+
+ to avoid unpredictable effects.
+  This way, the format of the quotes also will be set automatically to the
+ 
+\begin_inset Quotes eld
+\end_inset
+
+English
+\begin_inset Quotes erd
+\end_inset
+
+ or 
+\begin_inset Quotes gld
+\end_inset
+
+German
+\begin_inset Quotes grd
+\end_inset
+
+ style.
+ The quotes style affects only the typing.
+ Quotes already present in the text will remain in the old format.
+ So, it's for your own good to make this setting as soon as possible.
+\end_layout
+
+\begin_layout Standard
+You have to make the language setting also for the file 
+\family typewriter
+./lyx-contents/titlepage.lyx
+\family default
+ (please remember not to do any changes in this file, though), and, if your
+ thesis contains several sub-documents (see also 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "subdocs_ilias"
+
+\end_inset
+
+), for every child document separately.
+\end_layout
+
+\begin_layout Section
+List of acronyms and symbols
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:acrlist"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+List of acronyms
+\end_layout
+
+\begin_layout Standard
+The list of acronyms is created with the package 
+\family typewriter
+acronym
+\family default
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "acropkg"
+
+\end_inset
+
+ which is not part of \SpecialChar LyX
+, so you have to use a little of \SpecialChar LaTeX
+ for it and using
+ of 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+ac{ERT}
+\end_layout
+
+\end_inset
+
+ cannot be avoided.
+ First you need to define your acronym in the file 
+\family typewriter
+./tex-contents/listofacronyms.tex
+\family default
+ by adding a new line with your acronyms definition.
+ This can be done using any text editor you want.
+ The definition has to be done in the form 
+\family typewriter
+
+\backslash
+acro{<acronym>}[<short name>]{<full name>}
+\family default
+ where 
+\family typewriter
+<acronym>
+\family default
+ is the short form of the acronym and the call variable if used in the text.
+ If your acronym contains non-alphabetic characters you have to use the
+ optional argument 
+\family typewriter
+<short name> 
+\family default
+for the acronym and 
+\family typewriter
+<acronym>
+\family default
+ has to be a simplified version of it.
+ Finally 
+\family typewriter
+<full name>
+\family default
+ defines the description of the acronym.
+ You have to take care that the list of acronyms is ordered alphabetically
+ by ordering the entries in the definition file.
+\end_layout
+
+\begin_layout Standard
+If you want to use an acronym you need to insert a 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+ac{ERT}
+\end_layout
+
+\end_inset
+
+ box in your document and write 
+\family typewriter
+
+\backslash
+ac{<acronym>}
+\family default
+ in it.
+ 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+ac{ERT}
+\end_layout
+
+\end_inset
+
+ can be inserted by clicking 
+\begin_inset Graphics
+	filename fig/ert-insert.png
+	scale 85
+	groupId Icon
+
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+Ctrl + L
+\begin_inset Quotes erd
+\end_inset
+
+ or using the menu 
+\begin_inset Quotes eld
+\end_inset
+
+Insert -> \SpecialChar TeX
+-code
+\begin_inset Quotes erd
+\end_inset
+
+.
+ The package will insert the acronym, include it to the list of acronyms,
+ and, if used for the first time, include 
+\family typewriter
+<full name>
+\family default
+ before the short form which is placed in parentheses in this case e.g.
+ 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+ac{MIMO}
+\end_layout
+
+\end_inset
+
+.
+ Please note that in order to avoid ugly constructs like 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+ac{OFDM}
+\end_layout
+
+\end_inset
+
+ transmitter (first usage) you might want to mention the acronym in a phrase
+ earlier so that for the complex form 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+ac{OFDM}
+\end_layout
+
+\end_inset
+
+ transmitter (second usage) definitely the abbreviation is applied.
+ Have a look at how it was done with the term 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+ac{ERT}
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+List of symbols
+\end_layout
+
+\begin_layout Standard
+The list of symbols is created using the \SpecialChar LyX
+ included package 
+\family typewriter
+Nomenclature
+\family default
+.
+ To create new entries to this list you can either use the menu with 
+\begin_inset Quotes eld
+\end_inset
+
+Insert -> Nomenclature Entry
+\begin_inset Quotes erd
+\end_inset
+
+ or by using the button 
+\begin_inset Info
+type  "icon"
+arg   "nomencl-insert"
+\end_inset
+
+.
+ This can be done anywhere in the text near to the (first) usage of the
+ symbol as you can see below the equation 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:Einstein"
+
+\end_inset
+
+ or in a separated \SpecialChar LyX
+ document as shown here with the file
+\family typewriter
+ lyx_contents/nomenclature_entries.lyx
+\family default
+ which is included in the main \SpecialChar LyX
+ document via 
+\begin_inset Quotes eld
+\end_inset
+
+input
+\begin_inset Quotes erd
+\end_inset
+
+.
+\begin_inset CommandInset include
+LatexCommand input
+filename "lyx_contents/nomenclature_enrties.lyx"
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+Please be aware that any symbol used in a formula or equation has to be
+ defined as \SpecialChar LaTeX
+ code surrounded by 
+\begin_inset Quotes eld
+\end_inset
+
+$
+\begin_inset Quotes erd
+\end_inset
+
+ signs.
+ For correct sorting of your list of symbols you have to define a sort key
+ as well e.g.
+ if your symbol is 
+\begin_inset Quotes eld
+\end_inset
+
+
+\family typewriter
+$
+\backslash
+sigma$
+\family default
+
+\begin_inset Quotes erd
+\end_inset
+
+ it is shown as 
+\begin_inset Formula $\sigma$
+\end_inset
+
+ and the right sort key is 
+\begin_inset Quotes eld
+\end_inset
+
+sigma
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Note that a nomenclature-entry does only affect the list of symbols it
+ dos not create any text if defined.
+ 
+\end_layout
+
+\begin_layout Subsection
+List of notations
+\end_layout
+
+\begin_layout Standard
+The template contains a list of notations which you should follow in your
+ thesis.
+ Please take special care of discrete- and continuous-valued arguments of
+ functions.
+ The list is static and is created independently of your thesis contents
+ but you are free to remove unused entries from this list.
+ Please edit the file 
+\family typewriter
+lyx_contents/ notations_en.lyx
+\family default
+ or 
+\family typewriter
+lyx_contents/ notations_de.lyx
+\family default
+, respectively.
+\end_layout
+
+\begin_layout Chapter
+Examples
+\end_layout
+
+\begin_layout Section
+Equations
+\end_layout
+
+\begin_layout Standard
+All equations have to be numbered as e.g.
+ 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:Einstein"
+
+\end_inset
+
+, even if there is no reference to some equations in your thesis 
+\begin_inset Formula 
+\begin{equation}
+E=m\cdot c_{0}^{2}.\label{eq:Einstein}
+\end{equation}
+
+\end_inset
+
+Where 
+\begin_inset Formula $c_{0}$
+\end_inset
+
+ 
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "cnull"
+symbol "$c_0$"
+description "Speed of light in vacuum"
+
+\end_inset
+
+ is the speed of light in vacuum, 
+\begin_inset Formula $E$
+\end_inset
+
+ is the energy and 
+\begin_inset Formula $m$
+\end_inset
+
+ is the mass.
+ The symbols used in the equations should be added to the nomenclature in
+ order to be printed in the list of symbols.
+\end_layout
+
+\begin_layout Standard
+In \SpecialChar LyX
+, when you enter a command in the math mode that takes an argument via
+ curly brackets 
+\begin_inset Quotes eld
+\end_inset
+
+{}
+\begin_inset Quotes erd
+\end_inset
+
+, just type the command without brackets and finalize it with a space.
+ You will get a box, inside which the command applies.
+\end_layout
+
+\begin_layout Subsection
+Parentheses and brackets
+\end_layout
+
+\begin_layout Standard
+Avoid using parentheses and brackets the same way you would use them in
+ plain text, like 
+\family typewriter
+$(x+
+\backslash
+frac{1}{2})^2$ 
+\family default
+which would yield constant-size brackets: 
+\begin_inset Formula $(x+\frac{1}{2})^{2}$
+\end_inset
+
+.
+ Better you use nested parentheses that adapt their height according to
+ the symbols inside them.
+ \SpecialChar LaTeX
+ code for this would be 
+\family typewriter
+$
+\backslash
+left(x+
+\backslash
+frac{1}{2}
+\backslash
+right)^2$ 
+\family default
+which gives you nicer (bigger) parentheses: 
+\begin_inset Formula $\left(x+\frac{1}{2}\right)^{2}$
+\end_inset
+
+.
+ Fortunately, \SpecialChar LyX
+ enables simple input for those cases: When in math mode,
+ the math toolbar contains an 
+\begin_inset Quotes eld
+\end_inset
+
+Insert delimiters
+\begin_inset Quotes erd
+\end_inset
+
+ button, see also Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Insert-delimiters-GUI"
+
+\end_inset
+
+.
+ If you uncheck the option 
+\begin_inset Quotes eld
+\end_inset
+
+Keep matched
+\begin_inset Quotes erd
+\end_inset
+
+ there, you will be able to select different kinds of brackets for the left
+ and right side or even leave one side open, like in 
+\begin_inset Formula $\left.\frac{E_{\mathrm{s}}}{N_{0}}\right|_{\unit{dB}}$
+\end_inset
+
+ (avoid constructs like 
+\begin_inset Formula $\frac{E_{\mathrm{s}}}{N_{0}}|_{\unit{dB}}$
+\end_inset
+
+).
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename fig/brackets.png
+	width 70text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+GUI 
+\begin_inset Quotes eld
+\end_inset
+
+Insert delimiters
+\begin_inset Quotes erd
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Insert-delimiters-GUI"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Units
+\end_layout
+
+\begin_layout Standard
+If you use units in your thesis, it's recommended to do this via special
+ \SpecialChar LaTeX
+ package 
+\family typewriter
+units
+\family default
+.
+ This way, you make sure that units are always printed in upright font even
+ if used in an equation, and that the distance between a number and correspondin
+g unit is set correctly (In an equation, you normally don't use whitespaces
+ at all; this way you also don't have to).
+ \SpecialChar LyX
+ incorporates the corresponding commands in the math mode.
+ There, you have several possibilities (type the command, press Space button,
+ enter values in appearing boxes):
+\end_layout
+
+\begin_layout Itemize
+Using only a unit without a value: use the command 
+\family typewriter
+
+\backslash
+unitone
+\family default
+ like in the phrase 
+\begin_inset Quotes eld
+\end_inset
+
+The SNR is usually given in 
+\begin_inset Formula $\unit{dB}$
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Unit and a value: use the command 
+\family typewriter
+
+\backslash
+unittwo
+\family default
+ like in 
+\begin_inset Quotes eld
+\end_inset
+
+The algorithm works with SNR values down to 
+\begin_inset Formula $\unit[3]{dB}$
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Here, you get two boxes, the first one is for the number, the second for
+ the unit.
+\end_layout
+
+\begin_layout Itemize
+If the unit is a fraction, you can either type a fraction into the unit
+ box (corresponding button or command 
+\family typewriter
+
+\backslash
+frac
+\family default
+), like in 
+\begin_inset Formula $c_{0}\approx\unit[3\cdot10^{8}]{\frac{m}{s}}$
+\end_inset
+
+, or use the more compact version available via the command 
+\family typewriter
+
+\backslash
+unitfrac
+\family default
+: 
+\begin_inset Formula $c_{0}\approx\unit[3\cdot10^{8}]{\unitfrac{m}{s}}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Format of subscript and superscript indexes
+\end_layout
+
+\begin_layout Standard
+Descriptive indexes of symbols must be set in upright roman font as they
+ are no variables.
+ Examples: number of frames 
+\begin_inset Formula $N_{\mathrm{F}}$
+\end_inset
+
+, equalizer transfer function 
+\begin_inset Formula $H_{\mathrm{eq}}$
+\end_inset
+
+.
+ Use the math command 
+\family typewriter
+
+\backslash
+mathrm{}
+\family default
+ to achieve this.
+ 
+\end_layout
+
+\begin_layout Standard
+In contrast, variable indexes are to be set in the normal (italic) math
+ font.
+ Examples: sampled noise 
+\begin_inset Formula $n_{k}$
+\end_inset
+
+ with discrete time 
+\begin_inset Formula $k$
+\end_inset
+
+; 
+\begin_inset Formula $m$
+\end_inset
+
+-dimensional vector space 
+\begin_inset Formula $\mathbb{\mathbb{R}}^{m}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Operators
+\end_layout
+
+\begin_layout Standard
+Mathematical operators and functions must be set in upright font and obey
+ special spacing rules.
+ The basic math functions like 
+\begin_inset Formula $\sin(x)$
+\end_inset
+
+ and 
+\begin_inset Formula $\exp(x)$
+\end_inset
+
+ are built-in Latex commands.
+ Other operators should be set using 
+\family typewriter
+
+\backslash
+operatorname{}
+\family default
+.
+ Example: 
+\begin_inset Formula 
+\begin{equation}
+\operatorname{g}(x)=A\cdot\operatorname{erf}(x).
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Choice of symbols
+\end_layout
+
+\begin_layout Standard
+Multi-letter symbols should be avoided since they cannot be distinguished
+ from a product of symbols.
+ For example 
+\begin_inset Formula $SNR$
+\end_inset
+
+ could falsely be interpreted as 
+\begin_inset Formula $S\cdot N\cdot R$
+\end_inset
+
+.
+ Neither is it good practice to use an upright version of 
+\begin_inset Formula $\mathrm{{SNR}}$
+\end_inset
+
+, because variables should always be set in italic font in order to make
+ them distinguishable from abbreviations like 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+ac{SNR}
+\end_layout
+
+\end_inset
+
+.
+ Instead, use a single-letter symbol like 
+\begin_inset Formula $\gamma$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Every symbol must be used uniquely throughout the whole work.
+ Do not use the same symbol for different meanings.
+ The list of symbols can be a support for that.
+ You can check whether every symbol appears exactly once in the list when
+ finishing the work.
+\end_layout
+
+\begin_layout Subsection
+Multiline equations
+\end_layout
+
+\begin_layout Standard
+For multiline equations the 
+\begin_inset Quotes eld
+\end_inset
+
+AMS align
+\begin_inset Quotes erd
+\end_inset
+
+ math environment is recommended:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+(a+b)^{2} & =(a+b)(a+b)\nonumber \\
+ & =a^{2}+2ab+b^{2}.
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Inside \SpecialChar LyX
+ it is accessible by 
+\begin_inset Quotes eld
+\end_inset
+
+Insert -> Math -> AMS align Environment
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Hints for usage of acronyms 
+\end_layout
+
+\begin_layout Standard
+The section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:acrlist"
+
+\end_inset
+
+ described the technical details of the acronym usage such that the appearing
+ of the long version and the list of acronyms is managed correctly.
+ Here, the design rules are explained.
+ 
+\end_layout
+
+\begin_layout Enumerate
+You should minimize the usage of acronyms in the abstract.
+ If you use them there, you have to follow this rules:
+\begin_inset Separator latexpar
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+When used for the first time, the abbreviation has to be described in long
+ form (as usually, simply using 
+\family typewriter
+
+\backslash
+ac{<acronym>}
+\family default
+ will do the job).
+\end_layout
+
+\begin_layout Enumerate
+If you use the acronym only once in the abstract, it’s advisable not to
+ introduce the acronym at all and only use the long form (see below) because...
+\end_layout
+
+\begin_layout Enumerate
+...every acronym introduced in the abstract has to be re-introduces again at
+ the point of the first occurrence in the main text.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Avoid using acronyms in their long or short forms in the headings of chapters,
+ sections etc.
+ If you do, follow this rules: 
+\begin_inset Separator latexpar
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Use the non-linked version of the acronym command (see below).
+ 
+\end_layout
+
+\begin_layout Enumerate
+If the acronym has not been introduced before, use only the long form in
+ the heading, and introduce the acronym with the form as usually “long (short)”
+ in the text of the section.
+ 
+\end_layout
+
+\begin_layout Enumerate
+If this is not the first usage of the acronym, you may use the short form
+ if you think it looks well enough.
+ 
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+You may want to re-introduce an acronym at some later occurrence.
+ It should not be done for commonly used acronyms like 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+hacs{SNR}
+\end_layout
+
+\end_inset
+
+, 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+ac{BER}
+\end_layout
+
+\end_inset
+
+ etc.
+ Also for the less well-known terms, the list of acronyms is mostly sufficient.
+ If you still want to remind the reader of the acronym meaning, the only
+ allowed place for this is the first occurrence of the abbreviation after
+ a new chapter started.
+ 
+\end_layout
+
+\begin_layout Subsection
+Some useful code examples
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+
+\backslash
+acf{<acronym>}
+\family default
+ Introduces the acronym in the form “long form (short)”, even if it’s not
+ the first occurrence.
+ Useful for re-introducing an acronym if it was used in abstract.
+ 
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+
+\backslash
+acl{<acronym>}
+\family default
+ Only the long form of an acronym (e.g.: 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+acs{BER}
+\end_layout
+
+\end_inset
+
+ instead of 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+ac{BER}
+\end_layout
+
+\end_inset
+
+).
+ Useful for non-abbreviated acronyms in a section heading or in the abstract.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+
+\backslash
+acs{<acronym>}
+\family default
+ Only the short form of an acronym.
+ You should not feel the need to using this command, it’s mentioned here
+ just for the sake of completeness.
+ 
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+
+\backslash
+hacs{<acronym>},
+\backslash
+hacl{<acronym>}
+\family default
+ Non-linked form of the commands.
+ Does not create a link to the list of acronyms.
+ Has to be used (only) when using an acronym in a section heading.
+ This commands are not defined by the package but are an extension to commands
+ above, defined by this template.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+
+\backslash
+acp{<acronym>},
+\backslash
+acfp{<acronym>},etc
+\family default
+ Use the acronym in plural form.
+ This might need special definition of the acronym, please refer here to
+ the corresponding manual 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "acropkg"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+Unfortunately, unlike other acronym/glossaries packages, 
+\family typewriter
+acronym
+\family default
+ does not define special commands for starting the long form with the capital
+ letter.
+ A workaround for this is to either not use the acronym at the beginning
+ of a sentence, or define the long form to always have capital initial letters,
+ or just write the correctly capitalized form as plain text (not as a command).
+\end_layout
+
+\begin_layout Section
+Tables
+\end_layout
+
+\begin_layout Standard
+A table has to have a caption below the table as in table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:Example"
+
+\end_inset
+
+.
+ To be able to place a caption below your table you need to create a float
+ environment table first, use either the button 
+\begin_inset Graphics
+	filename fig/float-insert_table.png
+
+\end_inset
+
+ or the menu 
+\begin_inset Quotes eld
+\end_inset
+
+Insert -> Float -> Table
+\begin_inset Quotes erd
+\end_inset
+
+, and then use the table assistant of \SpecialChar LyX
+ inside this float environment.
+ This assistant is available via the button 
+\begin_inset Graphics
+	filename fig/tabular-insert.png
+
+\end_inset
+
+ or the menu 
+\begin_inset Quotes eld
+\end_inset
+
+Insert -> Table
+\begin_inset Quotes erd
+\end_inset
+
+.
+ As it looks much nicer if the table is centered, you have to set the paragraph
+ of the table to be centered.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="3" columns="2">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $x$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $x^{2}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $2$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $4$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $9$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $81$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Example of a simple table
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:Example"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+To keep thesis reports short, the list of tables is regarded as not useful
+ and no such list is created by the template.
+\end_layout
+
+\begin_layout Section
+Figures
+\end_layout
+
+\begin_layout Standard
+A figure has to have a caption below it as in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Example-Figure"
+
+\end_inset
+
+.
+ To be able to place a caption below your figure you need to create a float
+ environment figure first, use either the button 
+\begin_inset Graphics
+	filename fig/float-insert_figure.png
+
+\end_inset
+
+ or the menu 
+\begin_inset Quotes eld
+\end_inset
+
+Insert Float -> Figure
+\begin_inset Quotes erd
+\end_inset
+
+, and then use the figure insertion assistant of \SpecialChar LyX
+ inside this float environment.
+ This assistant is available by the button 
+\begin_inset Graphics
+	filename fig/dialog-show-new-inset_graphics.png
+
+\end_inset
+
+ or via the menu 
+\begin_inset Quotes eld
+\end_inset
+
+Insert -> Graphics
+\begin_inset Quotes erd
+\end_inset
+
+.
+ As it looks much nicer if the figure is centered you have to set the paragraph
+ of the figure to be centered.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename fig/logo_international.eps
+	lyxscale 20
+	height 2cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Example Figure 
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Example-Figure"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Generally, every image format can be used in the thesis.
+ The decision is up to you and \SpecialChar LyX
+ takes care of using the correct compiler
+ and/or converting the image to the correct format.
+ However, it is advisable to use vector graphics formats like 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+ac{EPS}
+\end_layout
+
+\end_inset
+
+ where possible.
+\end_layout
+
+\begin_layout Standard
+If you had Inkscape installed before installing \SpecialChar LyX
+, the latter might have
+ been automatically configured to even enable 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+ac{SVG}
+\end_layout
+
+\end_inset
+
+ images.
+ If you want to use 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+ac{SVG}
+\end_layout
+
+\end_inset
+
+ but it does not work, refer to 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "svglyx"
+
+\end_inset
+
+ to see how to configure \SpecialChar LyX
+ for this job.
+\end_layout
+
+\begin_layout Standard
+To keep thesis reports short, the list of figures is regarded as not useful
+ and no such list is created by the template.
+\end_layout
+
+\begin_layout Subsection
+Subfigures
+\end_layout
+
+\begin_layout Standard
+If you want to display or compare some information in several figures having
+ something in common, you can place them together as subfigures inside a
+ parent figure float.
+ For rather wide images you can use vertical alignment as in Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:subfig_vert"
+
+\end_inset
+
+ consisting out of Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:subfig_vert_1"
+
+\end_inset
+
+ and Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:subfig_vert_2"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename fig/logo_international.eps
+	lyxscale 20
+	width 60text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+International logo
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:subfig_vert_1"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename fig/logo_german.eps
+	lyxscale 20
+	width 60text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+German logo
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:subfig_vert_2"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Vertical alignment of subfigures.
+ 
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:subfig_vert"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Whenever possible, especially for plots, it's better to use horizontal alignment
+ as in Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:subfig_horz"
+
+\end_inset
+
+.
+ To do so, just make the width of the two graphics less than 50% of the
+ available text width each.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename fig/pl_900mhz.png
+	lyxscale 20
+	width 49text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Path loss at 
+\begin_inset Formula $\unit[900]{MHz}$
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:subfig_horz_1"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename fig/pl_2400mhz.png
+	lyxscale 20
+	width 49text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Path loss at 
+\begin_inset Formula $\unit[2400]{MHz}$
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:subfig_horz_2"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Horizontal alignment of subfigures.
+ Taken from 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "webdemo_pl"
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:subfig_horz"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If all subfigures together are wider than the text width, \SpecialChar LyX
+ inserts a line
+ break automatically.
+ In this template, a horizontal fill object is placed between the subfigures
+ to avoid them sticking together and disabling line breaks.
+\end_layout
+
+\begin_layout Standard
+Just for the sake of completeness, let's mention that if you use subfigures
+ in your thesis, you have to take care that they have the same size and
+ aspect ratio.
+\end_layout
+
+\begin_layout Section
+Code listings
+\end_layout
+
+\begin_layout Standard
+You can include code listings into your thesis.
+ Please use this function very carefully and don't place too much code into
+ the report! At no point it is required to put the whole source code of
+ your programs into your thesis: neither in the main part, nor in the appendix.
+\end_layout
+
+\begin_layout Standard
+To enable this function, the package 
+\family typewriter
+listings
+\family default
+ is required by the template.
+ So, in the case that the package is not yet part of your \SpecialChar LaTeX
+ distribution,
+ you either get an error message stating missing package or the package
+ is installed automatically if you configured MikTex for the installation
+ 
+\begin_inset Quotes eld
+\end_inset
+
+on-the-fly
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand lstinputlisting
+filename "listings/HelloWorld.java"
+lstparams "breaklines=true,captionpos=b,frame=tblr,language=Java,basicstyle={\\footnotesize\\ttfamily},keywordstyle={\\bfseries\\color{green!40!black}},commentstyle={\\itshape\\color{purple!40!black}},identifierstyle={\\color{blue}},stringstyle={\\color{orange}},numbers={left},caption={A simple Java Program},label={list:helloworld}"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+When including a source code file as a listing (
+\begin_inset Quotes eld
+\end_inset
+
+Insert 
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+ File 
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+ Child document
+\begin_inset Quotes erd
+\end_inset
+
+), you can specify many options such as the language for code highlighting
+ or styles (fonts, colors) for different code elements.
+ For an example, please have a look at the instantiation of listing 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "list:helloworld"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "list:vhdl"
+
+\end_inset
+
+.
+ You can find more details about available options at 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "listings"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand lstinputlisting
+filename "listings/lin2log_calc.vhd"
+lstparams "breaklines=true,captionpos=b,frame=tblr,language=VHDL,basicstyle={\\footnotesize\\ttfamily},keywordstyle={\\bfseries\\color{blue!40!black}},commentstyle={\\itshape\\color{green!40!black}},identifierstyle={\\color{black}},stringstyle={\\color{orange}},numberstyle={\\color{purple!40!black}},firstline=25,lastline=35,inputencoding=utf8,caption={Some VHDL code},label={list:vhdl}"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Bibliography
+\end_layout
+
+\begin_layout Standard
+This file is set to meet the restrictions on bibliographies for INÜ papers
+ so you just have to deal a little with the idea of Bib\SpecialChar TeX
+.
+ This document refers to the database 
+\family typewriter
+./tex_contents/Bib.bib
+\family default
+.
+ The entries in this database are only examples at the moment and you have
+ to define your own entries for the sources you have used.
+ You can also use your own database.
+ To do so, click the gray bar labeled 
+\begin_inset Quotes eld
+\end_inset
+
+BibTex generated Bibliography
+\begin_inset Quotes erd
+\end_inset
+
+ at the end of this document and add it.
+ 
+\end_layout
+
+\begin_layout Standard
+If you want to refer to one of your sources click on 
+\begin_inset Graphics
+	filename fig/dialog-show-new-inset_citation.png
+
+\end_inset
+
+ or on 
+\begin_inset Info
+type  "icon"
+arg   "dialog-show-new-inset citation"
+\end_inset
+
+, depending on your \SpecialChar LyX
+ version.
+ Here you see an example reference to the bibliography: 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "fftw"
+
+\end_inset
+
+; or with several entries in a reference: 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "621567,mar_test,lyx"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Spell check
+\end_layout
+
+\begin_layout Standard
+\SpecialChar LyX
+ integrates external spellcheckers 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "lyx"
+
+\end_inset
+
+.
+ After the spellchecker has been configured in 
+\begin_inset Quotes eld
+\end_inset
+
+Tools -> Settings...
+ / Language Settings / Spellchecker
+\begin_inset Quotes erd
+\end_inset
+
+, it can be activated by pressing F7.
+ Spell-checking is very helpful for finding typos.
+ Please use it to save yourself (and your advisor) some time.
+\end_layout
+
+\begin_layout Section
+Declaration of self-performing the work
+\end_layout
+
+\begin_layout Standard
+The declaration is included after the bibliography and.
+ Your name and the hand in date will be added automatically.
+ Since it is in German, it looks better when the date is also in German.
+ If you write your thesis in English, , right-click the gray bar 
+\begin_inset Quotes eld
+\end_inset
+
+Include: Declaration.lyx
+\begin_inset Quotes erd
+\end_inset
+
+ and select 
+\begin_inset Quotes eld
+\end_inset
+
+Edit the included file...
+\begin_inset Quotes erd
+\end_inset
+
+ in the menu.
+ There, change the 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+ac{ERT}
+\end_layout
+
+\end_inset
+
+ 
+\family typewriter
+
+\backslash
+handinvar
+\family default
+ to the date of hand in the format 
+\begin_inset Quotes eld
+\end_inset
+
+28.06.2014
+\begin_inset Quotes erd
+\end_inset
+
+ or 
+\begin_inset Quotes eld
+\end_inset
+
+28.
+ Juni 2014
+\begin_inset Quotes erd
+\end_inset
+
+ and save the file.
+ German-writing authors don't need to change anything here.
+ After printing the work, you have to sign the declaration on the underline
+ bottom right of the page.
+\end_layout
+
+\begin_layout Chapter
+\start_of_appendix
+Appendix
+\end_layout
+
+\begin_layout Standard
+After your main part you may want to insert an appendix to achieve one or
+ several of this targets:
+\end_layout
+
+\begin_layout Itemize
+Move longer calculations from the text to the appendix to improve readability.
+\end_layout
+
+\begin_layout Itemize
+Put some intermediate results (figures, tables) in the appendix to concentrate
+ on the final results.
+\end_layout
+
+\begin_layout Itemize
+Explain the files submitted along with the thesis (source code, figures,
+ report, presentation) and how to use them.
+\end_layout
+
+\begin_layout Standard
+Use this (and any self-created) chapters to insert the appendix.
+ If you somehow lose the setting, you can create an appendix in \SpecialChar LyX
+ by checking
+ the box in the menu 
+\begin_inset Quotes eld
+\end_inset
+
+Document -> Start appendix here
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Sectioning the appendix
+\end_layout
+
+\begin_layout Standard
+The thesis must have not more than one appendix (A).
+ This is achieved by having only one chapter after the start of the appendix.
+ If you need some structure in the appendix, please use sections and subsections
+ for this.
+ An example is the section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:app_section"
+
+\end_inset
+
+ and the subsection 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:app_subsec"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Another section of the appendix
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:app_section"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This is just to demonstrate the numbering structure.
+\end_layout
+
+\begin_layout Subsection
+Subsections in Appendix
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:app_subsec"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+As you see, numbering always starts with A (convinient for the name 
+\begin_inset Quotes eld
+\end_inset
+
+Appendix
+\begin_inset Quotes erd
+\end_inset
+
+), and different appendix types are separated by numbers.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+bibfiles "tex_contents/Bib"
+options "tex_contents/IEEEtran"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand include
+filename "lyx_contents/Declaration.lyx"
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

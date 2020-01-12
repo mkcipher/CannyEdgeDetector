@@ -1,0 +1,21 @@
+\newcommand{\posterindicator}{
+  \ifthenelse{\equal{\thesistypevar}{Bachelorarbeit}
+	  \OR \equal{\thesistypevar}{Bachelor Thesis}}{
+    \def\indicatorcolor{uni_apfelgruen}
+  }{
+    \ifthenelse{\equal{\thesistypevar}{Forschungsarbeit} 
+	    \OR \equal{\thesistypevar}{Research Thesis}}{
+      \def\indicatorcolor{uni_mittelblau}
+    }{
+      \ifthenelse{\equal{\thesistypevar}{Seminar Thesis}}{
+	\def\indicatorcolor{uni_gelb}
+      }{
+	\def\indicatorcolor{uni_rot}
+      }
+    }
+  }
+  
+  \begin{tikzpicture}
+    \fill[\indicatorcolor] (0,0) circle (0.6);
+  \end{tikzpicture}
+}

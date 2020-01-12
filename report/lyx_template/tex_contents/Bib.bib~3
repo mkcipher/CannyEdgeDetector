@@ -1,0 +1,94 @@
+@book{transmission_line,
+	author = {Wadell, Brian},
+	publisher = {{Artech House, Inc.}},
+	title = {{Transmission Line Design Handbook}},
+	year = {1991}
+}
+
+@article{621567,
+	abstract = {In this paper we discuss various aspects of VLSI implementation of radix-8 Sande-Tukey butterfly PEs. The Sande-Tukey algorithm is investigated to find regularities and simplifications. We argue that a bit-serial implementation of the butterfly PEs will be advantageous from an area point of view under most circumstances. The ideas are supported by a design example, a radix-8 butterfly PE that will be used in a 512 point FFT/IFFT processor aimed at OFDM applications},
+	author = {Widhe, T. and Melander, J. and Wanhammar, L.},
+	doi = {10.1109/ISCAS.1997.621567},
+	issn = {},
+	journal = {Circuits and Systems, 1997. ISCAS '97., Proceedings of 1997 IEEE International Symposium on},
+	keywords = {bit-serial implementation; CMOS digital integrated circuits; digital signal processing chips; fast Fourier transforms; FFT/IFFT processor; OFDM applications; pipeline processingDSP chip; radix-8 butterfly processing elements; Sande-Tukey algorithm; Sande-Tukey butterfly PEs; VLSI; VLSI implementation},
+	month = jun,
+	number = {},
+	pages = {2084--2087 vol.3},
+	title = {{Design of efficient radix-8 butterfly PEs for VLSI}},
+	volume = {3},
+	year = {1997}
+}
+
+@article{mar_test,
+	abstract = {In this paper we discuss various aspects of VLSI implementation of radix-8 Sande-Tukey butterfly PEs. The Sande-Tukey algorithm is investigated to find regularities and simplifications. We argue that a bit-serial implementation of the butterfly PEs will be advantageous from an area point of view under most circumstances. The ideas are supported by a design example, a radix-8 butterfly PE that will be used in a 512 point FFT/IFFT processor aimed at OFDM applications},
+	author = {Some, A. and Another, A.},
+	doi = {10.1109/ISCAS.1997.621567},
+	issn = {},
+	journal = {Circuits and Systems, 1997. ISCAS '97., Proceedings of 1997 IEEE International Symposium on},
+	keywords = {bit-serial implementation; CMOS digital integrated circuits; digital signal processing chips; fast Fourier transforms; FFT/IFFT processor; OFDM applications; pipeline processingDSP chip; radix-8 butterfly processing elements; Sande-Tukey algorithm; Sande-Tukey butterfly PEs; VLSI; VLSI implementation},
+	month = mar,
+	number = {},
+	pages = {2084--2087 vol.3},
+	title = {{Some other literature to test {M}arch in {G}erman bibliographies}},
+	volume = {3},
+	year = {1997}
+}
+
+@manual{fftw,
+	author = {Frigo, Matteo and Johnson, Steven G.},
+	edition = {3.1.2},
+	month = jun,
+	organization = {Massachusetts Institute of Technology},
+	title = {{FFTW}},
+	url = {www.fftw.org},
+	year = {2006}
+}
+
+@manual{lyx,
+	author = {Unknown},
+	month = jul,
+	organization = {The Lyx Team},
+	title = {{The Lyx User's Guide}},
+	url = {http://wiki.lyx.org/uploads/LyX/Manuals/1.4.2/UserGuide.pdf},
+	year = {2006}
+}
+
+@techreport{acropkg,
+	author = {Oetiker, To­bias},
+	institution = {CTAN},
+	title = {{An Acronym Environment for \LaTeX}},
+	url = {http://www.ctan.org/tex-archive/macros/latex/contrib/acronym},
+	year = {2015}
+}
+
+@techreport{svglyx,
+	author = {Wiki, LyX},
+	institution = {LyX},
+	title = {{Include SVG Images in LyX}},
+	url = {http://wiki.lyx.org/Tips/UseInkscapeSVGImages},
+	year = {2015}
+}
+
+@booklet{webdemo_pl,
+	address = {{Institute of Telecommunications, University of Stuttgart, Germany}},
+	author = {ten Brink, Stephan},
+	lastchecked = {18th August, 2015},
+	month = {Aug},
+	note = {Webdemo},
+	title = {{Path Loss Models}},
+	url = {http://webdemo.inue.uni-stuttgart.de},
+	year = {2015}
+}
+
+@booklet{subdocs_ilias,
+	address = {{Institute of Telecommunications, University of Stuttgart, Germany}},
+	author = {Roerich, David},
+	lastchecked = {18th August, 2015},
+	month = may,
+	note = {{ILIAS-Wiki}},
+	title = {{Managing large documents with master/child documents}},
+	url = {https://ilias3.uni-stuttgart.de/goto_Uni_Stuttgart_wiki_151627_Managing_large_documents_with_master\%252Fchild_documents.html},
+	year = {2015}
+}
+

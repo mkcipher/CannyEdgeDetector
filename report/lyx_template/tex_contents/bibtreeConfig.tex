@@ -1,0 +1,31 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This is the Bib-Tree config file. 
+% If you want its an easy way to give an overview of the literature related
+% to thr content of this thesis.
+% As a roule of thumb there should be 5 to 10 references with about 2 to 4 
+% levels of hierarchy mentioned in a single Bib-Tree.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter*{\BibTreeName}
+\label{ch:bibtree}
+\addcontentsline{toc}{chapter}{\BibTreeName}
+\markboth{\BibTreeName}{\BibTreeName}
+\vspace{1cm}
+
+\newcommand{\comment}[1]{ \bfseries{{(#1)}}}
+
+\newcommand{\negpar}[1][-1em]{%
+  \ifvmode\else\par\fi
+  {\parindent=#1\leavevmode}\ignorespaces
+}
+
+%h{offset}{width}{sep}{rule-width}{dot-size}
+\DTsetlength{-1.15em}{0.5em}{0.8cm}{0.4pt}{1.6pt}
+\setlength{\DTbaselineskip}{20pt}
+% define a handy command to be used in the bib-tree
+% one for references with author
+\newcommand{\bibtree}[1] {\vspace{-0.6cm}\negpar[-0.80cm]\parbox[c]{1.50em}{\centering \cite{#1}} \usebibentry{#1}{author}, \usebibentry{#1}{title}, \usebibentry{#1}{year}.\vspace{0.2em}}%
+% and one with missing author field
+\newcommand{\bibtreeNa}[1] {\vspace{-0.6cm}\negpar[-0.80cm]\parbox[c]{1.5em}{\centering \cite{#1}} \usebibentry{#1}{title}, \usebibentry{#1}{year}.\vspace{0.2em}}%
+
+\renewcommand*\DTstyle{}
+% here follows the actual tree in respective LyX-File
